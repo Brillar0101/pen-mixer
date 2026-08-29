@@ -369,6 +369,10 @@ FRAMES=[
 ]
 
 # ---------------------------------------------------------------- emission
+import sys as _sys
+if __name__ != "__main__":
+    _sys.exit(0) if False else None
+WRITE = (__name__ == "__main__")
 def eff(size=1.27,just=None,hide=False):
     s=f"(effects (font (size {size} {size}))"
     if just: s+=f" (justify {just})"
@@ -459,6 +463,9 @@ sch=f'''(kicad_sch
 \t(sheet_instances (path "/" (page "1")))
 )
 '''
-open(os.path.join(OUT,PROJ+".kicad_sch"),"w").write(sch)
+if WRITE:
+    open(os.path.join(OUT,PROJ+".kicad_sch"),"w").write(sch)
+else:
+    print("(import mode: no file written)")
 print(f"emitted: {len(PLACE)} symbol instances, {len(PWR)} power, {len(FLAGS)} flags, "
       f"{len(SEGS)} wires, {len(JUNC)} junctions, {len(NC)} nc")
