@@ -202,7 +202,7 @@ def P(ref,pin):
     return (round(X+px,2), round(Y-py,2))
 
 # ---------------------------------------------------------------- wires
-SEGS=[]; LABELS=[]; POWERS=[]; pwr_i=[0]
+SEGS=[]; LABELS=[]; POWERS=[]; GLB=[]; pwr_i=[0]
 def path(*pts):
     for a,b in zip(pts,pts[1:]):
         if a!=b: SEGS.append((a,b))
@@ -210,6 +210,8 @@ def pw(net,x,y):
     POWERS.append((net,round(x,2),round(y,2)))
 def lab(net,x,y,rot=0):
     LABELS.append((net,round(x,2),round(y,2),rot))
+def glab(net,x,y,rot):
+    GLB.append((net,round(x,2),round(y,2),rot))
 def chain(ref,pins,ext=None):
     pts=[P(ref,p) for p in pins]
     for a,b in zip(pts,pts[1:]): path(a,b)
@@ -224,9 +226,11 @@ pts=chain("J1",["A4","A9","B4","B9"])
 path(pts[0],(pts[0][0],63)); pw("VBUS",pts[0][0],63)
 # USB pairs -> U1
 a6,b6=P("J1","A6"),P("J1","B6"); u8=P("U1","8")
-path(a6,b6); path(b6,(230,b6[1]),(230,u8[1]),u8); lab("USB_DP",160,b6[1])
+path(a6,b6); path(b6,(92,b6[1])); glab("USB_DP",92,b6[1],0)
+path(u8,(u8[0]-2*G,u8[1])); glab("USB_DP",u8[0]-2*G,u8[1],180)
 a7,b7=P("J1","A7"),P("J1","B7"); u10=P("U1","10")
-path(a7,b7); path(b7,(234,b7[1]),(234,u10[1]),u10); lab("USB_DM",160,b7[1])
+path(a7,b7); path(b7,(92,b7[1])); glab("USB_DM",92,b7[1],0)
+path(u10,(u10[0]-2*G,u10[1])); glab("USB_DM",u10[0]-2*G,u10[1],180)
 # CC pulldowns
 path(P("J1","A5"),P("R1","1")); lab("CC1",95,P("J1","A5")[1])
 path(P("J1","B5"),P("R2","1")); lab("CC2",95,P("J1","B5")[1])
@@ -241,28 +245,32 @@ path(pts[-1],(pts[-1][0],150)); pw("GND",pts[-1][0],150)
 p12=P("U1","12"); path(p12,(276,p12[1]),(276,90)); pw("VBUS",276,90)
 p26=P("U1","26"); path(p26,(278,p26[1]),(278,95)); pw("+3V3",278,95)
 # SWD + reset to test pads
-p28=P("U1","28"); t1=P("TP1","1")
-path(p28,(t1[0],p28[1]),t1); lab("SWDIO",p28[0]-14,p28[1])
-p30=P("U1","30"); t2=P("TP2","1")
-path(p30,(t2[0],p30[1]),t2); lab("SWDCLK",p30[0]-14,p30[1])
-p13=P("U1","13"); t3=P("TP3","1")
-path(p13,(t3[0],p13[1]),t3); lab("nRESET",p13[0]-14,p13[1])
+for pin,tp,name in [("28","TP1","SWDIO"),("30","TP2","SWDCLK"),("13","TP3","nRESET")]:
+    pp=P("U1",pin); tt=P(tp,"1")
+    path(pp,(pp[0]-2*G,pp[1])); glab(name,pp[0]-2*G,pp[1],180)
+    path(tt,(tt[0]-4,tt[1])); glab(name,tt[0]-4,tt[1],180)
 t4=P("TP4","1"); path(t4,(t4[0]-3,t4[1]),(t4[0]-3,t4[1]+4)); pw("GND",t4[0]-3,t4[1]+4)
 t5=P("TP5","1"); path(t5,(t5[0]-3,t5[1]),(t5[0]-3,t5[1]-4)); pw("+3V3",t5[0]-3,t5[1]-4)
 # I2C with pullups
 u2scl=P("U2","13"); u1scl=P("U1","6"); r7=P("R7","1")
 path(u2scl,(260,u2scl[1]))
-path((260,r7[1]),(260,u2scl[1]),(260,u1scl[1]),u1scl)
-path(r7,(260,r7[1])); lab("SCL",240,u2scl[1])
+path((260,r7[1]),(260,u2scl[1]))
+path(r7,(260,r7[1])); glab("SCL",260,u2scl[1],0)
+path(u1scl,(u1scl[0]-2*G,u1scl[1])); glab("SCL",u1scl[0]-2*G,u1scl[1],180)
 r=P("R7","2"); path(r,(248,r[1]),(248,r[1]-4)); pw("+3V3",248,r[1]-4)
 u2sda=P("U2","12"); u1sda=P("U1","32"); r6=P("R6","1")
 path(u2sda,(265,u2sda[1]))
-path((265,r6[1]),(265,u2sda[1]),(265,u1sda[1]),u1sda)
-path(r6,(265,r6[1])); lab("SDA",240,u2sda[1])
+path((265,r6[1]),(265,u2sda[1]))
+path(r6,(265,r6[1])); glab("SDA",265,u2sda[1],0)
+path(u1sda,(u1sda[0]-2*G,u1sda[1])); glab("SDA",u1sda[0]-2*G,u1sda[1],180)
 r=P("R6","2"); path(r,(248.5,r[1]),(248.5,r[1]-4)); pw("+3V3",248.5,r[1]-4)
 # interrupts
-a=P("U2","4"); b=P("U1","2"); path(a,(270,a[1]),(270,b[1]),b); lab("IMU_INT1",240,a[1])
-a=P("U2","9"); b=P("U1","4"); path(a,(275,a[1]),(275,b[1]),b); lab("IMU_INT2",240,a[1])
+a=P("U2","4"); b=P("U1","2")
+path(a,(268,a[1])); glab("IMU_INT1",268,a[1],0)
+path(b,(b[0]-2*G,b[1])); glab("IMU_INT1",b[0]-2*G,b[1],180)
+a=P("U2","9"); b=P("U1","4")
+path(a,(268,a[1])); glab("IMU_INT2",268,a[1],0)
+path(b,(b[0]-2*G,b[1])); glab("IMU_INT2",b[0]-2*G,b[1],180)
 # U2 rails
 pts=chain("U2",[14,8,5]); path(pts[0],(pts[0][0],88)); pw("+3V3",pts[0][0],88)
 pts=chain("U2",[2,3,10,11,1,6,7]); path(pts[-1],(pts[-1][0],121)); pw("GND",pts[-1][0],121)
@@ -293,7 +301,8 @@ r81=P("R8","1"); path(r81,(110,r81[1]),(110,r81[1]-4)); pw("VBAT",110,r81[1]-4)
 r82=P("R8","2"); r91=P("R9","1"); c101=P("C10","1"); u38=P("U1","38")
 path(r82,(132,r82[1]),(132,208),(132,r91[1]),(132,216))
 path((132,r91[1]),r91); path((132,c101[1]),c101)
-path((132,208),(245,208),(245,u38[1]),u38); lab("VBAT_SENSE",180,208)
+path((132,208),(150,208)); glab("VBAT_SENSE",150,208,0)
+path(u38,(u38[0]-2*G,u38[1])); glab("VBAT_SENSE",u38[0]-2*G,u38[1],180)
 r92=P("R9","2"); path(r92,(148,r92[1]),(148,r92[1]+3),(150,r92[1]+3)) if False else None
 path(r92,(150,r92[1]),(150,213.5)) if False else None
 path(r92,(151,r92[1]),(151,208.5)) if False else None
@@ -311,7 +320,8 @@ path((106,j2_[1]),(106,222)) if False else None
 path((110,222),(110,230)) if False else None
 path((110,j2_[1]),(110,242)) if False else None
 # actual: junction at (110,230): branches drawn above; run to U1:
-path((110,230),(110,222),(240,222),(240,u36[1]),u36); lab("FSR_SENSE",170,222)
+path((110,230),(110,222),(130,222)); glab("FSR_SENSE",130,222,0)
+path(u36,(u36[0]-2*G,u36[1])); glab("FSR_SENSE",u36[0]-2*G,u36[1],180)
 r52=P("R5","2"); path(r52,(128,r52[1]),(128,234)); pw("GND",128,234)
 c92=P("C9","2"); path(c92,(124,c92[1]),(124,242)); pw("GND",124,242)
 # decoupling row
@@ -393,6 +403,10 @@ for title, refs in GROUPS:
     body.append(f'\t\t(effects (font (size 2 2) (bold yes)) (justify left)) (uuid "{U()}"))')
 for net,x,y,rot in LABELS:
     body.append(f'\t(label "{net}" (at {x} {y} {rot}) {eff(1.0,"left")} (uuid "{U()}"))')
+for net,x,y,rot in GLB:
+    just = "left" if rot==0 else "right"
+    body.append(f'\t(global_label "{net}" (shape bidirectional) (at {x} {y} {rot})')
+    body.append(f'\t\t(fields_autoplaced yes) {eff(1.27,just)} (uuid "{U()}"))')
 
 libs="\n".join(DEFS[k][0] for k in DEFS)
 sch=f'''(kicad_sch
