@@ -1,63 +1,48 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T19:24:38 **
+** Created on 2026-08-29T19:28:07 **
 ** Report includes: Errors, Warnings **
 
-** Found 15 DRC violations **
+** Found 10 DRC violations **
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(105.3120 mm, 53.4519 mm): Track [IMU_INT1] on F.Cu, length 1.8236 mm
-    @(104.7452 mm, 53.9852 mm): Pad 1 [GND] of U1 on F.Cu
+    @(97.0239 mm, 52.2353 mm): Via [SWDCLK] on F.Cu - B.Cu
+    @(97.5452 mm, 52.4352 mm): Pad 28 [SWDIO] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(105.4700 mm, 52.3096 mm): Via [SCL] on F.Cu - B.Cu
-    @(104.9452 mm, 52.4352 mm): Pad 4 [IMU_INT2] of U1 on F.Cu
+    @(103.7113 mm, 50.1675 mm): Via [USB_DM] on F.Cu - B.Cu
+    @(103.8452 mm, 50.6852 mm): Pad 8 [USB_DP] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(104.9450 mm, 52.4352 mm): Track [IMU_INT2] on F.Cu, length 0.7398 mm
-    @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
-    @(99.1353 mm, 54.7115 mm): Via [SDA] on F.Cu - B.Cu
+    @(99.1625 mm, 54.7025 mm): Track [SDA] on F.Cu, length 0.7316 mm
     @(99.2952 mm, 54.1852 mm): Pad 34 [<no net>] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(97.1892 mm, 50.3004 mm): Track [VBUS] on F.Cu, length 0.9798 mm
-    @(97.5452 mm, 49.9352 mm): Pad 78 [<no net>] of U1 on F.Cu
+    @(105.3119 mm, 53.4519 mm): Track [IMU_INT1] on F.Cu, length 1.6570 mm
+    @(104.7452 mm, 53.9852 mm): Pad 1 [GND] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(105.4680 mm, 52.9585 mm): Via [IMU_INT2] on F.Cu - B.Cu
+    @(105.2351 mm, 50.3080 mm): Track [USB_DP] on F.Cu, length 1.0127 mm
+    @(104.9452 mm, 49.9352 mm): Pad 65 [<no net>] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(104.9452 mm, 52.4352 mm): Track [IMU_INT2] on F.Cu, length 0.7542 mm
     @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
+    @(97.5452 mm, 52.4352 mm): Track [SWDIO] on F.Cu, length 0.7401 mm
     @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(101.8940 mm, 50.0345 mm): Track [VBUS] on F.Cu, length 0.9204 mm
-    @(101.8952 mm, 50.6852 mm): Pad 14 [GND] of U1 on F.Cu
+    @(97.0219 mm, 52.9585 mm): Via [SWDIO] on F.Cu - B.Cu
+    @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(103.1950 mm, 50.6852 mm): Track [USB_DM] on F.Cu, length 0.7340 mm
-    @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
+    @(105.4704 mm, 50.5433 mm): Via [USB_DP] on F.Cu - B.Cu
+    @(104.7452 mm, 50.8852 mm): Pad 7 [GND] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(102.6760 mm, 50.1661 mm): Via [USB_DM] on F.Cu - B.Cu
-    @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(105.7120 mm, 71.9852 mm): Track [+3V3] on F.Cu, length 0.2147 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(97.9452 mm, 74.6352 mm): Track [GND] on F.Cu, length 0.8667 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(103.0780 mm, 66.4852 mm): Track [GND] on B.Cu, length 0.6667 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(97.7452 mm, 65.8185 mm): Track [SWDIO] on B.Cu, length 0.6981 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(99.7452 mm, 65.8185 mm): Track [SWDCLK] on B.Cu, length 0.3931 mm
+    @(99.1625 mm, 54.7025 mm): Via [SDA] on F.Cu - B.Cu
+    @(99.2952 mm, 54.1852 mm): Pad 34 [<no net>] of U1 on F.Cu
 
 ** Found 0 unconnected pads **
 
