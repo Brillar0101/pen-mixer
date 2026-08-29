@@ -94,10 +94,8 @@ prototype/
   patches/            Pure Data: track playback, manual sliders, live input
 ```
 
-Run it with `python3 prototype/bridge.py`, open
-`prototype/patches/pen-mixer-track.pd`, turn on DSP. The dashboard is at
-localhost:8080. The only dependency in the whole project is `bleak`, and only
-for BLE mode.
+How to run all of it — firmware, bridge, Pure Data, dashboard — lives in
+[docs/RUNNING.md](docs/RUNNING.md).
 
 ## Measured, not estimated
 
@@ -121,7 +119,6 @@ docs/                 architecture page and printable PDF
 ARCHITECTURE.md       how it all fits together, with diagrams
 ```
 
-Audio files are gitignored; `python3 prototype/make_test_tone.py` generates a
-test tone. Standalone repos for each build:
+Standalone repos for each build:
 [pen-mixer-rp2040](https://github.com/Brillar0101/pen-mixer-rp2040),
 [pen-mixer-nrf52840](https://github.com/Brillar0101/pen-mixer-nrf52840).
