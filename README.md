@@ -94,7 +94,7 @@ prototype/
   patches/            Pure Data: track playback, manual sliders, live input
 ```
 
-How to run all of it — firmware, bridge, Pure Data, dashboard — lives in
+How to run all of it, from firmware to Pure Data to the dashboard, lives in
 [docs/RUNNING.md](docs/RUNNING.md).
 
 ## Measured, not estimated

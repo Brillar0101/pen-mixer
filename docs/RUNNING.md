@@ -26,16 +26,16 @@ silence per-frame logging.
 ## Start the audio
 
 1. Open one of the patches in `prototype/patches/`:
-   - `pen-mixer-track.pd` — plays an audio file and applies filter + gain
-   - `pen-mixer-live.pd` — processes live audio input
-   - `pen-mixer-manual.pd` — sliders only, no sensor needed (sanity check)
+   - `pen-mixer-track.pd` plays an audio file and applies filter + gain
+   - `pen-mixer-live.pd` processes live audio input
+   - `pen-mixer-manual.pd` is sliders only, no sensor needed (sanity check)
 2. Turn on DSP (Media → DSP On, or the toggle in the patch).
 3. Audio files are gitignored; generate a test tone with
    `python3 prototype/make_test_tone.py` or load your own file.
 
 ## See it move
 
-- Dashboard: open `localhost:8080` — live tilt/twist visualization.
+- Open `localhost:8080` for the dashboard, a live tilt and twist view.
 - Tilt the pen: the filter sweeps. Twist it: the level moves.
 
 ## Troubleshooting
