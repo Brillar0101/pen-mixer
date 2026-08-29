@@ -1,12 +1,16 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T19:47:57 **
+** Created on 2026-08-29T19:50:41 **
 ** Report includes: Errors, Warnings **
 
-** Found 7 DRC violations **
+** Found 10 DRC violations **
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(97.0239 mm, 52.2353 mm): Via [SWDCLK] on F.Cu - B.Cu
     @(97.5452 mm, 52.4352 mm): Pad 28 [SWDIO] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(105.3119 mm, 53.4519 mm): Track [IMU_INT1] on F.Cu, length 1.6570 mm
+    @(104.7452 mm, 53.9852 mm): Pad 1 [GND] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(105.2351 mm, 50.3080 mm): Track [USB_DP] on F.Cu, length 1.0127 mm
@@ -15,10 +19,6 @@
     Rule: board setup solder mask min width; error
     @(99.3350 mm, 54.8750 mm): Track [SDA] on F.Cu, length 0.9755 mm
     @(99.2952 mm, 54.1852 mm): Pad 34 [<no net>] of U1 on F.Cu
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
-    @(105.3119 mm, 53.4519 mm): Track [IMU_INT1] on F.Cu, length 1.6570 mm
-    @(104.7452 mm, 53.9852 mm): Pad 1 [GND] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(104.9452 mm, 52.4352 mm): Track [IMU_INT2] on F.Cu, length 0.7542 mm
@@ -31,6 +31,18 @@
     Rule: board setup solder mask min width; error
     @(97.0219 mm, 52.9585 mm): Via [SWDIO] on F.Cu - B.Cu
     @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.3452 mm, 45.6852 mm): Reference field of U1
+    @(101.2452 mm, 45.0352 mm): PCB text '2026-08-29' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(97.5452 mm, 73.1902 mm): Reference field of R8
+    @(97.4502 mm, 74.0402 mm): Reference field of R9
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(101.0452 mm, 55.4102 mm): Reference field of U4
+    @(102.1802 mm, 55.5852 mm): Reference field of C5
 
 ** Found 0 unconnected pads **
 
