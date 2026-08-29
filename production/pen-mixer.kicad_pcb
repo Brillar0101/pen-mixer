@@ -4898,7 +4898,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "298e3298-c1bb-41a6-926d-52c7c88645bc")
-		(at 99.9952 73.8352)
+		(at 99.9952 51.1352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP2"
 			(at 0 1.6 180)
@@ -4963,7 +4963,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "2a279f18-06ae-40f6-8871-5fec3faeea88")
-		(at 104.9952 73.8352)
+		(at 104.9952 51.1352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP5"
 			(at 0 1.6 180)
@@ -5028,7 +5028,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "77fde6ad-ac60-46c5-882f-44895b3d56da")
-		(at 102.4952 73.8352)
+		(at 102.4952 51.1352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP4"
 			(at 0 1.6 180)
@@ -5093,7 +5093,7 @@
 	(footprint "SolderPad_1.2x2.0mm"
 		(layer "B.Cu")
 		(uuid "b1f6f44a-7436-4919-b0f8-7311da041633")
-		(at 101.2452 51.6352 90)
+		(at 101.2452 81.0352 90)
 		(descr "Wire solder pad pair, 2.0mm pitch")
 		(property "Reference" "J2"
 			(at 0 1.6 270)
@@ -5165,7 +5165,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "f686d426-f92c-43bb-b45e-6548d4f3eb94")
-		(at 97.4952 73.8352)
+		(at 97.4952 51.1352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP1"
 			(at 0 1.6 180)

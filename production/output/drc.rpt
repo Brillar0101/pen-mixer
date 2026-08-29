@@ -1,8 +1,12 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T19:00:52 **
+** Created on 2026-08-29T19:04:21 **
 ** Report includes: Errors, Warnings **
 
-** Found 16 DRC violations **
+** Found 17 DRC violations **
+[clearance]: Clearance violation ( clearance 0.0900 mm; actual 0.0760 mm)
+    Local override; error
+    @(97.0275 mm, 51.9362 mm): Via [+3V3] on F.Cu - B.Cu
+    @(97.4952 mm, 51.1352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(97.1892 mm, 50.3004 mm): Track [VBUS] on F.Cu, length 0.9798 mm
@@ -17,20 +21,24 @@
     @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(103.1952 mm, 50.6852 mm): Track [USB_DM] on F.Cu, length 0.7341 mm
-    @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
+    @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
+    @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(105.4696 mm, 52.3096 mm): Via [SCL] on F.Cu - B.Cu
     @(104.9452 mm, 52.4352 mm): Pad 4 [IMU_INT2] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
-    @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
+    @(103.1952 mm, 50.6852 mm): Track [USB_DM] on F.Cu, length 0.7341 mm
+    @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(102.6761 mm, 50.1661 mm): Via [USB_DM] on F.Cu - B.Cu
     @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(99.1353 mm, 54.7115 mm): Via [SDA] on F.Cu - B.Cu
+    @(99.2952 mm, 54.1852 mm): Pad 34 [<no net>] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(105.3119 mm, 53.4519 mm): Track [IMU_INT1] on F.Cu, length 1.8236 mm
@@ -39,10 +47,6 @@
     Rule: board setup solder mask min width; error
     @(104.9452 mm, 52.4352 mm): Track [IMU_INT2] on F.Cu, length 0.7401 mm
     @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
-    @(99.1353 mm, 54.7115 mm): Via [SDA] on F.Cu - B.Cu
-    @(99.2952 mm, 54.1852 mm): Pad 34 [<no net>] of U1 on F.Cu
 [track_dangling]: Track has unconnected end
     Local override; warning
     @(104.9452 mm, 71.9852 mm): Track [+3V3] on F.Cu, length 0.7667 mm
@@ -65,28 +69,28 @@
 ** Found 6 unconnected pads **
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(104.9952 mm, 73.8352 mm): Pad 1 [+3V3] of TP5 on B.Cu
-    @(104.9452 mm, 71.9852 mm): Track [+3V3] on F.Cu, length 0.7667 mm
+    @(103.3852 mm, 55.5852 mm): Track [+3V3] on F.Cu, length 1.7725 mm
+    @(104.9952 mm, 51.1352 mm): Pad 1 [+3V3] of TP5 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(99.6202 mm, 51.3352 mm): Track [GND] on F.Cu, length 0.6500 mm
-    @(100.1452 mm, 51.6352 mm): Pad 2 [GND] of J2 on B.Cu
+    @(105.5652 mm, 81.3502 mm): Track [GND] on GND, length 8.6400 mm
+    @(100.1452 mm, 81.0352 mm): Pad 2 [GND] of J2 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(102.4952 mm, 73.8352 mm): Pad 1 [GND] of TP4 on B.Cu
-    @(102.1452 mm, 73.5752 mm): Track [GND] on F.Cu, length 1.1700 mm
+    @(101.2452 mm, 50.6852 mm): Track [GND] on F.Cu, length 0.6500 mm
+    @(102.4952 mm, 51.1352 mm): Pad 1 [GND] of TP4 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(103.8268 mm, 58.9504 mm): Track [VBAT] on F.Cu, length 0.8932 mm
-    @(102.3452 mm, 51.6352 mm): Pad 1 [VBAT] of J2 on B.Cu
+    @(97.9452 mm, 72.4352 mm): Track [VBAT] on F.Cu, length 0.4334 mm
+    @(102.3452 mm, 81.0352 mm): Pad 1 [VBAT] of J2 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(97.4952 mm, 73.8352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
-    @(97.7452 mm, 66.4852 mm): Track [SWDIO] on B.Cu, length 0.6667 mm
+    @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
+    @(97.4952 mm, 51.1352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(99.7452 mm, 66.4852 mm): Track [SWDCLK] on B.Cu, length 0.6667 mm
-    @(99.9952 mm, 73.8352 mm): Pad 1 [SWDCLK] of TP2 on B.Cu
+    @(99.9952 mm, 51.1352 mm): Pad 1 [SWDCLK] of TP2 on B.Cu
+    @(97.5452 mm, 53.0852 mm): Track [SWDCLK] on F.Cu, length 0.5624 mm
 
 ** Found 0 Footprint errors **
 
