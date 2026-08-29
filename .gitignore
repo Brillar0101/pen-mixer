@@ -6,3 +6,4 @@ __pycache__/
 hardware/*-backups/
 hardware/*.kicad_prl
 hardware/net.xml
+production/.history/
