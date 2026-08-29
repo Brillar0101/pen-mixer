@@ -1,12 +1,12 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T19:04:21 **
+** Created on 2026-08-29T19:04:42 **
 ** Report includes: Errors, Warnings **
 
-** Found 17 DRC violations **
-[clearance]: Clearance violation ( clearance 0.0900 mm; actual 0.0760 mm)
-    Local override; error
-    @(97.0275 mm, 51.9362 mm): Via [+3V3] on F.Cu - B.Cu
-    @(97.4952 mm, 51.1352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
+** Found 16 DRC violations **
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(105.4685 mm, 52.9585 mm): Via [IMU_INT2] on F.Cu - B.Cu
+    @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(97.1892 mm, 50.3004 mm): Track [VBUS] on F.Cu, length 0.9798 mm
@@ -17,20 +17,16 @@
     @(101.8952 mm, 50.6852 mm): Pad 14 [GND] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(105.4685 mm, 52.9585 mm): Via [IMU_INT2] on F.Cu - B.Cu
-    @(104.9452 mm, 53.0852 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
     @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
     @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(105.4696 mm, 52.3096 mm): Via [SCL] on F.Cu - B.Cu
-    @(104.9452 mm, 52.4352 mm): Pad 4 [IMU_INT2] of U1 on F.Cu
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
     @(103.1952 mm, 50.6852 mm): Track [USB_DM] on F.Cu, length 0.7341 mm
     @(102.5452 mm, 50.6852 mm): Pad 12 [VBUS] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(105.4696 mm, 52.3096 mm): Via [SCL] on F.Cu - B.Cu
+    @(104.9452 mm, 52.4352 mm): Pad 4 [IMU_INT2] of U1 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(102.6761 mm, 50.1661 mm): Via [USB_DM] on F.Cu - B.Cu
@@ -85,12 +81,12 @@
     @(102.3452 mm, 81.0352 mm): Pad 1 [VBAT] of J2 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(96.7858 mm, 53.1946 mm): Track [SWDIO] on F.Cu, length 1.0740 mm
-    @(97.4952 mm, 51.1352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
+    @(97.5452 mm, 52.4352 mm): Pad 28 [SWDIO] of U1 on F.Cu
+    @(98.0952 mm, 51.1352 mm): Pad 1 [SWDIO] of TP1 on B.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
     @(99.9952 mm, 51.1352 mm): Pad 1 [SWDCLK] of TP2 on B.Cu
-    @(97.5452 mm, 53.0852 mm): Track [SWDCLK] on F.Cu, length 0.5624 mm
+    @(97.5452 mm, 53.0852 mm): Pad 30 [SWDCLK] of U1 on F.Cu
 
 ** Found 0 Footprint errors **
 

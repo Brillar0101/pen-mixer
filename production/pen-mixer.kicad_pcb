@@ -5165,7 +5165,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "f686d426-f92c-43bb-b45e-6548d4f3eb94")
-		(at 97.4952 51.1352)
+		(at 98.0952 51.1352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP1"
 			(at 0 1.6 180)
