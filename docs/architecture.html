@@ -1,0 +1,339 @@
+<title>Pen Mixer Architecture</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Mono:wght@400;500;700&family=Red+Hat+Text:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f0f0f1; --surface:#fff; --surface-2:#fafafa; --masthead:#151515;
+  --text:#151515; --text-2:#4d4d4d; --text-3:#6a6e73;
+  --border:#d2d2d2; --border-2:#b8bbbe;
+  --blue:#06c; --blue-d:#004d99; --blue-s:#e7f1fa;
+  --green:#3d7317; --green-s:#f3faf2; --green-l:#63993d;
+  --gold:#795600; --gold-s:#fdf7e7; --gold-l:#dca614;
+  --red:#a30000; --red-s:#fef2f1; --red-l:#c9190b;
+  --purple:#5e40be; --purple-s:#f2f0fc; --purple-l:#8476d1;
+  --shadow:0 1px 2px rgba(21,21,21,.10),0 0 2px rgba(21,21,21,.06);
+  --fd:"Red Hat Display","Helvetica Neue",Arial,sans-serif;
+  --ft:"Red Hat Text","Helvetica Neue",Arial,sans-serif;
+  --fm:"Red Hat Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1214; --surface:#1b1d21; --surface-2:#212427; --masthead:#08090a;
+  --text:#e0e0e0; --text-2:#b8bbbe; --text-3:#8a8d90;
+  --border:#3d3f42; --border-2:#57585a;
+  --blue:#92c5f9; --blue-d:#bee1f4; --blue-s:#16283a;
+  --green:#7cc674; --green-s:#17200f; --green-l:#3d7317;
+  --gold:#f0ab00; --gold-s:#241d0e; --gold-l:#795600;
+  --red:#fe5142; --red-s:#2a1310; --red-l:#a30000;
+  --purple:#b2a3ff; --purple-s:#1c1930; --purple-l:#5e40be;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 0 2px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1214; --surface:#1b1d21; --surface-2:#212427; --masthead:#08090a;
+  --text:#e0e0e0; --text-2:#b8bbbe; --text-3:#8a8d90;
+  --border:#3d3f42; --border-2:#57585a;
+  --blue:#92c5f9; --blue-d:#bee1f4; --blue-s:#16283a;
+  --green:#7cc674; --green-s:#17200f; --green-l:#3d7317;
+  --gold:#f0ab00; --gold-s:#241d0e; --gold-l:#795600;
+  --red:#fe5142; --red-s:#2a1310; --red-l:#a30000;
+  --purple:#b2a3ff; --purple-s:#1c1930; --purple-l:#5e40be;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 0 2px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--ft);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fd);text-wrap:balance;margin:0}
+p{margin:0}
+code{font-family:var(--fm);font-size:.88em;background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;color:var(--text)}
+.mast{background:var(--masthead);color:#f0f0f0;padding:0 24px;height:60px;display:flex;align-items:center;gap:14px}
+.mast svg{width:28px;height:28px;color:#e00}
+.mast .n{font-family:var(--fd);font-weight:700;font-size:16px}
+.mast .s{width:1px;height:22px;background:#3d3f42}
+.mast .t{font-family:var(--fm);font-size:11.5px;color:#b8bbbe;letter-spacing:.04em;text-transform:uppercase}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.head{background:var(--surface);border-bottom:1px solid var(--border);padding:30px 0 26px}
+.head h1{font-size:34px;font-weight:900;letter-spacing:-.022em;margin:8px 0 10px}
+.head p{font-size:16.5px;color:var(--text-2);max-width:66ch}
+.eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
+.sec{padding:34px 0;border-bottom:1px solid var(--border)}
+.sec:last-of-type{border-bottom:0}
+.secw{background:var(--surface)}
+.sec h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.sec .lede{font-size:15px;color:var(--text-2);max-width:72ch;margin-bottom:18px}
+figure{margin:0}
+figure svg{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 6px}
+figcaption{font-size:14px;color:var(--text-2);margin-top:12px;max-width:74ch}
+.scroll{overflow-x:auto}
+.hw{fill:var(--blue-s);stroke:var(--blue);stroke-width:1.2}
+.sw{fill:var(--purple-s);stroke:var(--purple-l);stroke-width:1.2}
+.io{fill:var(--surface-2);stroke:var(--border-2);stroke-width:1.2}
+.ok{fill:var(--green-s);stroke:var(--green-l);stroke-width:1.2}
+.bad{fill:var(--red-s);stroke:var(--red-l);stroke-width:1.2}
+.warn{fill:var(--gold-s);stroke:var(--gold-l);stroke-width:1.2}
+.t-hw{fill:var(--blue-d)} .t-sw{fill:var(--purple)} .t-io{fill:var(--text)}
+.t-ok{fill:var(--green)} .t-bad{fill:var(--red)} .t-warn{fill:var(--gold)}
+.lab{fill:var(--text-3);font-family:var(--fm)}
+.arw{stroke:var(--text-2);stroke-width:1.5;fill:none}
+.arwr{stroke:var(--red-l);stroke-width:1.5;fill:none}
+.ah{fill:var(--text-2)} .ahr{fill:var(--red-l)}
+.grp{fill:none;stroke:var(--border-2);stroke-width:1.2;stroke-dasharray:5 4}
+svg text{font-family:"Red Hat Text",Arial,sans-serif}
+.tscroll{overflow-x:auto;border:1px solid var(--border);border-radius:8px;background:var(--surface);margin-top:14px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th{font-family:var(--fm);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);text-align:left;padding:11px 13px;border-bottom:1px solid var(--border-2);background:var(--surface-2);font-weight:500;white-space:nowrap}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--text);font-weight:500}
+.num{font-family:var(--fm);font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:13.5px;color:var(--text-2);background:var(--surface-2);border-left:2px solid var(--gold-l);padding:10px 13px;border-radius:0 4px 4px 0;margin-top:16px}
+.note b{color:var(--text);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;padding:3px 9px;border-radius:20px;border:1px solid var(--border-2);color:var(--text-2)}
+.lg i{width:11px;height:3px;border-radius:2px;display:inline-block}
+</style>
+
+<header class="mast">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M4 20 L6.4 13.2 L14.6 5 A2.4 2.4 0 0 1 19 9.4 L10.8 17.6 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M6.4 13.2 L10.8 17.6" stroke="currentColor" stroke-width="1.6"/></svg>
+  <span class="n">Pen Mixer</span><span class="s"></span>
+  <span class="t">Architecture</span>
+</header>
+
+<div class="head"><div class="wrap">
+  <span class="eyebrow">System documentation</span>
+  <h1>How a pen ends up controlling a filter</h1>
+  <p>Numbers on this page are measured on the working rig, not estimated. Where
+     something is estimated or unverified it says so.</p>
+</div></div>
+
+<section class="sec secw"><div class="wrap">
+  <h2>Signal chain</h2>
+  <p class="lede">Two transports, one discard path, and two loops. The loops are
+     the parts that took longest to get right, so they are drawn rather than
+     described.</p>
+  <figure><div class="scroll">
+  <svg viewBox="0 0 1060 420" role="img" aria-label="Signal chain. The pen's IMU feeds a microcontroller which sends CSV frames over USB or Bluetooth. Bluetooth carries a reconnect loop back to advertising. The bridge parses frames, discarding malformed ones to a counter, then smooths and maps them before sending UDP to Pure Data, which loops its own file playback at end of file.">
+    <defs>
+      <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ah"/></marker>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ahr"/></marker>
+    </defs>
+
+    <rect x="120" y="58" width="252" height="120" rx="10" class="grp"/>
+    <text x="136" y="78" class="lab" font-size="11">ON THE PEN</text>
+    <rect x="452" y="42" width="452" height="238" rx="10" class="grp"/>
+    <text x="468" y="62" class="lab" font-size="11">ON THE LAPTOP</text>
+
+    <rect x="14" y="98" width="84" height="52" rx="6" class="io"/>
+    <text x="56" y="121" text-anchor="middle" class="t-io" font-size="13" font-weight="700">Hand</text>
+    <text x="56" y="138" text-anchor="middle" class="lab" font-size="10">tilt, twist</text>
+
+    <rect x="138" y="98" width="96" height="52" rx="6" class="hw"/>
+    <text x="186" y="120" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">IMU</text>
+    <text x="186" y="137" text-anchor="middle" class="t-hw" font-size="10">0x6A</text>
+
+    <rect x="264" y="98" width="92" height="52" rx="6" class="hw"/>
+    <text x="310" y="120" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">MCU</text>
+    <text x="310" y="137" text-anchor="middle" class="t-hw" font-size="10">197 Hz</text>
+
+    <line x1="102" y1="124" x2="132" y2="124" class="arw" marker-end="url(#a)"/>
+    <line x1="238" y1="124" x2="258" y2="124" class="arw" marker-end="url(#a)"/>
+    <text x="248" y="112" text-anchor="middle" class="lab" font-size="9">I²C</text>
+
+    <line x1="360" y1="112" x2="470" y2="112" class="arw" marker-end="url(#a)"/>
+    <text x="415" y="102" text-anchor="middle" class="lab" font-size="10">USB 1 ms</text>
+    <line x1="360" y1="150" x2="470" y2="150" class="arw" stroke-dasharray="5 4" marker-end="url(#a)"/>
+    <text x="415" y="166" text-anchor="middle" class="lab" font-size="10">BLE ~10 ms</text>
+    <path d="M400 158 q-14 34 -60 34 q-46 0 -46 -34" class="arw" stroke-dasharray="4 4" marker-end="url(#a)"/>
+    <text x="330" y="206" text-anchor="middle" class="lab" font-size="9.5">disconnect, re-advertise</text>
+
+    <rect x="474" y="86" width="176" height="118" rx="8" class="sw"/>
+    <text x="562" y="110" text-anchor="middle" class="t-sw" font-size="13.5" font-weight="700">bridge.py</text>
+    <line x1="490" y1="120" x2="634" y2="120" stroke="var(--purple-l)" stroke-width="1"/>
+    <text x="562" y="138" text-anchor="middle" class="t-sw" font-size="11">1 · strip ANSI, parse 3 floats</text>
+    <text x="562" y="156" text-anchor="middle" class="t-sw" font-size="11">2 · smooth, alpha 0.4</text>
+    <text x="562" y="174" text-anchor="middle" class="t-sw" font-size="11">3 · map to cutoff/gain/wet</text>
+    <text x="562" y="192" text-anchor="middle" class="lab" font-size="10">24 ms of the 32 ms budget</text>
+
+    <path d="M562 208 L562 236" class="arwr" marker-end="url(#ar)"/>
+    <rect x="482" y="238" width="160" height="34" rx="6" class="bad"/>
+    <text x="562" y="259" text-anchor="middle" class="t-bad" font-size="11">discarded, bad++</text>
+    <text x="576" y="226" class="lab" font-size="9.5">malformed</text>
+
+    <rect x="700" y="86" width="150" height="60" rx="8" class="sw"/>
+    <text x="775" y="110" text-anchor="middle" class="t-sw" font-size="13.5" font-weight="700">Pure Data</text>
+    <text x="775" y="128" text-anchor="middle" class="t-sw" font-size="10.5">lop~ · *~ · 128 buf</text>
+    <line x1="654" y1="116" x2="694" y2="116" class="arw" marker-end="url(#a)"/>
+    <text x="674" y="106" text-anchor="middle" class="lab" font-size="9">UDP</text>
+    <path d="M850 100 q42 0 42 26 q0 26 -42 26" class="arw" marker-end="url(#a)"/>
+    <text x="900" y="130" class="lab" font-size="9.5">EOF, reopen</text>
+
+    <rect x="700" y="188" width="150" height="46" rx="8" class="io"/>
+    <text x="775" y="209" text-anchor="middle" class="t-io" font-size="12">dashboard :8080</text>
+    <text x="775" y="225" text-anchor="middle" class="lab" font-size="10">read-only tap</text>
+    <line x1="596" y1="204" x2="596" y2="211" class="arw"/>
+    <path d="M596 204 L596 211 L694 211" class="arw" marker-end="url(#a)"/>
+
+    <rect x="930" y="86" width="112" height="60" rx="8" class="io"/>
+    <text x="986" y="122" text-anchor="middle" class="t-io" font-size="13" font-weight="700">Speakers</text>
+    <line x1="854" y1="116" x2="924" y2="116" class="arw" marker-end="url(#a)"/>
+
+    <text x="14" y="330" class="lab" font-size="11">MEASURED ON THE RIG, 29 AUG</text>
+    <rect x="14" y="342" width="200" height="34" rx="6" class="ok"/>
+    <text x="114" y="364" text-anchor="middle" class="t-ok" font-size="11.5">105,872 frames · 0 bad</text>
+    <rect x="226" y="342" width="188" height="34" rx="6" class="ok"/>
+    <text x="320" y="364" text-anchor="middle" class="t-ok" font-size="11.5">1,761 msgs routed in Pd</text>
+    <rect x="426" y="342" width="216" height="34" rx="6" class="warn"/>
+    <text x="534" y="364" text-anchor="middle" class="t-warn" font-size="11.5">197 Hz actual vs 250 target</text>
+  </svg></div>
+  <div class="legend">
+    <span class="lg"><i style="background:var(--blue)"></i>on the pen</span>
+    <span class="lg"><i style="background:var(--purple-l)"></i>on the laptop</span>
+    <span class="lg"><i style="background:var(--red-l)"></i>failure path</span>
+    <span class="lg">dashed = intermittent</span>
+  </div>
+  <figcaption>The bridge is drawn largest because it holds all three transforms
+    and most of the tuning. The red edge is the discard path: any frame that
+    does not split into three floats is dropped and counted, and the dashboard
+    shows that counter. Both loops are real. BLE re-advertises after a
+    disconnect, and Pd reopens the file at end of playback, which is the only
+    reason the track repeats.</figcaption>
+  </figure>
+  <p class="note"><b>The 197 Hz gap:</b> USB scheduling plus CircuitPython's
+    <code>print()</code> overhead against a 250 Hz target. It has not caused
+    problems, but it means the smoothing figures below settle slightly slower
+    in practice than the table says.</p>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <h2>Two builds</h2>
+  <p class="lede">The RP2040 build exists so the chain could be built before the
+     motion sensor arrived. What is worth drawing is the seam: where they differ
+     and where they stop differing.</p>
+  <figure><div class="scroll">
+  <svg viewBox="0 0 940 350" role="img" aria-label="The RP2040 build uses capacitive touch pins and the nRF52840 build uses an IMU. Both firmwares emit the same CSV frame format, so the shared bridge, patches and dashboard below are identical in both repositories.">
+    <defs><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ah"/></marker></defs>
+    <text x="196" y="24" text-anchor="middle" class="lab" font-size="11">BUILD A · VALIDATION</text>
+    <text x="700" y="24" text-anchor="middle" class="lab" font-size="11">BUILD B · PRODUCT</text>
+
+    <rect x="60" y="38" width="272" height="52" rx="8" class="warn"/>
+    <text x="196" y="60" text-anchor="middle" class="t-warn" font-size="12.5" font-weight="700">capacitive touch pins A0/A1</text>
+    <text x="196" y="78" text-anchor="middle" class="t-warn" font-size="10.5">jitters on bare pins, mains hum</text>
+
+    <rect x="564" y="38" width="272" height="52" rx="8" class="ok"/>
+    <text x="700" y="60" text-anchor="middle" class="t-ok" font-size="12.5" font-weight="700">LSM6DS3TR-C IMU</text>
+    <text x="700" y="78" text-anchor="middle" class="t-ok" font-size="10.5">continuous, absolute from gravity</text>
+
+    <rect x="60" y="118" width="272" height="50" rx="8" class="hw"/>
+    <text x="196" y="139" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">XIAO RP2040</text>
+    <text x="196" y="156" text-anchor="middle" class="t-hw" font-size="10.5">USB only, no radio</text>
+
+    <rect x="564" y="118" width="272" height="50" rx="8" class="hw"/>
+    <text x="700" y="139" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">XIAO nRF52840 Sense</text>
+    <text x="700" y="156" text-anchor="middle" class="t-hw" font-size="10.5">USB or BLE, needs IMU_PWR high</text>
+
+    <line x1="196" y1="94" x2="196" y2="112" class="arw" marker-end="url(#b)"/>
+    <line x1="700" y1="94" x2="700" y2="112" class="arw" marker-end="url(#b)"/>
+    <line x1="196" y1="172" x2="196" y2="218" class="arw" marker-end="url(#b)"/>
+    <line x1="700" y1="172" x2="700" y2="218" class="arw" marker-end="url(#b)"/>
+    <text x="448" y="198" text-anchor="middle" class="lab" font-size="11">both emit "tilt,roll,energy"</text>
+
+    <rect x="60" y="222" width="776" height="108" rx="10" class="sw"/>
+    <text x="448" y="248" text-anchor="middle" class="t-sw" font-size="12.5" font-weight="700">byte-identical in both repos</text>
+    <rect x="92" y="262" width="216" height="50" rx="6" class="io"/>
+    <text x="200" y="283" text-anchor="middle" class="t-io" font-size="12">bridge.py</text>
+    <text x="200" y="300" text-anchor="middle" class="lab" font-size="10">smoothing, mapping</text>
+    <rect x="340" y="262" width="216" height="50" rx="6" class="io"/>
+    <text x="448" y="283" text-anchor="middle" class="t-io" font-size="12">3 Pd patches</text>
+    <text x="448" y="300" text-anchor="middle" class="lab" font-size="10">track, manual, live</text>
+    <rect x="588" y="262" width="216" height="50" rx="6" class="io"/>
+    <text x="696" y="283" text-anchor="middle" class="t-io" font-size="12">dashboard.py</text>
+    <text x="696" y="300" text-anchor="middle" class="lab" font-size="10">SSE on :8080</text>
+  </svg></div>
+  <figcaption>Moving from validation to product means replacing
+    <code>read_motion()</code>. The gold box is gold because touch is a
+    compromise, not a preview: bare pins pick up mains hum, so the values wander
+    even untouched.</figcaption>
+  </figure>
+</div></section>
+
+<section class="sec secw"><div class="wrap">
+  <h2>Production board</h2>
+  <p class="lede">12 x 30 mm, four layers, 0.6 mm, all SMD. Two constraints
+     drive the whole layout, and one of them dictates the board's shape.</p>
+  <figure><div class="scroll">
+  <svg viewBox="0 0 960 340" role="img" aria-label="USB-C feeds the MCP73831 charger and the ISP1807 module. The charger drives an off-board LiPo cell whose 4.2 volts must pass through the TPS7A02 LDO because the module maximum is 3.6 volts. The IMU connects to the module over I2C. An antenna keep-out spans all four layers at one edge.">
+    <defs><marker id="c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ah"/></marker></defs>
+    <text x="20" y="24" class="lab" font-size="11">POWER</text>
+    <rect x="20" y="36" width="110" height="50" rx="6" class="io"/>
+    <text x="75" y="57" text-anchor="middle" class="t-io" font-size="12.5" font-weight="700">USB-C</text>
+    <text x="75" y="74" text-anchor="middle" class="lab" font-size="10">J1 · 5 V</text>
+
+    <rect x="186" y="36" width="132" height="50" rx="6" class="hw"/>
+    <text x="252" y="57" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">MCP73831</text>
+    <text x="252" y="74" text-anchor="middle" class="t-hw" font-size="10">U3 · 50 mA</text>
+
+    <rect x="186" y="126" width="132" height="50" rx="6" class="warn"/>
+    <text x="252" y="147" text-anchor="middle" class="t-warn" font-size="12.5" font-weight="700">LiPo 401230</text>
+    <text x="252" y="164" text-anchor="middle" class="t-warn" font-size="10">off-board · J2 on B.Cu</text>
+
+    <rect x="384" y="36" width="132" height="50" rx="6" class="hw"/>
+    <text x="450" y="57" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">TPS7A02</text>
+    <text x="450" y="74" text-anchor="middle" class="t-hw" font-size="10">U4 · 3.3 V LDO</text>
+
+    <line x1="134" y1="61" x2="180" y2="61" class="arw" marker-end="url(#c)"/>
+    <text x="157" y="51" text-anchor="middle" class="lab" font-size="9">5 V</text>
+    <line x1="252" y1="90" x2="252" y2="120" class="arw" marker-end="url(#c)"/>
+    <path d="M322 151 L450 151 L450 92" class="arw" marker-end="url(#c)"/>
+    <text x="386" y="141" text-anchor="middle" class="lab" font-size="9.5">3.0–4.2 V</text>
+    <line x1="520" y1="61" x2="596" y2="61" class="arw" marker-end="url(#c)"/>
+    <text x="558" y="51" text-anchor="middle" class="lab" font-size="9">3.3 V</text>
+
+    <rect x="600" y="36" width="182" height="112" rx="8" class="ok"/>
+    <text x="691" y="62" text-anchor="middle" class="t-ok" font-size="13" font-weight="700">ISP1807</text>
+    <text x="691" y="80" text-anchor="middle" class="t-ok" font-size="10.5">U1 · nRF52840 + antenna</text>
+    <text x="691" y="98" text-anchor="middle" class="t-ok" font-size="10.5">8 × 8 × 0.95 mm LGA-78</text>
+    <text x="691" y="118" text-anchor="middle" class="t-ok" font-size="10.5">pin 20 ↔ pin 22 REQUIRED</text>
+    <text x="691" y="136" text-anchor="middle" class="lab" font-size="10">footprint reconstructed, verify</text>
+
+    <text x="20" y="216" class="lab" font-size="11">DATA</text>
+    <rect x="384" y="228" width="132" height="50" rx="6" class="hw"/>
+    <text x="450" y="249" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">LSM6DSV16X</text>
+    <text x="450" y="266" text-anchor="middle" class="t-hw" font-size="10">U2 · 6-axis</text>
+    <path d="M520 253 L691 253 L691 154" class="arw" marker-end="url(#c)"/>
+    <text x="600" y="243" text-anchor="middle" class="lab" font-size="9.5">I²C · 0x6A · SA0 low</text>
+    <line x1="450" y1="92" x2="450" y2="222" class="arw" stroke-dasharray="4 4" marker-end="url(#c)"/>
+    <text x="460" y="170" class="lab" font-size="9">3.3 V</text>
+
+    <rect x="812" y="36" width="66" height="256" rx="8" class="bad"/>
+    <text x="845" y="164" text-anchor="middle" class="t-bad" font-size="11" font-weight="700" transform="rotate(90 845 164)">ANTENNA KEEP-OUT · ALL 4 LAYERS</text>
+    <line x1="786" y1="80" x2="806" y2="80" class="arw" marker-end="url(#c)"/>
+  </svg></div>
+  <figcaption>The cell cannot feed the module directly: it runs to 4.2 V and the
+    module's ceiling is 3.6 V, so it returns through the LDO. The keep-out is
+    drawn full height because it is the constraint that decides the board's
+    shape, not a footnote to it.</figcaption>
+  </figure>
+  <p class="note"><b>Unverified:</b> the ISP1807 land pattern in
+    <code>stylus.pretty/</code> was reconstructed from the datasheet drawing.
+    Pad numbering is read from the datasheet figure and is correct; the
+    coordinates are derived. On a 0.65 mm pitch 78-pad LGA, check it against
+    Insight SiP's official land pattern before paying for fabrication.</p>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <h2>Smoothing</h2>
+  <p class="lede">Measured settling to 95% of a step at 250 Hz. Past roughly
+     20 ms end to end the instrument stops feeling connected to your hand.</p>
+  <div class="tscroll"><table>
+    <thead><tr><th>alpha</th><th class="num">settles in</th><th>feel</th></tr></thead>
+    <tbody>
+      <tr><td>0.05</td><td class="num">236 ms</td><td>unusable</td></tr>
+      <tr><td>0.15</td><td class="num">76 ms</td><td>visibly behind your hand</td></tr>
+      <tr><td>0.4</td><td class="num">24 ms</td><td>the default</td></tr>
+      <tr><td>0.5</td><td class="num">20 ms</td><td>snappier, more jitter through</td></tr>
+      <tr><td>1.0</td><td class="num">0 ms</td><td>raw, audible clicks on the filter</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Smoothing eats 24 of the 32 ms budget and it is the only term
+    you can change freely. A one-pole filter picks one setting for both fast and
+    slow motion. A one-euro filter adapts instead, and that is the right fix
+    once the mapping stops changing.</p>
+</div></section>

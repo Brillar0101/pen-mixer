@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "pen-mixer")(type "KiCad")(uri "${KIPRJMOD}/pen-mixer.pretty")(options "")(descr "Pen Mixer custom footprints"))
+)

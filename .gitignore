@@ -1,0 +1,8 @@
+*.wav
+*.mp3
+__pycache__/
+*.pyc
+.DS_Store
+hardware/*-backups/
+hardware/*.kicad_prl
+hardware/net.xml

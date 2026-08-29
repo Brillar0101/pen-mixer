@@ -1,0 +1,11 @@
+(footprint "TestPad_1.0mm"
+	(version 20240108) (generator "hand") (generator_version "8.0")
+	(layer "F.Cu")
+	(descr "1.0mm round-ish pogo test pad")
+	(attr smd)
+	(property "Reference" "**" (at 0 -1.6 0) (layer "F.SilkS") (uuid "r")
+		(effects (font (size 0.6 0.6) (thickness 0.1))))
+	(property "Value" "" (at 0 1.6 0) (layer "F.Fab") (uuid "v")
+		(effects (font (size 0.6 0.6) (thickness 0.1))))
+	(pad "1" smd rect (at 0 0) (size 1.0 1.0) (layers "F.Cu" "F.Paste" "F.Mask") (uuid "p0"))
+)
