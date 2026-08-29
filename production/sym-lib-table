@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "ISP1807")(type "KiCad")(uri "${KIPRJMOD}/ISP1807-LR.kicad_sym")(options "")(descr "Insight SiP ISP1807-LR vendor symbol"))
+)
