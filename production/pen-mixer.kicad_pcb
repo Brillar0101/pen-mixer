@@ -2219,6 +2219,7 @@
 			(property pad_prop_mechanical)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
+			(net "GND")
 			(uuid "c1fae002-13b6-4b4b-a6a3-8f9a27f58459")
 		)
 		(pad "SH" thru_hole oval
@@ -2228,6 +2229,7 @@
 			(property pad_prop_mechanical)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
+			(net "GND")
 			(uuid "ffd41eb4-e8bf-40a5-a294-074f09bb1e83")
 		)
 		(pad "SH" thru_hole oval
@@ -2237,6 +2239,7 @@
 			(property pad_prop_mechanical)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
+			(net "GND")
 			(uuid "dd7204d5-d3da-487f-9ec3-65a037e622be")
 		)
 		(pad "SH" thru_hole oval
@@ -2246,6 +2249,7 @@
 			(property pad_prop_mechanical)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
+			(net "GND")
 			(uuid "62efd5a5-bf8a-4b7a-8cc4-e2f9b52ebd74")
 		)
 		(embedded_fonts no)
