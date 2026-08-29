@@ -1,55 +1,71 @@
-# code_touch.py - XIAO RP2040 : real hand input via capacitive touch
+# code.py - Seeed XIAO nRF52840 Sense
 #
-# The RP2040 has no IMU, but its pins can sense a finger. Touch A0 and A1
-# (or wires soldered/taped to them) and the values move. This is a real
-# hand-driven control, today, with no extra parts.
+# Reads the onboard LSM6DS3TR-C 6-axis IMU and streams motion over USB serial
+# as "tilt,roll,energy" at ~250 Hz - the same frame format the RP2040 touch
+# build uses, so the bridge, dashboard and Pd patches are unchanged.
 #
-# Emits the same "tilt,roll,energy" frame format as code.py, so the bridge
-# and Pd patches need no changes at all.
+# REQUIRES on CIRCUITPY/lib :
+#     adafruit_lsm6ds/          (folder)
+#     adafruit_bus_device/      (folder)
+#     adafruit_register/        (folder)
+# from the CircuitPython library bundle at circuitpython.org/libraries
 
-import time
 import math
+import time
 
 import board
+import busio
+import digitalio
 
-USE_TOUCH = True
+FRAME_HZ = 250
+G = 9.80665
+
+# The Sense's IMU sits on its own I2C bus and is unpowered at boot.
+# Forgetting this line is the usual reason the sensor "isn't found".
+imu_pwr = digitalio.DigitalInOut(board.IMU_PWR)
+imu_pwr.direction = digitalio.Direction.OUTPUT
+imu_pwr.value = True
+time.sleep(0.1)
+
 try:
-    import touchio
-    t0_pin = touchio.TouchIn(board.A0)
-    t1_pin = touchio.TouchIn(board.A1)
-except Exception:
-    USE_TOUCH = False
-    import analogio
-    t0_pin = analogio.AnalogIn(board.A0)
-    t1_pin = analogio.AnalogIn(board.A1)
+    from adafruit_lsm6ds.lsm6ds3trc import LSM6DS3TRC
+except ImportError:
+    raise SystemExit(
+        "Missing library. Copy adafruit_lsm6ds/, adafruit_bus_device/ and "
+        "adafruit_register/ from the CircuitPython bundle into CIRCUITPY/lib/"
+    )
+
+i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
+imu = LSM6DS3TRC(i2c)
 
 
-def raw(pin):
-    return pin.raw_value if USE_TOUCH else pin.value
+def read_motion():
+    """Absolute tilt and roll from gravity, plus movement energy.
+
+    Tilt and roll are derived from the gravity vector, so they are absolute
+    and do not drift - no sensor fusion or filtering needed here. Energy is
+    how far total acceleration departs from 1 g, i.e. how hard it is moving.
+    """
+    ax, ay, az = imu.acceleration
+
+    tilt = math.degrees(math.atan2(ax, math.sqrt(ay * ay + az * az)))
+    roll = math.degrees(math.atan2(ay, az))
+
+    mag = math.sqrt(ax * ax + ay * ay + az * az)
+    energy = min(1.0, abs(mag - G) / 8.0)
+
+    return tilt, roll, energy
 
 
-# Establish a baseline so we report change, not absolute capacitance.
-time.sleep(0.3)
-base0 = sum(raw(t0_pin) for _ in range(40)) / 40.0
-base1 = sum(raw(t1_pin) for _ in range(40)) / 40.0
-SPAN = 900.0 if USE_TOUCH else 12000.0
+# ---- axis orientation -----------------------------------------------------
+# Which physical gesture lands on which axis depends on how the board is
+# mounted to the pen. Run it, note which value moves when you tilt versus
+# twist, and if they are swapped, exchange them in the return above.
+# ---------------------------------------------------------------------------
 
-print("# touch mode" if USE_TOUCH else "# analog mode")
-
-prev0 = 0.0
-t_start = time.monotonic()
+period = 1.0 / FRAME_HZ
 
 while True:
-    d0 = (raw(t0_pin) - base0) / SPAN          # 0..1-ish when touched
-    d1 = (raw(t1_pin) - base1) / SPAN
-
-    d0 = max(0.0, min(1.0, d0))
-    d1 = max(0.0, min(1.0, d1))
-
-    tilt = -45.0 + d0 * 90.0                   # A0 -> filter cutoff
-    roll = -90.0 + d1 * 180.0                  # A1 -> gain
-    energy = min(1.0, abs(d0 - prev0) * 25.0)  # rate of change -> send
-    prev0 = d0
-
+    tilt, roll, energy = read_motion()
     print("%.2f,%.2f,%.3f" % (tilt, roll, energy))
-    time.sleep(0.006)
+    time.sleep(period)

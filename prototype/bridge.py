@@ -127,11 +127,17 @@ def main():
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--web", type=int, default=8080,
                     help="port for the live dashboard, 0 to disable")
+    ap.add_argument("--ble", action="store_true",
+                    help="read over Bluetooth LE instead of USB serial "
+                         "(board must be running code_ble.py)")
     args = ap.parse_args()
 
     if dashboard and args.web:
         dashboard.serve(args.web)
         print("dashboard: http://localhost:%d" % args.web)
+
+    if args.ble:
+        return run_ble(args)
 
     port = args.port or find_port()
     if not port:
@@ -203,3 +209,51 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def run_ble(args):
+    """BLE transport. Same smoothing, mapping and outputs as the serial path."""
+    import ble_source
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s_tilt, s_roll, s_energy = (Smooth(args.alpha) for _ in range(3))
+    if dashboard and args.web:
+        dashboard.serve(args.web)
+        print("dashboard: http://localhost:%d" % args.web)
+
+    state = {"frames": 0, "bad": 0, "t0": time.monotonic()}
+
+    def on_line(raw):
+        parts = raw.split(",")
+        if len(parts) != 3:
+            state["bad"] += 1
+            return
+        try:
+            tilt, roll, energy = (float(p) for p in parts)
+        except ValueError:
+            state["bad"] += 1
+            return
+
+        tilt = s_tilt(tilt)
+        roll = s_roll(roll)
+        energy = s_energy(energy)
+
+        cutoff = linexp(tilt, -45.0, 45.0, 80.0, 12000.0)
+        gain = linlin(roll, -90.0, 90.0, 0.25, 1.75)
+        wet = linlin(energy, 0.0, 1.0, 0.0, 1.0)
+
+        for name, val in (("cutoff", cutoff), ("gain", gain), ("wet", wet)):
+            sock.sendto(("%s %.4f;\n" % (name, val)).encode(), PD_ADDR)
+
+        state["frames"] += 1
+        if dashboard:
+            el = max(0.001, time.monotonic() - state["t0"])
+            dashboard.publish(tilt=tilt, roll=roll, energy=energy,
+                              cutoff=cutoff, gain=gain, wet=wet,
+                              fps=int(state["frames"] / el),
+                              bad=state["bad"], mode="ble")
+
+    try:
+        ble_source.run(on_line)
+    except KeyboardInterrupt:
+        print("\nstopped after %d frames" % state["frames"])

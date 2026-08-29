@@ -51,9 +51,9 @@ PLACE = {
  "R8": (1.8, 29.0,  90, False), "R9": (3.8, 29.0, 90, False),
  "C10":(5.8, 29.0,  90, False), "C9": (7.8, 29.0, 90, False),
  "R5": (9.6, 29.0,  90, False),
- "J2": (2.2, 33.0,   0, False), "J3": (8.8, 33.0,  0, False),
- "R1": (4.6, 32.2,  90, False), "R2": (6.4, 32.2, 90, False),
- "J1": (5.5, 40.4,   0, False),
+ "J2": (2.2, 30.6,   0, False), "J3": (9.2, 30.6,  0, False),
+ "R1": (4.6, 31.6,  90, False), "R2": (6.4, 31.6, 90, False),
+ "J1": (5.5, 37.79,  0, False),   # body flush with the y=42 edge, no overhang
  # test pads on the back, in a pogo-friendly row
  "TP1":(2.0, 24.0,   0, True), "TP2":(4.0, 24.0, 0, True),
  "TP3":(6.0, 24.0,   0, True), "TP4":(8.0, 24.0, 0, True),
@@ -71,6 +71,9 @@ board.SetCopperLayerCount(4)
 ds.m_MinClearance = MM(0.09)
 ds.m_CopperEdgeClearance = MM(0.20)   # JLCPCB capable
 ds.m_HoleClearance = MM(0.20)
+ds.m_TrackMinWidth = MM(0.09)
+ds.m_ViasMinSize = MM(0.45)
+ds.m_MinThroughDrill = MM(0.20)
 board.SetLayerName(pcbnew.In1_Cu, "GND"); board.SetLayerName(pcbnew.In2_Cu, "PWR")
 
 nets = {}
@@ -120,7 +123,9 @@ arc(R,BH-R,R,BH,0,BH-R); arc(BW-R,BH-R,BW,BH-R,BW-R,BH)
 def zone(layer, netname, y_from, y_to, prio=0):
     z = pcbnew.ZONE(board); z.SetLayer(layer); z.SetNet(net_of(netname))
     z.SetAssignedPriority(prio); z.SetLocalClearance(MM(0.3))
-    z.SetMinThickness(MM(0.15)); z.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL)
+    z.SetMinThickness(MM(0.15))
+    z.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL if netname=="GND"
+                       else pcbnew.ZONE_CONNECTION_THERMAL)
     o = z.Outline(); o.NewOutline()
     for px,py in [(0.4,y_from),(BW-0.4,y_from),(BW-0.4,y_to),(0.4,y_to)]:
         o.Append(MM(X0+px), MM(Y0+py))
@@ -143,7 +148,7 @@ for px,py in [(0,0),(BW,0),(BW,ANT_CLEAR),(0,ANT_CLEAR)]:
 board.Add(ko)
 
 # explicit copper knockouts around the USB-C shell mounting holes
-for hx, hy in [(2.61, 37.795), (8.39, 37.795)]:
+for hx, hy in [(2.61, 35.185), (8.39, 35.185)]:
     k = pcbnew.ZONE(board); k.SetIsRuleArea(True)
     k.SetDoNotAllowZoneFills(True); k.SetLayerSet(pcbnew.LSET.AllCuMask())
     k.SetDoNotAllowPads(False); k.SetDoNotAllowTracks(False)

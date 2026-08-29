@@ -48,8 +48,8 @@ to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 | J1 | USB-C 16P | charge, programming, serial |
 | J2 | pads on B.Cu | off-board LiPo, 401230 |
 
-The KiCad project lives in `hardware/`. Schematic PDF, board plots, a render
-and the BOM are in `hardware/output/`.
+The KiCad project lives in `production/`. Schematic PDF, board plots, a render
+and the BOM are in `production/output/`.
 
 Two items block fabrication, deliberately:
 
@@ -62,17 +62,17 @@ Two items block fabrication, deliberately:
    diff it against Insight SiP's official land pattern before paying for
    fabrication.
 
-Every pinout came from a primary datasheet, kept in `hardware/datasheets/`.
+Every pinout came from a primary datasheet, kept in `production/datasheets/`.
 The one that would have cost a board spin: ISP1807 pin 20 (OUT_ANT) must be
 tied to pin 22 (OUT_MOD) on the application PCB, or the radio has no antenna.
 
 ## The firmware and laptop stack
 
-`production/` runs on the Seeed XIAO nRF52840 Sense today and targets the
+`prototype/` runs on the Seeed XIAO nRF52840 Sense today and targets the
 custom board unchanged, since both are an nRF52840 with an ST IMU on I2C.
 
 ```
-production/
+prototype/
   bridge.py           serial or BLE, then smoothing, mapping, UDP, dashboard
   ble_source.py       laptop-side BLE client for --ble
   dashboard.py        live web view on :8080
@@ -82,17 +82,10 @@ production/
   patches/            Pure Data: track playback, manual sliders, live input
 ```
 
-Run it with `python3 production/bridge.py`, open
-`production/patches/pen-mixer-track.pd`, turn on DSP. The dashboard is at
+Run it with `python3 prototype/bridge.py`, open
+`prototype/patches/pen-mixer-track.pd`, turn on DSP. The dashboard is at
 localhost:8080. The only dependency in the whole project is `bleak`, and only
 for BLE mode.
-
-## The prototype
-
-`prototype/` is the same laptop stack driven from a XIAO RP2040 using
-capacitive touch as a stand-in sensor. It exists because the whole chain was
-built and tuned on it before any motion sensor arrived; moving to the product
-build replaced one function. Kept for history and for bring-up of new laptops.
 
 ## Measured, not estimated
 
@@ -107,17 +100,16 @@ build replaced one function. Kept for history and for bring-up of new laptops.
 ## Layout
 
 ```
-prototype/          RP2040 build: touch stand-in, same laptop stack
-production/         nRF52840 build: real IMU, USB or BLE
-hardware/           KiCad 10 project, 12 x 30 mm production board
-  pen-mixer.pretty/ custom footprints, ISP1807 land pattern flagged above
-  datasheets/       primary sources for every pinout
-  output/           schematic PDF, board plots, render, BOM, DRC report
-docs/               architecture page and printable PDF
-ARCHITECTURE.md     how it all fits together, with diagrams
+prototype/            nRF52840 Sense build: real IMU, USB or BLE, laptop stack
+production/           KiCad 10 project, the production board
+  pen-mixer.pretty/   custom footprints
+  datasheets/         primary sources for every pinout
+  output/             schematic PDF, board plots, render, BOM, DRC report
+docs/                 architecture page and printable PDF
+ARCHITECTURE.md       how it all fits together, with diagrams
 ```
 
-Audio files are gitignored; `python3 production/make_test_tone.py` generates a
+Audio files are gitignored; `python3 prototype/make_test_tone.py` generates a
 test tone. Standalone repos for each build:
 [pen-mixer-rp2040](https://github.com/Brillar0101/pen-mixer-rp2040),
 [pen-mixer-nrf52840](https://github.com/Brillar0101/pen-mixer-nrf52840).
