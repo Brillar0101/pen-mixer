@@ -1,87 +1,42 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T16:27:45 **
+** Created on 2026-08-29T17:21:29 **
 ** Report includes: Errors, Warnings **
 
-** Found 3 DRC violations **
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(101.5793 mm, 88.4900 mm): Track [VBAT_SENSE] on F.Cu, length 0.4253 mm
-[via_dangling]: Via is not connected or connected on only one layer
-    Local override; warning
-    @(105.4852 mm, 90.1275 mm): Via [VBAT_SENSE] on F.Cu - B.Cu
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(105.4852 mm, 75.3467 mm): Track [VBAT_SENSE] on PWR, length 1.0015 mm
+** Found 8 DRC violations **
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.2000 mm, 69.9500 mm): Track [IMU_INT2] on F.Cu, length 0.9730 mm
+    @(109.2000 mm, 70.6000 mm): Pad 2 [IMU_INT1] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.2793 mm, 67.6793 mm): Track [VBUS] on F.Cu, length 0.7364 mm
+    @(106.1500 mm, 68.2000 mm): Pad 14 [GND] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.2793 mm, 67.6793 mm): Via [VBUS] on F.Cu - B.Cu
+    @(106.1500 mm, 68.2000 mm): Pad 14 [GND] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(101.2756 mm, 70.4744 mm): Via [SWDIO] on F.Cu - B.Cu
+    @(101.8000 mm, 70.6000 mm): Pad 30 [SWDCLK] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.9293 mm, 67.6793 mm): Track [USB_DM] on F.Cu, length 0.7364 mm
+    @(106.8000 mm, 68.2000 mm): Pad 12 [VBUS] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(106.9293 mm, 67.6793 mm): Via [USB_DM] on F.Cu - B.Cu
+    @(106.8000 mm, 68.2000 mm): Pad 12 [VBUS] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.5667 mm, 71.9691 mm): Track [IMU_INT1] on F.Cu, length 1.0024 mm
+    @(109.0000 mm, 71.5000 mm): Pad 1 [GND] of U1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(109.3071 mm, 72.2287 mm): Track [IMU_INT1] on F.Cu, length 0.3671 mm
+    @(109.0000 mm, 71.5000 mm): Pad 1 [GND] of U1 on F.Cu
 
-** Found 17 unconnected pads **
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on B.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on B.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on B.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on GND, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on F.Cu, priority 0
-    @(100.4000 mm, 67.2000 mm): Zone [GND] on GND, priority 0
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(105.4850 mm, 88.8000 mm): Track [VBAT_SENSE] on B.Cu, length 1.3270 mm
-    @(105.7700 mm, 89.5100 mm): Track [VBAT_SENSE] on F.Cu, length 0.0424 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(105.4852 mm, 75.3467 mm): Track [VBAT_SENSE] on PWR, length 1.0015 mm
-    @(102.4000 mm, 88.2000 mm): Track [VBAT_SENSE] on B.Cu, length 2.5000 mm
+** Found 0 unconnected pads **
 
 ** Found 0 Footprint errors **
 
