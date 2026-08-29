@@ -1,5 +1,17 @@
 # Pen Mixer
 
+<p align="center">
+  <img src="docs/images/schematic.svg" alt="Pen Mixer schematic" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/images/pcb-front.png" alt="PCB front" width="24%">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/images/pcb-back.png" alt="PCB back" width="24%">
+</p>
+
+<p align="center"><em>Schematic rev 0.3 &middot; board front and back, 11 &times; 42 mm, 4-layer</em></p>
+
 Strap a sensor to a pen. Tilt it and a filter sweeps across whatever track is
 playing on the laptop. Twist it and the level moves.
 
