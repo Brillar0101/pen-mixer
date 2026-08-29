@@ -4898,7 +4898,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "298e3298-c1bb-41a6-926d-52c7c88645bc")
-		(at 99.8952 50.1352)
+		(at 100.0952 43.9352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP2"
 			(at 0 1.6 180)
@@ -4963,7 +4963,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "2a279f18-06ae-40f6-8871-5fec3faeea88")
-		(at 103.8952 50.1352)
+		(at 104.4952 43.9352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP5"
 			(at 0 1.6 180)
@@ -5028,7 +5028,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "77fde6ad-ac60-46c5-882f-44895b3d56da")
-		(at 101.6952 50.1352)
+		(at 102.2952 43.9352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP4"
 			(at 0 1.6 180)
@@ -5165,7 +5165,7 @@
 	(footprint "TestPad_1.0mm"
 		(layer "B.Cu")
 		(uuid "f686d426-f92c-43bb-b45e-6548d4f3eb94")
-		(at 97.6952 50.1352)
+		(at 97.8952 43.9352)
 		(descr "1.0mm round-ish pogo test pad")
 		(property "Reference" "TP1"
 			(at 0 1.6 180)
