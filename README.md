@@ -115,7 +115,7 @@ production/           KiCad 10 project, the production board
   pen-mixer.pretty/   custom footprints
   datasheets/         primary sources for every pinout
   output/             schematic PDF, board plots, render, BOM, DRC report
-docs/                 architecture, run guide, requirements (SRS)
+docs/                 architecture, run guide, requirements (PRD)
 ARCHITECTURE.md       how it all fits together, with diagrams
 ```
 

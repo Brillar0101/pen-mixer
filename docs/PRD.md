@@ -1,4 +1,4 @@
-# System requirements specification
+# Product requirements document
 
 Requirements for the Mixer Pen, taken from the client brief and the academic
 rubric. Each one is marked with where it stands: **v1** means it works today,
