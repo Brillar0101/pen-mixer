@@ -120,3 +120,6 @@ ARCHITECTURE.md       how it all fits together, with diagrams
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+Built by Barakaeli ([Brillar0101](https://github.com/Brillar0101)) and
+Lexy ([vnllagoldfish](https://github.com/vnllagoldfish)).
