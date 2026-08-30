@@ -10,3 +10,5 @@ production/.history/
 production/blender/pen-mixer-cappuccino.blend
 *.blend1
 production/blender/shots/
+production/kicad/.history/
+*.kicad_prl
