@@ -1,5 +1,12 @@
 # Pen Mixer
 
+Pen Mixer is a small motion controller that clips onto the top of an ordinary
+pen and turns handwriting gestures into live audio control. An IMU on the
+board reads tilt and twist, an nRF52840 sends the motion to a laptop over
+Bluetooth, and the laptop shapes whatever track is playing: tilt the pen and
+a filter sweeps, twist it and the level moves. The better your pen control
+gets, the better your mix sounds.
+
 <p align="center">
   <img src="docs/images/schematic.svg" alt="Pen Mixer schematic" width="100%">
 </p>
@@ -11,9 +18,6 @@
 </p>
 
 <p align="center"><em>Schematic rev 0.3 &middot; board front and back, 11 &times; 42 mm, 4-layer</em></p>
-
-Strap a sensor to a pen. Tilt it and a filter sweeps across whatever track is
-playing on the laptop. Twist it and the level moves.
 
 This repo holds the whole project: prototype firmware, production firmware and
 laptop stack, and the production PCB as a KiCad project.
