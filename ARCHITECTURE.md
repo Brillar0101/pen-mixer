@@ -123,7 +123,7 @@ drift. There is no sensor fusion to write.
 
 ## Production board
 
-The custom PCB is a separate KiCad project: 12 x 30 mm, four layers, 0.6 mm,
+The custom PCB is a separate KiCad project: 11 x 42 mm, four layers, 0.6 mm,
 all SMD.
 
 ```mermaid
@@ -133,7 +133,7 @@ flowchart LR
     CHG --> BAT[("LiPo 401230<br>off-board, J2 on B.Cu")]
     BAT -->|"3.0 to 4.2 V"| LDO["TPS7A02<br>U4, 3.3 V LDO"]
     LDO -->|"3.3 V"| MOD["ISP1807<br>U1, nRF52840 + antenna"]
-    LDO -->|"3.3 V"| SNS["LSM6DSV16X<br>U2, 6-axis IMU"]
+    LDO -->|"3.3 V"| SNS["LSM6DS3TR-C<br>U2, 6-axis IMU"]
     SNS -->|"I2C 0x6A, SA0 low"| MOD
     MOD --- KO["antenna keep-out<br>all 4 layers"]
 

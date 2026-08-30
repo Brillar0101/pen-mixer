@@ -27,7 +27,7 @@ flowchart LR
     HAND["Hand<br>tilt, twist"] --> FW
 
     subgraph pen["Pen Mixer board: on the pen"]
-        FW["LSM6DSV16X IMU<br>+ ISP1807 nRF52840"]
+        FW["LSM6DS3TR-C IMU<br>+ ISP1807 nRF52840"]
     end
 
     FW -->|"BLE, Nordic UART"| BR
@@ -52,13 +52,13 @@ flowchart LR
 
 ## The hardware
 
-The production board is a 12 x 30 mm, four-layer, 0.6 mm PCB, all SMD, designed
+The production board is an 11 x 42 mm, four-layer, 0.6 mm PCB, all SMD, designed
 to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 
 | Ref | Part | Role |
 |---|---|---|
 | U1 | ISP1807 | nRF52840 with integrated antenna, pre-certified |
-| U2 | LSM6DSV16X | 6-axis IMU with on-chip fusion |
+| U2 | LSM6DS3TR-C | 6-axis IMU |
 | U3 | MCP73831 | LiPo charger, 50 mA |
 | U4 | TPS7A02 | 3.3 V LDO, 200 nA quiescent |
 | J1 | USB-C 16P | charge, programming, serial |
