@@ -123,6 +123,3 @@ docs/                 architecture, run guide, requirements (PRD)
 ARCHITECTURE.md       how it all fits together, with diagrams
 ```
 
-Standalone repos for each build:
-[pen-mixer-rp2040](https://github.com/Brillar0101/pen-mixer-rp2040),
-[pen-mixer-nrf52840](https://github.com/Brillar0101/pen-mixer-nrf52840).
