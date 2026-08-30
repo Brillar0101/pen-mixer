@@ -55,12 +55,13 @@ v2.1 board revision plus firmware.
 
 | # | Requirement | Status |
 |---|---|---|
-| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **v2.1.** Needs an RGBW LED (white cannot be mixed convincingly from RGB alone). Proposed thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, read from the existing VBAT_SENSE divider. |
-| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **v2.1.** One tactile switch on a wake-capable nRF52840 pin. The chip's System OFF mode makes this a soft button: off means microamps of sleep, and any press wakes it, so no physical power switch is needed. |
-| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **v2.1.** Can share the RGBW LED from I1 with time-multiplexing (battery shown briefly at wake and on demand, Bluetooth state otherwise), or use a second small LED; decide during v2.1 layout, where board space will settle it. |
+| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **In the v2.1 board.** LED1, a 1 x 1 mm addressable RGB (XL-1010RGBC, the smallest multicolor LED made); white is all three channels on. Thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, read from VBAT_SENSE. Firmware pending. |
+| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **In the v2.1 board.** SW1, a side-actuated Panasonic switch on the right edge, pressed from the pen's side, on wake-capable P0.17. System OFF sleep makes it a soft power button. Firmware pending. |
+| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **In the v2.1 board.** LED2, a second 1 x 1 mm addressable RGB chained after LED1, so both run from one GPIO. Blue solid when connected, flashing when pairing is ready, any color available later. Firmware pending. |
 
-Hardware delta for v2.1: one RGBW LED (about 2 x 2 mm), one tactile switch
-(about 3 x 2 mm), four GPIO lines; the ISP1807 has the pins free.
+Hardware as built in v2.1: two 1 x 1 mm addressable RGB LEDs (chained, one
+GPIO, no resistors), one side-actuated tactile switch, one decoupling cap;
+two GPIO lines total (P0.20 data, P0.17 button).
 
 ## What comes next, in one list
 
