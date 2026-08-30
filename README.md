@@ -67,16 +67,10 @@ to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 The KiCad project lives in `production/`. Schematic PDF, board plots, a render
 and the BOM are in `production/output/`.
 
-Two items block fabrication, deliberately:
-
-1. **Routing.** 53 connections are unrouted. Power and ground come from the
-   pours; what remains is USB as a differential pair, I2C, two interrupts, the
-   analog pair and SWD. An evening in the interactive router.
-2. **The ISP1807 land pattern is reconstructed**, not vendor-supplied. Pad
-   numbering is read from the datasheet figure and is correct; the coordinates
-   are derived from the dimensional drawing. On a 0.65 mm pitch 78-pad LGA,
-   diff it against Insight SiP's official land pattern before paying for
-   fabrication.
+The board is fully routed and fabrication-ready: 0 unrouted connections,
+ground pours on all four layers, and a clean DRC. U1 sits on the official
+JLCPCB land pattern with part-for-part verified pad geometry, and every
+component carries the 3D model of the exact part being ordered.
 
 Every pinout came from a primary datasheet, kept in `production/datasheets/`.
 The one that would have cost a board spin: ISP1807 pin 20 (OUT_ANT) must be
