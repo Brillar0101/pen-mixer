@@ -31,7 +31,7 @@ no hardware change is needed, the IMU already measures all three axes.
 
 | # | Requirement | Status |
 |---|---|---|
-| P1 | At most 30 mm in both directions | **Improved in v2.** v1 was 11 x 42 mm; v2 is 13 x 35 mm with a JST battery connector. Still 5 mm over the 30 mm limit lengthwise; getting under it means dropping USB-C for charge pads. |
+| P1 | At most 30 mm in both directions | **Improved in v2.** v1 was 11 x 42 mm; v2 is 13 x 35 mm; the battery wires solder to pads at the tip and the cell lies along the back. Still 5 mm over the 30 mm limit lengthwise; getting under it means dropping USB-C for charge pads. |
 | P2 | Clear casing | **v2.** No enclosure exists yet. Planned as a clear resin or polycarbonate shell over the board and battery. |
 | P3 | Weight at most 1 oz (28 g) | **v1 by design.** Board plus battery is roughly 5 g. Stays met with any reasonable casing; final weight gets measured in v2 with the shell on. |
 | P4 | Runs 3 hours at once | **v1 by design.** The 100 mAh cell against a ~6 mA average BLE draw estimates well past 3 h. Estimated, not yet measured; a soak test is on the v2 checklist. |
