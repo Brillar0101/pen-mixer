@@ -13,11 +13,6 @@ gets, the better your mix sounds.
 
 <p align="center"><em>The v2.1 board (13 &times; 35 mm) in its clear case</em></p>
 
-<p align="center">
-  <img src="docs/images/schematic.svg" alt="Pen Mixer schematic" width="100%">
-</p>
-
-<p align="center"><em>Schematic rev 0.3</em></p>
 
 This repo holds the whole project: prototype firmware, production firmware and
 laptop stack, and the production PCB as a KiCad project.
