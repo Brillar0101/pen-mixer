@@ -12,12 +12,10 @@ gets, the better your mix sounds.
 </p>
 
 <p align="center">
-  <img src="docs/images/pcb-front.png" alt="PCB front" width="24%">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/images/pcb-back.png" alt="PCB back" width="24%">
+  <img src="docs/images/board-render.png" alt="Pen Mixer board" width="100%">
 </p>
 
-<p align="center"><em>Schematic rev 0.3 &middot; board front and back, 11 &times; 42 mm, 4-layer</em></p>
+<p align="center"><em>Schematic rev 0.3 &middot; the board, 11 &times; 42 mm, 4-layer, rendered in Blender</em></p>
 
 This repo holds the whole project: prototype firmware, production firmware and
 laptop stack, and the production PCB as a KiCad project.
