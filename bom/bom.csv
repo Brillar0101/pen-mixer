@@ -1,21 +1,21 @@
-Reference,Qty,Value,Footprint,MPN,Manufacturer,LCSC,LC_Stock,Chosen_Distributor,Datasheet,Validated,DNP,Notes
-"C2,C1",2,4u7,0402,,,C23733,,,,,,
-"C3,C4",2,1u,0402,,,C52923,,,,,,
-C6,1,10u,0402,,,C23692971,,,,,,
-"C10,C8,C5,C7",4,100n,0402,,,C1525,,,,,,
-D1,1,GRN,0402,,,C130723,,,,,,
-J1,1,USB-C 16P,USB_C_Receptacle_G-Switch_GT-USB-7010ASV,,,C2988369,,,,,,
-J2,1,BAT,SolderPad_1.2x2.0mm,,,,,,,,,bare solder pads - no part to order
-"R1,R2",2,5k1,0402,,,C25905,,,,,,
-R3,1,20k,0402,,,C25765,,,,,,
-R4,1,1k,0402,,,C11702,,,,,,
-"R7,R6",2,4k7,0402,,,C25900,,,,,,
-"R9,R8",2,1M,0402,,,C26083,,,,,,
-TP1,1,SWDIO,TestPad_1.0mm,,,,,,,,,bare pad - no part
-TP2,1,SWDCLK,TestPad_1.0mm,,,,,,,,,bare pad - no part
-TP4,1,GND,TestPad_1.0mm,,,,,,,,,bare pad - no part
-TP5,1,+3V3,TestPad_1.0mm,,,,,,,,,bare pad - no part
-U1,1,ISP1807-LR,ISP1807-LR,ISP1807-LR-RS,Insight SiP,C5264268,,,,,,0 stock at JLC/LCSC - source from Mouser or DigiKey
-U2,1,LSM6DS3TR-C,LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y,,,C967633,,,,,,
-U3,1,MCP73831T-2ACI/OT,SOT-23-5,,,C424093,,,,,,
-U4,1,TPS7A0533PDBV,SOT-23-5,,,C493453,,,,,,
+"Reference","Value","Footprint","Qty","MPN","Manufacturer","LCSC","Notes"
+"C1,C2","4u7","Capacitor_SMD:C_0402_1005Metric","2","CL05A475MP5NRNC","Samsung Electro-Mechanics","C23733",""
+"C3,C4","1u","Capacitor_SMD:C_0402_1005Metric","2","CL05A105KA5NQNC","Samsung Electro-Mechanics","C52923",""
+"C5,C7,C8,C10","100n","Capacitor_SMD:C_0402_1005Metric","4","CL05B104KO5NNNC","Samsung Electro-Mechanics","C1525",""
+"C6","10u","Capacitor_SMD:C_0402_1005Metric","1","CGA0402X5R106M6R3GT","TDK","C23692971",""
+"D1","GRN","LED_SMD:LED_0402_1005Metric","1","NCD0402G1","Foshan NationStar","C130723",""
+"J1","USB-C 16P","Connector_USB:USB_C_Receptacle_G-Switch_GT-USB-7010ASV","1","GT-USB-7010ASV","G-Switch","C2988369",""
+"J2","BAT","pen-mixer:SolderPad_1.2x2.0mm","1","","","",""
+"R1,R2","5k1","Resistor_SMD:R_0402_1005Metric","2","0402WGF5101TCE","UNI-ROYAL","C25905",""
+"R3","20k","Resistor_SMD:R_0402_1005Metric","1","0402WGF2002TCE","UNI-ROYAL","C25765",""
+"R4","1k","Resistor_SMD:R_0402_1005Metric","1","0402WGF1001TCE","UNI-ROYAL","C11702",""
+"R6,R7","4k7","Resistor_SMD:R_0402_1005Metric","2","0402WGF4701TCE","UNI-ROYAL","C25900",""
+"R8,R9","1M","Resistor_SMD:R_0402_1005Metric","2","0402WGF1004TCE","UNI-ROYAL","C26083",""
+"TP1","SWDIO","pen-mixer:TestPad_1.0mm","1","","","",""
+"TP2","SWDCLK","pen-mixer:TestPad_1.0mm","1","","","",""
+"TP4","GND","pen-mixer:TestPad_1.0mm","1","","","",""
+"TP5","+3V3","pen-mixer:TestPad_1.0mm","1","","","",""
+"U1","ISP1807-LR","pen-mixer:ISP1807-LR","1","ISP1807-LR-RS","Insight SiP","C5264268","0 stock at JLC/LCSC - source from Mouser or DigiKey"
+"U2","LSM6DS3TR-C","Package_LGA:LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y","1","LSM6DS3TR-C","STMicroelectronics","C967633",""
+"U3","MCP73831T-2ACI/OT","Package_TO_SOT_SMD:SOT-23-5","1","MCP73831T-2ACI/OT","Microchip","C424093",""
+"U4","TPS7A0533PDBV","Package_TO_SOT_SMD:SOT-23-5","1","TPS7A0533PDBVR","Texas Instruments","C493453",""
