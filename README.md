@@ -117,3 +117,6 @@ docs/                 architecture, run guide, requirements (PRD)
 ARCHITECTURE.md       how it all fits together, with diagrams
 ```
 
+## License
+
+MIT. See [LICENSE](LICENSE).
