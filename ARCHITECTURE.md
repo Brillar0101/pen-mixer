@@ -164,11 +164,9 @@ matching, antenna design and certification testing, which runs to five
 figures. One wiring detail worth its own sentence: pin 20 (OUT_ANT) must be
 tied to pin 22 (OUT_MOD) on the application PCB, or the radio has no antenna.
 
-Unverified: the ISP1807 land pattern in `stylus.pretty/` was reconstructed
-from the datasheet drawing. Pad numbering is read from the datasheet figure
-and is correct; the coordinates are derived. On a 0.65 mm pitch 78-pad LGA,
-check it against the vendor's official land pattern before paying for
-fabrication.
+The ISP1807 land pattern is JLCPCB's official one (their EasyEDA library),
+swapped in after a pad-for-pad comparison confirmed it matches the vendor
+geometry exactly: all 78 pads, same numbering, same sizes, same positions.
 
 ### FUDI over UDP, not OSC
 
