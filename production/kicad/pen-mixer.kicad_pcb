@@ -6892,6 +6892,14 @@
 		(uuid "fd1b9f31-ad13-4f89-8511-65ac26f341a2")
 	)
 	(segment
+		(start 103.4552 45.9352)
+		(end 101.0952 44.0352)
+		(width 0.15)
+		(layer "B.Cu")
+		(net "GND")
+		(uuid "34c17da7-3e99-4c11-9d2a-a7d7c3368cbf")
+	)
+	(segment
 		(start 103.4585 45.9352)
 		(end 103.4585 51.9651)
 		(width 0.15)
@@ -6930,14 +6938,6 @@
 		(layer "B.Cu")
 		(net "GND")
 		(uuid "87515691-9f4c-475b-8b39-64837106062f")
-	)
-	(segment
-		(start 103.4552 45.9352)
-		(end 101.0952 44.0352)
-		(width 0.15)
-		(layer "B.Cu")
-		(net "GND")
-		(uuid "97e3296a-dadc-4390-aad6-ad78c2fad62f")
 	)
 	(segment
 		(start 103.8619 53.0352)
@@ -7180,6 +7180,14 @@
 		(uuid "0e06285d-6672-472a-98bf-716ef0c93440")
 	)
 	(segment
+		(start 103.2952 45.4352)
+		(end 103.2952 44.0352)
+		(width 0.15)
+		(layer "B.Cu")
+		(net "VBAT")
+		(uuid "39d46917-211a-482f-8105-9f09f2708643")
+	)
+	(segment
 		(start 105.5252 47.9352)
 		(end 107.5919 47.9352)
 		(width 0.15)
@@ -7188,28 +7196,20 @@
 		(uuid "3b4b179e-ab26-459f-9509-ea6a52729753")
 	)
 	(segment
-		(start 104.9952 45.4352)
-		(end 103.2952 45.4352)
-		(width 0.15)
-		(layer "B.Cu")
-		(net "VBAT")
-		(uuid "760a1bf1-458c-47b1-8f2a-400154f2a22d")
-	)
-	(segment
 		(start 105.5252 47.9352)
 		(end 104.9952 45.4352)
 		(width 0.15)
 		(layer "B.Cu")
 		(net "VBAT")
-		(uuid "ab0494f2-0236-4174-9765-8e8945893967")
+		(uuid "79563c53-c8ee-4e57-a387-d40c4e2c7073")
 	)
 	(segment
-		(start 103.2952 45.4352)
-		(end 103.2952 44.0352)
+		(start 104.9952 45.4352)
+		(end 103.2952 45.4352)
 		(width 0.15)
 		(layer "B.Cu")
 		(net "VBAT")
-		(uuid "c82a9101-24ff-4614-9968-8c6f29fcdc23")
+		(uuid "8f597f93-791d-4402-a7f6-3e7cb2a99171")
 	)
 	(segment
 		(start 102.8155 62.1534)
@@ -8694,7 +8694,7 @@
 	(zone
 		(net "GND")
 		(layer "F.Cu")
-		(uuid "0974cf45-b444-482f-a84a-59171fd82f9c")
+		(uuid "0e25ff43-e210-4d65-af22-ba110ec97ffc")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0.2)
@@ -9537,7 +9537,7 @@
 	(zone
 		(net "GND")
 		(layer "B.Cu")
-		(uuid "38e692d2-0811-4bab-8a30-898ce54fe48f")
+		(uuid "c2338c3c-6cf6-456b-9e93-99f62cd3eb47")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0.2)
@@ -10043,7 +10043,7 @@
 	(zone
 		(net "GND")
 		(layer "In1.Cu")
-		(uuid "b6dd2265-ff57-4588-9eba-9b064105c3ad")
+		(uuid "8f323599-7b96-4158-9fa6-aa52a2fdc638")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0.2)
@@ -10457,7 +10457,7 @@
 	(zone
 		(net "GND")
 		(layer "In2.Cu")
-		(uuid "e71cd5e4-4e9b-4bb7-950d-bc292d577f0f")
+		(uuid "eb189dcd-bdf2-4093-bc5a-1c0d68048a2f")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0.2)
