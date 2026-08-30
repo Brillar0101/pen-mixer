@@ -123,7 +123,7 @@ drift. There is no sensor fusion to write.
 
 ## Production board
 
-The custom PCB is a separate KiCad project: 13 x 35 mm, four layers, 0.6 mm,
+The custom PCB is a separate KiCad project: 13 x 35 mm, four layers, 0.8 mm,
 all SMD.
 
 ```mermaid

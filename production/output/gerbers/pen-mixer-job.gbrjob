@@ -5,17 +5,17 @@
       "Application": "Pcbnew",
       "Version": "10.0.3"
     },
-    "CreationDate": "2026-08-29T19:28:22-04:00"
+    "CreationDate": "2026-08-30T15:30:07-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "pen-mixer",
       "GUID": "70656e2d-6d69-4786-9572-2e6b69636164",
-      "Revision": "rev?"
+      "Revision": "v2"
     },
     "Size": {
-      "X": 11.1,
-      "Y": 42.1
+      "X": 13.0,
+      "Y": 35.0
     },
     "LayerNumber": 4,
     "BoardThickness": 1.6,
@@ -27,14 +27,18 @@
       "PadToPad": 0.09,
       "PadToTrack": 0.09,
       "TrackToTrack": 0.09,
-      "MinLineWidth": 0.09
+      "MinLineWidth": 0.1124,
+      "TrackToRegion": 0.2,
+      "RegionToRegion": 0.2
     },
     {
       "Layers": "Inner",
       "PadToPad": 0.09,
       "PadToTrack": 0.09,
       "TrackToTrack": 0.09,
-      "MinLineWidth": 0.15
+      "MinLineWidth": 0.15,
+      "TrackToRegion": 0.2,
+      "RegionToRegion": 0.2
     }
   ],
   "FilesAttributes": [
@@ -56,16 +60,6 @@
     {
       "Path": "pen-mixer-B_Cu.gbl",
       "FileFunction": "Copper,L4,Bot",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-F_Adhesive.gta",
-      "FileFunction": "Glue,Top",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-B_Adhesive.gba",
-      "FileFunction": "Glue,Bot",
       "FilePolarity": "Positive"
     },
     {
@@ -99,58 +93,8 @@
       "FilePolarity": "Negative"
     },
     {
-      "Path": "pen-mixer-User_Drawings.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_Comments.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_Eco1.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_Eco2.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
       "Path": "pen-mixer-Edge_Cuts.gm1",
       "FileFunction": "Profile",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-F_Fab.gbr",
-      "FileFunction": "AssemblyDrawing,Top",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-B_Fab.gbr",
-      "FileFunction": "AssemblyDrawing,Bot",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_1.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_2.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_3.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "pen-mixer-User_4.gbr",
-      "FileFunction": "Other,User",
       "FilePolarity": "Positive"
     }
   ],

@@ -31,7 +31,7 @@ no hardware change is needed, the IMU already measures all three axes.
 
 | # | Requirement | Status |
 |---|---|---|
-| P1 | At most 30 mm in both directions | **Improved in v2.** v1 was 11 x 42 mm; v2 is 13 x 35 mm; the battery wires solder to pads at the tip and the cell lies along the back. Still 5 mm over the 30 mm limit lengthwise; getting under it means dropping USB-C for charge pads. |
+| P1 | At most 30 mm in both directions | **Improved in v2.** v1 was 11 x 42 mm; v2 is 13 x 35 mm, 0.8 mm thick (JLCPCB's 4-layer minimum; 0.6 was the original target); the battery wires solder to pads at the tip and the cell lies along the back. Still 5 mm over the 30 mm limit lengthwise; getting under it means dropping USB-C for charge pads. |
 | P2 | Clear casing | **Designed.** Two clear shells, about 15.4 x 39.6 mm: bottom holds board and battery, top covers the components, with a USB-C opening and a slot for the side button; the LEDs shine through. The USB-C sits in an open notch, fully exposed and standing 0.7 mm proud of the case; the roof is only as tall as the side button needs (9.25 mm total; 1 mm walls). No screws: the halves hold by wall friction and the USB notch keying them together; snap ridges are the fallback if the printed fit is loose. Print in clear resin (JLCPCB 3D printing, 8001 resin). Not yet fabricated. |
 | P3 | Weight at most 1 oz (28 g) | **v1 by design.** Board plus battery is roughly 5 g. Stays met with any reasonable casing; final weight gets measured in v2 with the shell on. |
 | P4 | Runs 3 hours at once | **v1 by design.** The 100 mAh cell against a ~6 mA average BLE draw estimates well past 3 h. Estimated, not yet measured; a soak test is on the v2 checklist. |

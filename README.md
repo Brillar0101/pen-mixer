@@ -47,7 +47,7 @@ flowchart LR
 
 ## The hardware
 
-The production board is a 13 x 35 mm, four-layer, 0.6 mm PCB, all SMD, designed
+The production board is a 13 x 35 mm, four-layer, 0.8 mm PCB, all SMD, designed
 to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 
 | Ref | Part | Role |
