@@ -51,15 +51,15 @@ no hardware change is needed, the IMU already measures all three axes.
 
 New requirements from the client. None of this exists in the v2 hardware,
 which has one green LED (charge status) and no button; all three need the
-next board revision (v3) plus firmware.
+v2.1 board revision plus firmware.
 
 | # | Requirement | Status |
 |---|---|---|
-| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **v3.** Needs an RGBW LED (white cannot be mixed convincingly from RGB alone). Proposed thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, read from the existing VBAT_SENSE divider. |
-| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **v3.** One tactile switch on a wake-capable nRF52840 pin. The chip's System OFF mode makes this a soft button: off means microamps of sleep, and any press wakes it, so no physical power switch is needed. |
-| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **v3.** Can share the RGBW LED from I1 with time-multiplexing (battery shown briefly at wake and on demand, Bluetooth state otherwise), or use a second small LED; decide during v3 layout, where board space will settle it. |
+| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **v2.1.** Needs an RGBW LED (white cannot be mixed convincingly from RGB alone). Proposed thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, read from the existing VBAT_SENSE divider. |
+| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **v2.1.** One tactile switch on a wake-capable nRF52840 pin. The chip's System OFF mode makes this a soft button: off means microamps of sleep, and any press wakes it, so no physical power switch is needed. |
+| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **v2.1.** Can share the RGBW LED from I1 with time-multiplexing (battery shown briefly at wake and on demand, Bluetooth state otherwise), or use a second small LED; decide during v2.1 layout, where board space will settle it. |
 
-Hardware delta for v3: one RGBW LED (about 2 x 2 mm), one tactile switch
+Hardware delta for v2.1: one RGBW LED (about 2 x 2 mm), one tactile switch
 (about 3 x 2 mm), four GPIO lines; the ISP1807 has the pins free.
 
 ## What comes next, in one list
@@ -67,4 +67,4 @@ Hardware delta for v3: one RGBW LED (about 2 x 2 mm), one tactile switch
 Three-band EQ mapping (M1-M3), the 30 mm board (P1), the clear casing (P2),
 the one-handed adjustable clip (P5, P6), the NFC antenna and song-request
 flow (Q1, Q2), measured numbers for weight and battery life (P3, P4), and
-the v3 interface set: battery LED, power button, Bluetooth status (I1-I3).
+the v2.1 interface set: battery LED, power button, Bluetooth status (I1-I3).
