@@ -107,8 +107,8 @@ How to run all of it, from firmware to Pure Data to the dashboard, lives in
 
 ```
 prototype/            nRF52840 Sense build: real IMU, USB or BLE, laptop stack
-production/           KiCad 10 project, the production board
-  pen-mixer.pretty/   custom footprints
+production/           the production board
+  kicad/              KiCad 10 project, footprints, 3D models
   datasheets/         primary sources for every pinout
   output/             schematic PDF, board plots, render, BOM, DRC report
 docs/                 architecture, run guide, requirements (PRD)
