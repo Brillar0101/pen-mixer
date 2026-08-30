@@ -1725,7 +1725,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "pen-mixer:ISP1807-LR"
+			(property "Footprint" "pen-mixer:BULETM-SMD_ISP1807"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4258,7 +4258,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "pen-mixer:ISP1807-LR"
+			(property "Footprint" "pen-mixer:BULETM-SMD_ISP1807"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -11183,7 +11183,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "pen-mixer:ISP1807-LR"
+		(property "Footprint" "pen-mixer:BULETM-SMD_ISP1807"
 			(at 199.39 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -13337,7 +13337,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "pen-mixer:ISP1807-LR"
+		(property "Footprint" "pen-mixer:BULETM-SMD_ISP1807"
 			(at 209.55 160.02 0)
 			(hide yes)
 			(show_name no)
