@@ -15,7 +15,7 @@ gets, the better your mix sounds.
   <img src="docs/images/board-render.png" alt="Pen Mixer board" width="100%">
 </p>
 
-<p align="center"><em>Schematic rev 0.3 &middot; the board, 11 &times; 42 mm, 4-layer, rendered in Blender</em></p>
+<p align="center"><em>Schematic rev 0.3 &middot; the v1 board, 11 &times; 42 mm, 4-layer, rendered in Blender; v2 is 13 &times; 35 mm</em></p>
 
 This repo holds the whole project: prototype firmware, production firmware and
 laptop stack, and the production PCB as a KiCad project.
@@ -50,7 +50,7 @@ flowchart LR
 
 ## The hardware
 
-The production board is an 11 x 42 mm, four-layer, 0.6 mm PCB, all SMD, designed
+The production board is a 13 x 35 mm, four-layer, 0.6 mm PCB, all SMD, designed
 to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 
 | Ref | Part | Role |

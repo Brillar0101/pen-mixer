@@ -1,14 +1,14 @@
 ** Drc report for pen-mixer.kicad_pcb **
-** Created on 2026-08-29T20:48:20 **
+** Created on 2026-08-30T00:07:23 **
 ** Report includes: Errors, Warnings **
 
 ** Found 2 DRC violations **
 [text_thickness]: Text thickness out of range (TrueType font characters with insufficient stroke weight)
     Rule: board setup constraints silk text thickness; warning
-    @(101.2300 mm, 43.6200 mm): PCB text 'Pen-mixer v1' on F.Silkscreen
+    @(102.1800 mm, 43.6200 mm): PCB text 'Pen-mixer v2' on F.Silkscreen
 [text_thickness]: Text thickness out of range (TrueType font characters with insufficient stroke weight)
     Rule: board setup constraints silk text thickness; warning
-    @(101.0800 mm, 44.7200 mm): PCB text '2026-08-29' on F.Silkscreen
+    @(102.0300 mm, 44.7200 mm): PCB text '2026-08-29' on F.Silkscreen
 
 ** Found 0 unconnected pads **
 

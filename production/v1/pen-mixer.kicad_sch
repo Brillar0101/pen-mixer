@@ -10075,7 +10075,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "pen-mixer:CONN-SMD_P2.00_S2B-PH-SM4-TB-LF-SN"
+		(property "Footprint" "pen-mixer:SolderPad_1.2x2.0mm"
 			(at 74.93 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -10104,38 +10104,6 @@
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "BOM Comments" "mates JST PH 2.0 battery plug" (at 0 0 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C295747" (at 0 0 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "JST" (at 0 0 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "S2B-PH-SM4-TB(LF)(SN)" (at 0 0 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
 			)
 		)
 		(pin "1"
