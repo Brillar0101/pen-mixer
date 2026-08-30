@@ -8,7 +8,7 @@ a filter sweeps, twist it and the level moves. The better your pen control
 gets, the better your mix sounds.
 
 <p align="center">
-  <img src="docs/images/schematic.svg" alt="Pen Mixer schematic" width="100%">
+  <img src="docs/images/schematic.png" alt="Pen Mixer schematic" width="100%">
 </p>
 
 <p align="center">
