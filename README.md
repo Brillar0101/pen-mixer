@@ -15,7 +15,11 @@ gets, the better your mix sounds.
   <img src="docs/images/board-render.png" alt="Pen Mixer board" width="100%">
 </p>
 
-<p align="center"><em>Schematic rev 0.3 &middot; the v1 board, 11 &times; 42 mm, 4-layer, rendered in Blender; v2 is 13 &times; 35 mm</em></p>
+<p align="center">
+  <img src="docs/images/case-render.png" alt="Pen Mixer in its case" width="100%">
+</p>
+
+<p align="center"><em>Schematic rev 0.3 &middot; the v1 board render &middot; the v2.1 board (13 &times; 35 mm) in its clear case</em></p>
 
 This repo holds the whole project: prototype firmware, production firmware and
 laptop stack, and the production PCB as a KiCad project.
