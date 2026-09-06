@@ -16,16 +16,16 @@ dropped; if v1 misses a requirement, the table says so.
 
 ## Pen direction mapping
 
-The brief asks for a three-band EQ mapped to pen motion. The Qt app now
+The brief asks for a three-band EQ mapped to pen motion. The Qt app
 implements the three-band EQ (bass 60-250 Hz, mid 250 Hz-2 kHz, treble
-2-20 kHz) and drives two of the three bands from the pen, signed, so motion
-one way boosts and the other way cuts. The mid band waits on the firmware
-streaming a horizontal-motion value; no hardware change is needed.
+2-20 kHz) and drives all three bands from the pen, signed, so motion one
+way boosts and the other way cuts: tilt for bass, horizontal sway for mids,
+twist for treble.
 
 | # | Requirement | Status |
 |---|---|---|
 | M1 | Bass 60-250 Hz on vertical motion (y), like writing an "l" | **Done in app.** Pen tilt drives the bass band, signed: forward boosts to +12 dB, back cuts to -12 dB. Tilt orientation stands in for vertical motion. |
-| M2 | Mids 250 Hz-2 kHz on horizontal motion (x), like crossing a "t"; left cuts, right boosts | **Partial.** The mid filter and the cut/boost direction exist in the app, but the firmware streams no horizontal axis yet, so the mids are slider-only. Next step: derive x motion in code.py and stream it as a fourth value. |
+| M2 | Mids 250 Hz-2 kHz on horizontal motion (x), like crossing a "t"; left cuts, right boosts | **Done in app and firmware.** The firmware streams a fourth value, sway, a leaky integral of the gyro rate about the sweep axis; a stroke right boosts the mids, left cuts, holding still drifts back to flat. The sweep axis is a one-line constant (SWAY_AXIS) to match how the board sits on the pen. |
 | M3 | Treble 2-20 kHz on orientation, upright (90&deg;) as base; leaning toward 0&deg; adds brightness | **Done in app.** Pen twist (roll) drives the treble band, signed, both directions. |
 
 ## Physical requirements
@@ -44,7 +44,7 @@ streaming a horizontal-motion value; no hardware change is needed.
 
 | # | Question | Answer |
 |---|---|---|
-| Q1 | Can we include an NFC chip? | **v2, and cheaply.** The nRF52840 inside the ISP1807 has an NFC-A tag peripheral built in; the module exposes the NFC1/NFC2 pins. v2 adds only a small antenna coil and a tuning capacitor. |
+| Q1 | Can we include an NFC chip? | **v2, and cheaply, with one routing note.** The nRF52840 inside the ISP1807 has an NFC-A tag peripheral built in; the module exposes the NFC1/NFC2 pins. v2 adds only a small antenna coil and a tuning capacitor. Note: on the v2.1 schematic IMU_INT1/INT2 currently sit on P0.09/P0.10, which are the NFC1/NFC2 pins; move the interrupts to free GPIO before adding the antenna. |
 | Q2 | Song requests over NFC, e.g. pass a YouTube link to the chip | **v2.** The tag can carry an NDEF record with a URL that a phone tap reads, and the laptop bridge can rewrite it over BLE. Fetching audio from YouTube itself stays on the laptop side and depends on the source being licensed. |
 
 
@@ -56,9 +56,9 @@ v2.1 board revision plus firmware.
 
 | # | Requirement | Status |
 |---|---|---|
-| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **In the v2.1 board.** LED1, a 1 x 1 mm addressable RGB (XL-1010RGBC, the smallest multicolor LED made); white is all three channels on. Thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, read from VBAT_SENSE. Firmware pending. |
-| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **In the v2.1 board.** SW1, a side-actuated Panasonic switch on the right edge, pressed from the pen's side, on wake-capable P0.17. System OFF sleep makes it a soft power button. Firmware pending. |
-| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **In the v2.1 board.** LED2, a second 1 x 1 mm addressable RGB chained after LED1, so both run from one GPIO. Blue solid when connected, flashing when pairing is ready, any color available later. Firmware pending. |
+| I1 | Battery level indicator on an LED with four states: red, orange, green, white | **In the v2.1 board; firmware written, untested.** LED1, a 1 x 1 mm addressable RGB (XL-1010RGBC); white is all three channels on. Thresholds: red below 10%, orange 10-40%, green 40-80%, white above 80%, from VBAT_SENSE (P0.03, 1M/1M divider). production/firmware/code.py implements it; verification waits on the assembled v2.1 board. |
+| I2 | Power button: press to turn on, press to turn off, long press to start Bluetooth pairing | **In the v2.1 board; firmware written, untested.** SW1 on wake-capable P0.17. production/firmware/code.py: short press enters System OFF deep sleep with a pin alarm on the button to wake, long press (1.5 s) restarts advertising. Verification waits on the assembled board. |
+| I3 | Bluetooth status LED: a fixed color when connected, flashing when pairing is ready | **In the v2.1 board; firmware written, untested.** LED2 chained after LED1 on P0.20. production/firmware/code.py: blue flashing while advertising, solid blue when connected, back to flashing if the link drops. Verification waits on the assembled board. |
 
 Hardware as built in v2.1: two 1 x 1 mm addressable RGB LEDs (chained, one
 GPIO, no resistors), one side-actuated tactile switch, one decoupling cap;
@@ -66,8 +66,8 @@ two GPIO lines total (P0.20 data, P0.17 button).
 
 ## What comes next, in one list
 
-The horizontal axis for the mid band (M2), the 30 mm board (P1), the clear
-casing fabricated and fitted (P2), the one-handed adjustable clip (P5, P6),
-the NFC antenna and song-request flow (Q1, Q2), measured numbers for weight
-and battery life (P3, P4), and the v2.1 interface firmware: battery LED,
-power button, Bluetooth status (I1-I3).
+Assemble the v2.1 board and verify its interface firmware on it (I1-I3),
+the 30 mm board (P1), the clear casing fabricated and fitted (P2), the
+one-handed adjustable clip (P5, P6), the NFC antenna and song-request flow
+(Q1, Q2, after moving the IMU interrupts off the NFC pins), and measured
+numbers for weight and battery life (P3, P4).

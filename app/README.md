@@ -210,21 +210,30 @@ adding yourself to the docker group (`sudo usermod -aG docker $USER`).
 
 ## The nRF52840 pen board over Bluetooth
 
-When the real pen board is in hand, the app talks to it directly: set the
-Source dropdown to "Bluetooth (pen board)". The board must be running
-`code_ble.py` (in `../prototype/firmware/`); it advertises as
-"PenMixer" with a Nordic UART service streaming the same frame format as
-the USB path, so nothing else changes. The app scans, connects, and
+The app talks to the pen board directly: set the Source dropdown to
+"Bluetooth (pen board)" or click "Scan Bluetooth" to pick it from a list of
+everything in range. The board runs the firmware in `prototype/flash`
+(flash kit with CircuitPython, libraries and `code.py`); it advertises as
+"PenMixer" with a Nordic UART service. The app scans, connects, and
 reconnects on its own; the banner reports every state. On macOS the first
 scan pops a Bluetooth permission prompt for the terminal or Python; allow
 it or the scan finds nothing.
 
-Over Bluetooth the mapping is signed, because a resting pen sits at zero:
-at rest the sound is flat (0 dB), tilting one way boosts the bass up to
-+12 dB and the other way cuts it to -12 dB, and twist does the same for
-treble. That gives the PRD's cut-and-boost behavior (M2's direction idea)
-that the boost-only USB mapping does not. The mids stay slider-only until
-the firmware streams a third axis.
+The mapping is signed around the pen at rest, so holding still is flat
+(0 dB) and every band moves both ways:
+
+| Gesture | Band | Direction |
+|---------|------|-----------|
+| Tilt forward / back | Bass 60-250 Hz | forward boosts to +12 dB, back cuts to -12 dB |
+| Sway left / right (horizontal stroke) | Mid 250 Hz-2 kHz | right boosts, left cuts (PRD M2) |
+| Twist | Treble 2-20 kHz | one way boosts, the other cuts |
+
+Sway comes from the firmware as a fourth frame value: a leaky integral of
+the gyro rate about the sweep axis, so a stroke builds the value and
+holding still lets it drift back to center. Older three-field firmware still
+works; sway simply reads zero. If the "Sway (mid)" meter reacts to the
+wrong gesture for how the board sits on the pen, change `SWAY_AXIS` in the
+firmware (0, 1 or 2) and copy `code.py` back onto CIRCUITPY.
 
 ## Tests and Docker
 
