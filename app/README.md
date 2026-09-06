@@ -10,6 +10,73 @@ This README explains the whole project from zero: where it came from, how
 every piece works, how to run it, and every problem we hit along the way so
 you do not have to rediscover them.
 
+## Quick start
+
+Everything below assumes the pen board is already flashed (see
+`prototype/flash/README.md`) and advertising as "PenMixer".
+
+### macOS
+
+First time only:
+
+```bash
+brew install blackhole-2ch switchaudio-osx
+git clone https://github.com/Brillar0101/pen-mixer.git
+cd pen-mixer/app
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt -e .
+```
+
+Every time:
+
+```bash
+cd pen-mixer/app
+venv/bin/python -m penmixer.app
+```
+
+In the window: click "Route system audio here" (music now flows through the
+app), set Source to "Bluetooth (pen board)" or click "Scan Bluetooth" and
+pick PenMixer, play music, move the pen. Allow the Bluetooth permission
+prompt the first time. Closing the app hands your speakers back.
+
+### Windows
+
+First time only (VB-CABLE is the Windows loopback; details in "Running it
+on Windows" below):
+
+```powershell
+# administrator PowerShell, then reboot
+curl.exe -L -o $env:TEMP\vbcable.zip https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack45.zip
+Expand-Archive $env:TEMP\vbcable.zip $env:TEMP\vbcable -Force
+& $env:TEMP\vbcable\VBCABLE_Setup_x64.exe
+shutdown /r /t 0
+```
+
+```powershell
+# normal PowerShell, after the reboot
+git clone https://github.com/Brillar0101/pen-mixer.git
+cd pen-mixer\app
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt -e .
+```
+
+Every time:
+
+```powershell
+cd pen-mixer\app
+venv\Scripts\python -m penmixer.app
+```
+
+Set Windows Settings > System > Sound > Output to "CABLE Input", then in the
+window click "Hear music here", set Source to "Bluetooth (pen board)" or use
+"Scan Bluetooth", play music, move the pen. Set the Windows output back to
+your speakers when you are done.
+
+### No board handy
+
+Set Source to "Simulate (no board)": synthetic pen motion sweeps all three
+bands so the whole pipeline demos untethered.
+
 ## Where this fits in the bigger project
 
 The parent project is the Pen Mixer: a tiny board (nRF52840 + IMU) that clips
@@ -118,11 +185,13 @@ Then, in the window:
 
 1. Click "Route system audio here" and play music anywhere
 2. Waves and spectrum bars move; you hear the music through the app
-3. Plug in the pen board running `code.py`; the banner turns green
-4. Tilt for bass, roll for treble, both together for mids
+3. Set Source to "Bluetooth (pen board)", or click "Scan Bluetooth" and pick
+   PenMixer; the banner turns green when connected
+4. Tilt for bass, sway sideways for mids, twist for treble; each gesture
+   boosts one way and cuts the other, and the pen at rest leaves the music flat
 
-No board? Tick "Simulate (no board)" and synthetic motion sweeps the
-controls so the whole pipeline demos untethered.
+No board? Set Source to "Simulate (no board)" and synthetic motion sweeps
+the controls so the whole pipeline demos untethered.
 
 ## Running it on Windows
 

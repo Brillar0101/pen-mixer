@@ -105,6 +105,7 @@ How to run all of it, from firmware to Pure Data to the dashboard, lives in
 ```
 prototype/            nRF52840 Sense build: real IMU, USB or BLE, laptop stack
 app/                  Qt desktop app: 3-band EQ, visualizer, one-window stack
+                      (start instructions for macOS and Windows: app/README.md)
 production/           the production board
   kicad/              KiCad 10 project, footprints, 3D models
   datasheets/         primary sources for every pinout
