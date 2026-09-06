@@ -207,19 +207,12 @@ def main():
         ser.close()
 
 
-if __name__ == "__main__":
-    main()
-
-
 def run_ble(args):
     """BLE transport. Same smoothing, mapping and outputs as the serial path."""
     import ble_source
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s_tilt, s_roll, s_energy = (Smooth(args.alpha) for _ in range(3))
-    if dashboard and args.web:
-        dashboard.serve(args.web)
-        print("dashboard: http://localhost:%d" % args.web)
 
     state = {"frames": 0, "bad": 0, "t0": time.monotonic()}
 
@@ -257,3 +250,7 @@ def run_ble(args):
         ble_source.run(on_line)
     except KeyboardInterrupt:
         print("\nstopped after %d frames" % state["frames"])
+
+
+if __name__ == "__main__":
+    main()
