@@ -155,6 +155,18 @@ class MainWindow(QMainWindow):
             self.pad_bars.append(bar)
         layout.addLayout(pad_row)
 
+        # Output volume (makeup after the EQ; +9 dB cancels the input headroom pad)
+        vol_row = QHBoxLayout()
+        vol_row.addWidget(QLabel("Volume"))
+        self.volume_slider = QSlider(Qt.Orientation.Horizontal)
+        self.volume_slider.setRange(0, 150)  # 0 to +15 dB, tenths
+        self.volume_slider.setValue(90)
+        self.volume_readout = QLabel("+9.0 dB")
+        self.volume_slider.valueChanged.connect(self._volume_changed)
+        vol_row.addWidget(self.volume_slider, 1)
+        vol_row.addWidget(self.volume_readout)
+        layout.addLayout(vol_row)
+
         # Level + status
         self.level_bar = QProgressBar()
         self.level_bar.setRange(0, 100)
@@ -430,6 +442,11 @@ class MainWindow(QMainWindow):
                 "audio running but input is silent: set System Settings -> Sound -> "
                 "Output to BlackHole 2ch, then play music"
             )
+
+    def _volume_changed(self, value: int) -> None:
+        db = value / 10.0
+        self.engine.set_makeup_db(db)
+        self.volume_readout.setText(f"+{db:.1f} dB")
 
     def _refresh(self) -> None:
         level = min(int(self.engine.output_level * 300), 100)

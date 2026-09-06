@@ -78,6 +78,7 @@ class AudioEngine:
         self._xruns = 0
         self._rate = 48000.0
         self._viz = np.zeros(WINDOW_SAMPLES, dtype=np.float32)
+        self._makeup = 10.0 ** (9.0 / 20.0)  # default +9 dB, cancels the input pad
 
     @property
     def running(self) -> bool:
@@ -102,6 +103,10 @@ class AudioEngine:
     def set_gains(self, gains: BandGains) -> None:
         with self._lock:
             self._target = gains
+
+    def set_makeup_db(self, db: float) -> None:
+        """Output volume after the EQ. +9 dB restores unity against the pad."""
+        self._makeup = 10.0 ** (db / 20.0)
 
     def start(self, input_index: int, output_index: int) -> None:
         self.stop()
@@ -161,6 +166,7 @@ class AudioEngine:
         )
         eq.set_gains(*self._current)
         processed = eq.process(indata * HEADROOM)
+        processed = np.clip(processed * self._makeup, -1.0, 1.0)
         outdata[:] = processed
         self._level = float(np.sqrt(np.mean(processed**2)))
         mono = processed.mean(axis=1).astype(np.float32)
