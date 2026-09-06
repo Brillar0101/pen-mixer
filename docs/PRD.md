@@ -22,6 +22,13 @@ implements the three-band EQ (bass 60-250 Hz, mid 250 Hz-2 kHz, treble
 way boosts and the other way cuts: tilt for bass, horizontal sway for mids,
 twist for treble.
 
+What each gesture means:
+
+- Tilt: leaning the pen forward and backwards.
+- Sway: moving the pen left and right, like a horizontal stroke.
+- Twist: rotating the pen around its own long axis, so the pen's
+  orientation itself changes, up to a full 360.
+
 | # | Requirement | Status |
 |---|---|---|
 | M1 | Bass 60-250 Hz on vertical motion (y), like writing an "l" | **Done in app.** Pen tilt drives the bass band, signed: forward boosts to +12 dB, back cuts to -12 dB. Tilt orientation stands in for vertical motion. |
