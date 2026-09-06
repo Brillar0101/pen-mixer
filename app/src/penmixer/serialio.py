@@ -88,6 +88,7 @@ class SimulatedReader(QThread):
                 tilt=45.0 * math.sin(t * 0.9),
                 roll=90.0 * math.sin(t * 0.53 + 1.7),
                 energy=abs(math.cos(t)) * 0.5,
+                sway=math.sin(t * 0.37 + 0.6),
             )
             self.frame_received.emit(frame)
             t += 0.03

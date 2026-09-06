@@ -65,7 +65,22 @@ def read_motion():
 
 period = 1.0 / FRAME_HZ
 
+
+# Horizontal motion for the mid band (PRD M2), see code_ble.py for the notes.
+SWAY_AXIS = 2
+SWAY_SCALE = 1.5
+SWAY_LEAK = 0.97
+sway = 0.0
+
+
+def update_sway(gyro, dt):
+    global sway
+    sway = sway * SWAY_LEAK + gyro[SWAY_AXIS] * dt / SWAY_SCALE
+    sway = max(-1.0, min(1.0, sway))
+    return sway
+
 while True:
     tilt, roll, energy = read_motion()
-    print("%.2f,%.2f,%.3f" % (tilt, roll, energy))
+    sway_now = update_sway(imu.gyro, period)
+    print("%.2f,%.2f,%.3f,%.3f" % (tilt, roll, energy, sway_now))
     time.sleep(period)

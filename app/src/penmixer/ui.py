@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         # Live motion meters (F1: show the hand input as it moves); center = at rest
         pad_row = QHBoxLayout()
         self.pad_bars: list[QProgressBar] = []
-        for name in ("Tilt (bass)", "Twist (treble)"):
+        for name in ("Tilt (bass)", "Sway (mid)", "Twist (treble)"):
             pad_row.addWidget(QLabel(name))
             bar = QProgressBar()
             bar.setRange(0, 100)
@@ -301,7 +301,8 @@ class MainWindow(QMainWindow):
 
     def _on_frame(self, frame: TouchFrame) -> None:
         self.pad_bars[0].setValue(int((frame.tilt + 45.0) / 90.0 * 100))
-        self.pad_bars[1].setValue(int((frame.roll + 90.0) / 180.0 * 100))
+        self.pad_bars[1].setValue(int((frame.sway + 1.0) / 2.0 * 100))
+        self.pad_bars[2].setValue(int((frame.roll + 90.0) / 180.0 * 100))
         if not self.touch_toggle.isChecked():
             return
         self._touch_gains = smooth(self._touch_gains, gains_from_frame(frame))

@@ -41,3 +41,11 @@ def test_smooth_moves_toward_target() -> None:
     stepped = smooth(start, target, alpha=0.5)
     assert stepped.bass_db == 6.0
     assert 0.0 < stepped.mid_db < 12.0
+
+
+def test_sway_drives_mid_left_cuts_right_boosts() -> None:
+    right = gains_from_frame(MotionFrame(tilt=0.0, roll=0.0, energy=0.0, sway=1.0))
+    left = gains_from_frame(MotionFrame(tilt=0.0, roll=0.0, energy=0.0, sway=-0.5))
+    assert right.mid_db == MAX_BOOST_DB
+    assert left.mid_db == -MAX_BOOST_DB / 2
+    assert right.bass_db == 0.0 and right.treble_db == 0.0

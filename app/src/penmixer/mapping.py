@@ -4,7 +4,7 @@ Signed around the at-rest zero, so the pen held still is flat (0 dB) and
 motion one way boosts while the other way cuts:
     tilt   -> bass,   forward boosts up to +MAX_BOOST_DB, back cuts to -MAX_BOOST_DB
     roll   -> treble, twist one way boosts, the other cuts
-    mid    -> flat until the firmware streams a horizontal-motion value (PRD M2)
+    sway   -> mid,    horizontal motion: left cuts, right boosts (PRD M2)
 """
 
 from dataclasses import dataclass
@@ -27,10 +27,10 @@ FLAT = BandGains(0.0, 0.0, 0.0)
 
 
 def gains_from_frame(frame: TouchFrame) -> BandGains:
-    """Pen mapping: signed, both directions; mids flat until a third axis arrives."""
+    """Pen mapping: signed, both directions, all three bands."""
     return BandGains(
         bass_db=max(-1.0, min(1.0, frame.tilt / TILT_RANGE[1])) * MAX_BOOST_DB,
-        mid_db=0.0,
+        mid_db=max(-1.0, min(1.0, frame.sway)) * MAX_BOOST_DB,
         treble_db=max(-1.0, min(1.0, frame.roll / ROLL_RANGE[1])) * MAX_BOOST_DB,
     )
 
