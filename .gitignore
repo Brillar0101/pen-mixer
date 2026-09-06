@@ -2,6 +2,8 @@
 *.mp3
 __pycache__/
 *.pyc
+venv/
+.pytest_cache/
 .DS_Store
 hardware/*-backups/
 hardware/*.kicad_prl

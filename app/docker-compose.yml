@@ -1,0 +1,21 @@
+services:
+  # Reproducible test suite: DSP, parsing, mapping, spectrum. No hardware needed.
+  test:
+    build: .
+    command: sh -c "ruff check src tests && pytest -q"
+    environment:
+      QT_QPA_PLATFORM: offscreen
+
+  # The Qt app itself. Needs the three host bridges on macOS:
+  #   1. XQuartz running with "Allow connections from network clients"
+  #   2. scripts/host_bridges.sh (serial -> tcp 7777, starts PulseAudio)
+  # See README "Running the app in Docker".
+  app:
+    build: .
+    environment:
+      DISPLAY: host.docker.internal:0
+      PULSE_SERVER: host.docker.internal
+      PENMIXER_SERIAL_TCP: host.docker.internal:7777
+      QT_X11_NO_MITSHM: "1"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
