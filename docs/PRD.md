@@ -44,7 +44,7 @@ twist for treble.
 
 | # | Question | Answer |
 |---|---|---|
-| Q1 | Can we include an NFC chip? | **v2, and cheaply, with one routing note.** The nRF52840 inside the ISP1807 has an NFC-A tag peripheral built in; the module exposes the NFC1/NFC2 pins. v2 adds only a small antenna coil and a tuning capacitor. Note: on the v2.1 schematic IMU_INT1/INT2 currently sit on P0.09/P0.10, which are the NFC1/NFC2 pins; move the interrupts to free GPIO before adding the antenna. |
+| Q1 | Can we include an NFC chip? | **v2, and cheaply, with one routing note.** The nRF52840 inside the ISP1807 has an NFC-A tag peripheral built in; the module exposes the NFC1/NFC2 pins. v2 adds only a small antenna coil and a tuning capacitor. The IMU interrupt lines were disconnected from P0.09/P0.10 (the NFC1/NFC2 pins) so the antenna can use them; the firmware polls the IMU and never needed the interrupts. |
 | Q2 | Song requests over NFC, e.g. pass a YouTube link to the chip | **v2.** The tag can carry an NDEF record with a URL that a phone tap reads, and the laptop bridge can rewrite it over BLE. Fetching audio from YouTube itself stays on the laptop side and depends on the source being licensed. |
 
 
@@ -69,5 +69,5 @@ two GPIO lines total (P0.20 data, P0.17 button).
 Assemble the v2.1 board and verify its interface firmware on it (I1-I3),
 the 30 mm board (P1), the clear casing fabricated and fitted (P2), the
 one-handed adjustable clip (P5, P6), the NFC antenna and song-request flow
-(Q1, Q2, after moving the IMU interrupts off the NFC pins), and measured
+(Q1, Q2), and measured
 numbers for weight and battery life (P3, P4).
