@@ -31,8 +31,18 @@ class BleScanThread(QThread):
             from bleak import BleakScanner
 
             async def scan() -> list[tuple[str, str]]:
-                found = await BleakScanner.discover(timeout=6.0)
-                return [(d.name or "(no name)", d.address) for d in found]
+                # macOS often leaves device.name stale or empty; the name in the
+                # advertisement itself is fresh, so prefer it. Named devices and
+                # stronger signals sort first so the pen board is not buried
+                # under anonymous nearby devices.
+                found = await BleakScanner.discover(timeout=6.0, return_adv=True)
+                rows = []
+                for device, adv in found.values():
+                    name = adv.local_name or device.name or "(no name)"
+                    rssi = adv.rssi if adv.rssi is not None else -127
+                    rows.append((name, device.address, rssi))
+                rows.sort(key=lambda r: (r[0] == "(no name)", -r[2]))
+                return [(name, address) for name, address, _ in rows]
 
             self.devices_found.emit(aio.run(scan()))
         except Exception as exc:  # noqa: BLE001 - reported to the dialog
