@@ -7,12 +7,6 @@ across whatever track is playing on the laptop; twist it and the level moves.
 This repo is the product build: the Sense board carries a 6-axis IMU and
 Bluetooth on one 21 x 17.5 mm board, so real pen movement drives the audio.
 
-A companion repo, [pen-mixer-rp2040](https://github.com/Brillar0101/pen-mixer-rp2040),
-runs the same laptop-side stack from a board with no motion sensor, using
-capacitive touch as a stand-in. The two repos together separate "is the
-pipeline right" from "is the sensor right", and everything downstream of the
-firmware is byte-identical between them.
-
 Numbers in this document are measured on the working rig, not estimated.
 Where something is estimated or unverified it says so.
 
@@ -33,7 +27,8 @@ tilt,roll,energy
 14.44,88.63,0.146
 ```
 
-Both repos emit it, which is why the laptop side never changes between builds.
+Both firmwares emit it, which is why the laptop side never changes between
+USB and BLE.
 
 ## Signal topology
 

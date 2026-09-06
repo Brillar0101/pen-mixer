@@ -193,7 +193,7 @@ def main():
                 dashboard.publish(tilt=tilt, roll=roll, energy=energy,
                                   cutoff=cutoff, gain=gain, wet=wet,
                                   fps=int(frames / max(0.001, now - t_start)),
-                                  bad=bad, mode="touch")
+                                  bad=bad, mode="usb")
             if not args.quiet and now - last_print > 0.05:
                 last_print = now
                 sys.stdout.write("\r%s  %s   %5d fps  %d bad " % (

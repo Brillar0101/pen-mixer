@@ -202,61 +202,9 @@ td:first-child{color:var(--text);font-weight:500}
     in practice than the table says.</p>
 </div></section>
 
-<section class="sec"><div class="wrap">
-  <h2>Two builds</h2>
-  <p class="lede">The RP2040 build exists so the chain could be built before the
-     motion sensor arrived. What is worth drawing is the seam: where they differ
-     and where they stop differing.</p>
-  <figure><div class="scroll">
-  <svg viewBox="0 0 940 350" role="img" aria-label="The RP2040 build uses capacitive touch pins and the nRF52840 build uses an IMU. Both firmwares emit the same CSV frame format, so the shared bridge, patches and dashboard below are identical in both repositories.">
-    <defs><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ah"/></marker></defs>
-    <text x="196" y="24" text-anchor="middle" class="lab" font-size="11">BUILD A · VALIDATION</text>
-    <text x="700" y="24" text-anchor="middle" class="lab" font-size="11">BUILD B · PRODUCT</text>
-
-    <rect x="60" y="38" width="272" height="52" rx="8" class="warn"/>
-    <text x="196" y="60" text-anchor="middle" class="t-warn" font-size="12.5" font-weight="700">capacitive touch pins A0/A1</text>
-    <text x="196" y="78" text-anchor="middle" class="t-warn" font-size="10.5">jitters on bare pins, mains hum</text>
-
-    <rect x="564" y="38" width="272" height="52" rx="8" class="ok"/>
-    <text x="700" y="60" text-anchor="middle" class="t-ok" font-size="12.5" font-weight="700">LSM6DS3TR-C IMU</text>
-    <text x="700" y="78" text-anchor="middle" class="t-ok" font-size="10.5">continuous, absolute from gravity</text>
-
-    <rect x="60" y="118" width="272" height="50" rx="8" class="hw"/>
-    <text x="196" y="139" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">XIAO RP2040</text>
-    <text x="196" y="156" text-anchor="middle" class="t-hw" font-size="10.5">USB only, no radio</text>
-
-    <rect x="564" y="118" width="272" height="50" rx="8" class="hw"/>
-    <text x="700" y="139" text-anchor="middle" class="t-hw" font-size="12.5" font-weight="700">XIAO nRF52840 Sense</text>
-    <text x="700" y="156" text-anchor="middle" class="t-hw" font-size="10.5">USB or BLE, needs IMU_PWR high</text>
-
-    <line x1="196" y1="94" x2="196" y2="112" class="arw" marker-end="url(#b)"/>
-    <line x1="700" y1="94" x2="700" y2="112" class="arw" marker-end="url(#b)"/>
-    <line x1="196" y1="172" x2="196" y2="218" class="arw" marker-end="url(#b)"/>
-    <line x1="700" y1="172" x2="700" y2="218" class="arw" marker-end="url(#b)"/>
-    <text x="448" y="198" text-anchor="middle" class="lab" font-size="11">both emit "tilt,roll,energy"</text>
-
-    <rect x="60" y="222" width="776" height="108" rx="10" class="sw"/>
-    <text x="448" y="248" text-anchor="middle" class="t-sw" font-size="12.5" font-weight="700">byte-identical in both repos</text>
-    <rect x="92" y="262" width="216" height="50" rx="6" class="io"/>
-    <text x="200" y="283" text-anchor="middle" class="t-io" font-size="12">bridge.py</text>
-    <text x="200" y="300" text-anchor="middle" class="lab" font-size="10">smoothing, mapping</text>
-    <rect x="340" y="262" width="216" height="50" rx="6" class="io"/>
-    <text x="448" y="283" text-anchor="middle" class="t-io" font-size="12">3 Pd patches</text>
-    <text x="448" y="300" text-anchor="middle" class="lab" font-size="10">track, manual, live</text>
-    <rect x="588" y="262" width="216" height="50" rx="6" class="io"/>
-    <text x="696" y="283" text-anchor="middle" class="t-io" font-size="12">dashboard.py</text>
-    <text x="696" y="300" text-anchor="middle" class="lab" font-size="10">SSE on :8080</text>
-  </svg></div>
-  <figcaption>Moving from validation to product means replacing
-    <code>read_motion()</code>. The gold box is gold because touch is a
-    compromise, not a preview: bare pins pick up mains hum, so the values wander
-    even untouched.</figcaption>
-  </figure>
-</div></section>
-
 <section class="sec secw"><div class="wrap">
   <h2>Production board</h2>
-  <p class="lede">12 x 30 mm, four layers, 0.6 mm, all SMD. Two constraints
+  <p class="lede">13 x 35 mm, four layers, 0.8 mm, all SMD. Two constraints
      drive the whole layout, and one of them dictates the board's shape.</p>
   <figure><div class="scroll">
   <svg viewBox="0 0 960 340" role="img" aria-label="USB-C feeds the MCP73831 charger and the ISP1807 module. The charger drives an off-board LiPo cell whose 4.2 volts must pass through the TPS7A02 LDO because the module maximum is 3.6 volts. The IMU connects to the module over I2C. An antenna keep-out spans all four layers at one edge.">

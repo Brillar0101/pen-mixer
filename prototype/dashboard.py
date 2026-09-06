@@ -230,8 +230,8 @@ canvas{width:100%;height:240px;display:block;
     </div>
   </section>
 
-  <p class="support">Flat traces mean the board is not sending. Move the pen, or
-     touch A0 and A1 on the XIAO, to drive the channels.</p>
+  <p class="support">Flat traces mean the board is not sending. Move the pen to
+     drive the channels.</p>
 </main>
 
 <script>

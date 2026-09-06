@@ -1,8 +1,8 @@
 # code.py - Seeed XIAO nRF52840 Sense
 #
 # Reads the onboard LSM6DS3TR-C 6-axis IMU and streams motion over USB serial
-# as "tilt,roll,energy" at ~250 Hz - the same frame format the RP2040 touch
-# build uses, so the bridge, dashboard and Pd patches are unchanged.
+# as "tilt,roll,energy" at ~250 Hz - the same frame format code_ble.py emits,
+# so the bridge, dashboard and Pd patches are unchanged between links.
 #
 # REQUIRES on CIRCUITPY/lib :
 #     adafruit_lsm6ds/          (folder)
