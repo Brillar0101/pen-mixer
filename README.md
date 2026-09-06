@@ -90,6 +90,55 @@ prototype/
 How to run all of it, from firmware to Pure Data to the dashboard, lives in
 [docs/RUNNING.md](docs/RUNNING.md).
 
+## Run the desktop app
+
+The Qt app in `app/` is the laptop side: it EQs whatever the computer is
+playing, driven by the pen over Bluetooth. Full detail, Docker, and
+troubleshooting are in `app/README.md`; the short version:
+
+### macOS
+
+```bash
+brew install blackhole-2ch switchaudio-osx       # first time only
+git clone https://github.com/Brillar0101/pen-mixer.git
+cd pen-mixer/app
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt -e .    # first time only
+venv/bin/python -m penmixer.app                  # every time
+```
+
+In the window: click "Route system audio here", set Source to "Bluetooth
+(pen board)" or use "Scan Bluetooth", play music, move the pen. Closing the
+app restores your speakers.
+
+### Windows
+
+First time only, in an administrator PowerShell, then reboot (VB-CABLE is
+the Windows loopback device):
+
+```powershell
+curl.exe -L -o $env:TEMP\vbcable.zip https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack45.zip
+Expand-Archive $env:TEMP\vbcable.zip $env:TEMP\vbcable -Force
+& $env:TEMP\vbcable\VBCABLE_Setup_x64.exe
+shutdown /r /t 0
+```
+
+Then in a normal PowerShell:
+
+```powershell
+git clone https://github.com/Brillar0101/pen-mixer.git
+cd pen-mixer\app
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt -e .   # first time only
+venv\Scripts\python -m penmixer.app                 # every time
+```
+
+Set Settings > System > Sound > Output to "CABLE Input", then in the window
+click "Hear music here", set Source to "Bluetooth (pen board)", play music,
+move the pen. Set the output back to your speakers when done.
+
+No board? Set Source to "Simulate (no board)".
+
 ## Measured, not estimated
 
 | What | Number |
