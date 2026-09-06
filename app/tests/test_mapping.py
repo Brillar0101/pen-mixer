@@ -1,34 +1,38 @@
-from penmixer.frames import TouchFrame
+from penmixer.frames import MotionFrame
 from penmixer.mapping import MAX_BOOST_DB, BandGains, gains_from_frame, smooth
 
 
-def untouched() -> TouchFrame:
-    return TouchFrame(tilt=-45.0, roll=-90.0, energy=0.0)
+def at_rest() -> MotionFrame:
+    return MotionFrame(tilt=0.0, roll=0.0, energy=0.0)
 
 
-def test_untouched_is_flat() -> None:
-    assert gains_from_frame(untouched()) == BandGains(0.0, 0.0, 0.0)
+def test_pen_at_rest_is_flat() -> None:
+    assert gains_from_frame(at_rest()) == BandGains(0.0, 0.0, 0.0)
 
 
-def test_full_a0_touch_boosts_bass_only() -> None:
-    gains = gains_from_frame(TouchFrame(tilt=45.0, roll=-90.0, energy=0.0))
+def test_tilt_forward_boosts_bass_only() -> None:
+    gains = gains_from_frame(MotionFrame(tilt=45.0, roll=0.0, energy=0.0))
     assert gains.bass_db == MAX_BOOST_DB
     assert gains.mid_db == 0.0
     assert gains.treble_db == 0.0
 
 
-def test_full_a1_touch_boosts_treble_only() -> None:
-    gains = gains_from_frame(TouchFrame(tilt=-45.0, roll=90.0, energy=0.0))
-    assert gains.treble_db == MAX_BOOST_DB
-    assert gains.bass_db == 0.0
-    assert gains.mid_db == 0.0
+def test_tilt_back_cuts_bass() -> None:
+    gains = gains_from_frame(MotionFrame(tilt=-45.0, roll=0.0, energy=0.0))
+    assert gains.bass_db == -MAX_BOOST_DB
 
 
-def test_both_pads_raise_mid() -> None:
-    gains = gains_from_frame(TouchFrame(tilt=45.0, roll=90.0, energy=0.0))
-    assert gains.mid_db == MAX_BOOST_DB
-    assert gains.bass_db == MAX_BOOST_DB
-    assert gains.treble_db == MAX_BOOST_DB
+def test_twist_drives_treble_both_ways() -> None:
+    boost = gains_from_frame(MotionFrame(tilt=0.0, roll=90.0, energy=0.0))
+    cut = gains_from_frame(MotionFrame(tilt=0.0, roll=-45.0, energy=0.0))
+    assert boost.treble_db == MAX_BOOST_DB
+    assert cut.treble_db == -MAX_BOOST_DB / 2
+    assert boost.bass_db == 0.0
+
+
+def test_half_tilt_is_half_gain() -> None:
+    gains = gains_from_frame(MotionFrame(tilt=22.5, roll=0.0, energy=0.0))
+    assert gains.bass_db == MAX_BOOST_DB / 2
 
 
 def test_smooth_moves_toward_target() -> None:

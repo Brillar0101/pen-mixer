@@ -14,14 +14,14 @@ ROLL_RANGE = (-90.0, 90.0)
 
 
 @dataclass(frozen=True)
-class TouchFrame:
+class MotionFrame:
     tilt: float
     roll: float
     energy: float
 
 
-def parse_line(line: str) -> TouchFrame | None:
-    """Parse one serial line into a TouchFrame, or None if not a data frame."""
+def parse_line(line: str) -> MotionFrame | None:
+    """Parse one serial line into a MotionFrame, or None if not a data frame."""
     text = line.strip()
     if not text or text.startswith("#"):
         return None
@@ -35,4 +35,7 @@ def parse_line(line: str) -> TouchFrame | None:
     tilt = min(max(tilt, TILT_RANGE[0]), TILT_RANGE[1])
     roll = min(max(roll, ROLL_RANGE[0]), ROLL_RANGE[1])
     energy = min(max(energy, 0.0), 1.0)
-    return TouchFrame(tilt=tilt, roll=roll, energy=energy)
+    return MotionFrame(tilt=tilt, roll=roll, energy=energy)
+
+
+TouchFrame = MotionFrame  # legacy name from the touch test rig

@@ -77,7 +77,7 @@ Follow one pen move through the system:
 
 8. `ui.py` is the single source of truth: the window owns the reader, the
    engine, and the gain state. Motion drives the sliders and the sliders
-   drive the DSP; untick "Touch control" and you can drag the sliders by
+   drive the DSP; untick "Pen control" and you can drag the sliders by
    hand (including cuts). Live meters show the raw tilt and roll input as
    it moves.
 
@@ -289,7 +289,7 @@ Real issues from building and demoing this, with their fixes:
   sometimes only after a reload.
 - Distortion risk on boosts: BlackHole delivers hotter-than-full-scale
   audio, so the engine takes -9 dB of input headroom before the EQ.
-- Bluetooth headphones add latency, so the EQ response trails the touch
+- Bluetooth headphones add latency, so the EQ response trails the pen motion
   slightly; wired output feels snappier for a live demo.
 - Charge-only USB-C cables are the classic reason the board banner stays
   red with the board plugged in. Bring a known data cable.

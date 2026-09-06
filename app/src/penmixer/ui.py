@@ -1,8 +1,8 @@
 """Main window: the single source of truth for the whole instrument.
 
-The window owns the audio engine, the touch reader, and the gain state.
-Touch drives the sliders; the sliders drive the DSP; nothing else holds
-state. Untick "Touch control" to drive the EQ by hand.
+The window owns the audio engine, the motion reader, and the gain state.
+Pen motion drives the sliders; the sliders drive the DSP; nothing else
+holds state. Untick "Pen control" to drive the EQ by hand.
 """
 
 import os
@@ -28,7 +28,7 @@ from . import routing
 from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
-from .mapping import BandGains, gains_from_frame, gains_from_frame_signed, smooth
+from .mapping import BandGains, gains_from_frame, smooth
 from .serialio import SerialReader, SimulatedReader
 from .spectrum import bar_spectrum
 from .tcpio import TcpReader
@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
         control_row = QHBoxLayout()
         self.start_button = QPushButton("Start audio")
         self.start_button.clicked.connect(self._toggle_audio)
-        self.touch_toggle = QCheckBox("Touch control")
+        self.touch_toggle = QCheckBox("Pen control")
         self.touch_toggle.setChecked(True)
         self.source_box = QComboBox()
         self.source_box.addItems(["USB serial (cable)", "Bluetooth (pen board)", "Simulate (no board)"])
@@ -142,10 +142,10 @@ class MainWindow(QMainWindow):
             self.route_button.clicked.connect(self._toggle_routing)
             control_row.addWidget(self.route_button)
 
-        # Live pad meters (F1: show the hand input as it moves)
+        # Live motion meters (F1: show the hand input as it moves); center = at rest
         pad_row = QHBoxLayout()
         self.pad_bars: list[QProgressBar] = []
-        for name in ("Pad A0 (bass)", "Pad A1 (treble)"):
+        for name in ("Tilt (bass)", "Twist (treble)"):
             pad_row.addWidget(QLabel(name))
             bar = QProgressBar()
             bar.setRange(0, 100)
@@ -304,12 +304,7 @@ class MainWindow(QMainWindow):
         self.pad_bars[1].setValue(int((frame.roll + 90.0) / 180.0 * 100))
         if not self.touch_toggle.isChecked():
             return
-        mapper = (
-            gains_from_frame_signed
-            if "Bluetooth" in self.source_box.currentText()
-            else gains_from_frame
-        )
-        self._touch_gains = smooth(self._touch_gains, mapper(frame))
+        self._touch_gains = smooth(self._touch_gains, gains_from_frame(frame))
         gains = self._touch_gains
         for slider, value in zip(
             self.sliders, (gains.bass_db, gains.mid_db, gains.treble_db)

@@ -63,7 +63,7 @@ class SerialReader(QThread):
 
 
 class SimulatedReader(QThread):
-    """Hardware-free stand-in: sweeps the pads so the demo runs untethered."""
+    """Hardware-free stand-in: sweeps pen tilt and twist so the demo runs untethered."""
 
     frame_received = Signal(object)
     status_changed = Signal(str)
@@ -83,11 +83,10 @@ class SimulatedReader(QThread):
         self.status_changed.emit("simulated input (no board)")
         t = 0.0
         while not self._stop:
-            d0 = max(0.0, math.sin(t * 0.9))          # slow bass strokes
-            d1 = max(0.0, math.sin(t * 0.53 + 1.7))   # offset treble strokes
+            # Slow signed sweeps: tilt forward and back, twist both ways.
             frame = TouchFrame(
-                tilt=-45.0 + d0 * 90.0,
-                roll=-90.0 + d1 * 180.0,
+                tilt=45.0 * math.sin(t * 0.9),
+                roll=90.0 * math.sin(t * 0.53 + 1.7),
                 energy=abs(math.cos(t)) * 0.5,
             )
             self.frame_received.emit(frame)
