@@ -11025,7 +11025,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "USB-C 16P"
+		(property "Value" "USB-C 16P vertical"
 			(at 25.654 28.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11036,7 +11036,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_USB:USB_C_Receptacle_G-Switch_GT-USB-7010ASV"
+		(property "Footprint" "pen-mixer:USB-C-SMD_GT-USB-7055E"
 			(at 30.48 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -11067,7 +11067,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2988369" (at 0 0 0)
+		(property "LCSC" "C7450622" (at 0 0 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11083,7 +11083,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GT-USB-7010ASV" (at 0 0 0)
+		(property "MPN" "GT-USB-7055E" (at 0 0 0)
 			(effects
 				(font
 					(size 1.27 1.27)
