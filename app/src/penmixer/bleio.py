@@ -18,14 +18,36 @@ NUS_TX = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 ANSI = re.compile(r"\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)|\x1b\[[0-9;]*[A-Za-z]")
 
 
+class BleScanThread(QThread):
+    """One-shot scan: emits every advertising BLE device found nearby."""
+
+    devices_found = Signal(list)  # list[tuple[name, address]]
+    scan_failed = Signal(str)
+
+    def run(self) -> None:
+        try:
+            import asyncio as aio
+
+            from bleak import BleakScanner
+
+            async def scan() -> list[tuple[str, str]]:
+                found = await BleakScanner.discover(timeout=6.0)
+                return [(d.name or "(no name)", d.address) for d in found]
+
+            self.devices_found.emit(aio.run(scan()))
+        except Exception as exc:  # noqa: BLE001 - reported to the dialog
+            self.scan_failed.emit(str(exc))
+
+
 class BleReader(QThread):
     frame_received = Signal(object)
     status_changed = Signal(str)
     connected_changed = Signal(bool)
 
-    def __init__(self, name: str = DEVICE_NAME) -> None:
+    def __init__(self, name: str = DEVICE_NAME, address: str | None = None) -> None:
         super().__init__()
         self._name = name
+        self._address = address
         self._stop = False
 
     def stop(self) -> None:
@@ -48,13 +70,17 @@ class BleReader(QThread):
 
         while not self._stop:
             self.connected_changed.emit(False)
-            self.status_changed.emit(f'scanning for "{self._name}" over Bluetooth...')
-            device = await BleakScanner.find_device_by_name(self._name, timeout=10.0)
+            target = self._address or f'"{self._name}"'
+            self.status_changed.emit(f"scanning for {target} over Bluetooth...")
+            if self._address:
+                device = await BleakScanner.find_device_by_address(self._address, timeout=10.0)
+            else:
+                device = await BleakScanner.find_device_by_name(self._name, timeout=10.0)
             if self._stop:
                 return
             if device is None:
                 self.status_changed.emit(
-                    f'pen board "{self._name}" not found (is code_ble.py running?)'
+                    f"pen board {target} not found (is code_ble.py running?)"
                 )
                 await asyncio.sleep(2.0)
                 continue

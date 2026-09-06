@@ -11,8 +11,11 @@ from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QHBoxLayout,
     QLabel,
+    QListWidget,
     QMainWindow,
     QProgressBar,
     QPushButton,
@@ -23,7 +26,7 @@ from PySide6.QtWidgets import (
 
 from . import routing
 from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
-from .bleio import BleReader
+from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
 from .mapping import BandGains, gains_from_frame, gains_from_frame_signed, smooth
 from .serialio import SerialReader, SimulatedReader
@@ -113,6 +116,12 @@ class MainWindow(QMainWindow):
         control_row.addWidget(self.touch_toggle)
         control_row.addWidget(QLabel("Source"))
         control_row.addWidget(self.source_box)
+        self.scan_bt_button = QPushButton("Scan Bluetooth")
+        self.scan_bt_button.setToolTip(
+            "List every Bluetooth device in range and connect to the one you pick"
+        )
+        self.scan_bt_button.clicked.connect(self._scan_bluetooth)
+        control_row.addWidget(self.scan_bt_button)
         layout.addLayout(control_row)
 
         # Cross-platform: pick the loopback input and real speakers, start the
@@ -190,6 +199,57 @@ class MainWindow(QMainWindow):
             + ("; press Start audio again" if was_running else "")
         )
 
+    # ---- bluetooth scan ------------------------------------------------
+    def _scan_bluetooth(self) -> None:
+        self.scan_bt_button.setEnabled(False)
+        self.scan_bt_button.setText("Scanning...")
+        self._scan_thread = BleScanThread()
+        self._scan_thread.devices_found.connect(self._show_scan_results)
+        self._scan_thread.scan_failed.connect(self._scan_failed)
+        self._scan_thread.start()
+
+    def _scan_failed(self, message: str) -> None:
+        self.scan_bt_button.setEnabled(True)
+        self.scan_bt_button.setText("Scan Bluetooth")
+        self.status.setText(f"Bluetooth scan failed: {message}")
+
+    def _show_scan_results(self, devices: list) -> None:
+        self.scan_bt_button.setEnabled(True)
+        self.scan_bt_button.setText("Scan Bluetooth")
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Bluetooth devices in range")
+        layout = QVBoxLayout(dialog)
+        layout.addWidget(QLabel(f"{len(devices)} devices found. Pick one and Connect:"))
+        listing = QListWidget()
+        pen_row = -1
+        for i, (name, address) in enumerate(sorted(devices, key=lambda d: d[0].lower())):
+            listing.addItem(f"{name}  [{address}]")
+            listing.item(i).setData(Qt.ItemDataRole.UserRole, address)
+            if "penmixer" in name.lower():
+                pen_row = i
+        if pen_row >= 0:
+            listing.setCurrentRow(pen_row)
+        elif devices:
+            listing.setCurrentRow(0)
+        layout.addWidget(listing)
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Connect")
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+        listing.itemDoubleClicked.connect(lambda _: dialog.accept())
+        if dialog.exec() == QDialog.DialogCode.Accepted and listing.currentItem():
+            address = listing.currentItem().data(Qt.ItemDataRole.UserRole)
+            self._ble_address = address
+            pos = self.source_box.findText("Bluetooth (pen board)")
+            if self.source_box.currentIndex() == pos:
+                self._restart_reader()
+            else:
+                self.source_box.setCurrentIndex(pos)  # triggers restart
+            self.status.setText(f"connecting to {listing.currentItem().text()}")
+
     # ---- readers -------------------------------------------------------
     def _restart_reader(self) -> None:
         if self.reader is not None:
@@ -200,7 +260,7 @@ class MainWindow(QMainWindow):
         if "Simulate" in source:
             self.reader = SimulatedReader()
         elif "Bluetooth" in source:
-            self.reader = BleReader()
+            self.reader = BleReader(address=getattr(self, "_ble_address", None))
         elif tcp_target:
             host, _, port = tcp_target.partition(":")
             self.reader = TcpReader(host or "host.docker.internal", int(port or "7777"))
