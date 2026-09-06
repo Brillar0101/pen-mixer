@@ -10,7 +10,7 @@ from .ui import MainWindow
 def main() -> int:
     app = QApplication(sys.argv)
     window = MainWindow()
-    window.resize(460, 480)
+    window.resize(560, 600)
     window.show()
     return app.exec()
 

@@ -1,14 +1,17 @@
-"""Spectrum + waveform widget: cava-style bars with the live wave drawn behind."""
+"""Spectrum widget: cava-style bars with per-bar gradients and peak caps."""
 
 import numpy as np
-from PySide6.QtCore import QPointF
-from PySide6.QtGui import QColor, QPainter, QPen, QPolygonF
+from PySide6.QtCore import QRectF, Qt
+from PySide6.QtGui import QColor, QLinearGradient, QPainter
 from PySide6.QtWidgets import QWidget
 
 from .spectrum import BASS_EDGE_HZ, TREBLE_EDGE_HZ, bar_frequencies
 
-BAR_COUNT = 32
-DECAY = 0.82
+BAR_COUNT = 64
+# Tuned for the 16 ms refresh: bars snap up on transients and fall back in
+# roughly a third of a second, with the peak caps hanging above them.
+DECAY = 0.88
+PEAK_DECAY = 0.985
 
 BASS_COLOR = QColor(0x3B, 0x82, 0xF6)
 MID_COLOR = QColor(0x10, 0xB9, 0x81)
@@ -22,20 +25,16 @@ class SpectrumWidget(QWidget):
         self.setMinimumHeight(140)
         self._levels = np.zeros(BAR_COUNT)
         self._peaks = np.zeros(BAR_COUNT)
-        self._wave = np.zeros(256)
         freqs = bar_frequencies(BAR_COUNT)
         self._colors = [
             BASS_COLOR if f < BASS_EDGE_HZ else MID_COLOR if f < TREBLE_EDGE_HZ else TREBLE_COLOR
             for f in freqs
         ]
 
-    def update_levels(self, levels: np.ndarray, wave: np.ndarray | None = None) -> None:
+    def update_levels(self, levels: np.ndarray) -> None:
         # Rise fast, fall smoothly, hold a peak cap: reads like an instrument.
         self._levels = np.maximum(levels, self._levels * DECAY)
-        self._peaks = np.maximum(self._levels, self._peaks * 0.97)
-        if wave is not None and len(wave):
-            step = max(len(wave) // 256, 1)
-            self._wave = wave[::step][:256]
+        self._peaks = np.maximum(self._levels, self._peaks * PEAK_DECAY)
         self.update()
 
     def paintEvent(self, event: object) -> None:
@@ -43,29 +42,34 @@ class SpectrumWidget(QWidget):
         painter.fillRect(self.rect(), BACKGROUND)
         width = self.width()
         height = self.height()
-        # Waveform behind the bars: the music's wave, drawn live.
-        if len(self._wave):
-            mid_y = height / 2
-            amp = height * 0.45
-            xs = np.linspace(0, width, len(self._wave))
-            points = QPolygonF(
-                [QPointF(float(x), float(mid_y - w * amp)) for x, w in zip(xs, self._wave)]
-            )
-            pen = QPen(QColor(0x8A, 0x8D, 0x93, 150))
-            pen.setWidthF(1.4)
-            painter.setPen(pen)
-            painter.drawPolyline(points)
-        gap = 2
-        bar_width = max((width - gap * (BAR_COUNT + 1)) / BAR_COUNT, 1)
-        x = float(gap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+        gap = 1.0 if BAR_COUNT > 40 else 2.0
+        span = height - 8
+        bar_width = max((width - gap * (BAR_COUNT + 1)) / BAR_COUNT, 1.0)
+        radius = min(bar_width * 0.35, 2.5)
+        x = gap
         for level, peak, color in zip(self._levels, self._peaks, self._colors):
-            bar_height = max(int(level * (height - 8)), 2)
-            painter.fillRect(
-                int(x), height - bar_height, int(bar_width), bar_height, color
+            bar_height = max(level * span, 2.0)
+            top = height - bar_height
+            # Vertical gradient per bar: the tip reads brighter than the base,
+            # so tall bars stand out instead of becoming a flat slab.
+            grad = QLinearGradient(0.0, height, 0.0, top)
+            grad.setColorAt(0.0, color.darker(160))
+            grad.setColorAt(0.55, color)
+            grad.setColorAt(1.0, color.lighter(155))
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(grad)
+            painter.drawRoundedRect(
+                QRectF(x, top, bar_width, bar_height), radius, radius
             )
-            peak_y = height - max(int(peak * (height - 8)), 2) - 2
-            painter.fillRect(int(x), peak_y, int(bar_width), 2, color.lighter(150))
+            # Peak cap floats above and falls slower than the bar under it.
+            peak_height = max(peak * span, 2.0)
+            cap = QColor(color.lighter(185))
+            cap.setAlpha(220)
+            painter.setBrush(cap)
+            painter.drawRect(QRectF(x, height - peak_height - 2.0, bar_width, 2.0))
             x += bar_width + gap
+        painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.setPen(QColor(0x6A, 0x6E, 0x73))
         painter.drawText(6, 14, "bass")
         painter.drawText(width // 2 - 10, 14, "mid")
