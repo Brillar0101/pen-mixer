@@ -13,7 +13,7 @@ you do not have to rediscover them.
 ## Quick start
 
 Everything below assumes the pen board is already flashed (see
-`prototype/flash/README.md`) and advertising as "PenMixer".
+`prototype/flash/README.md`) and advertising as "PenMixer-Lexy".
 
 ### macOS
 
@@ -36,7 +36,7 @@ venv/bin/python -m penmixer.app
 
 In the window: click "Route system audio here" (music now flows through the
 app), set Source to "Bluetooth (pen board)" or click "Scan Bluetooth" and
-pick PenMixer, play music, move the pen. Allow the Bluetooth permission
+pick PenMixer-Lexy, play music, move the pen. Allow the Bluetooth permission
 prompt the first time. Closing the app hands your speakers back.
 
 ### Windows
@@ -186,7 +186,7 @@ Then, in the window:
 1. Click "Route system audio here" and play music anywhere
 2. Waves and spectrum bars move; you hear the music through the app
 3. Set Source to "Bluetooth (pen board)", or click "Scan Bluetooth" and pick
-   PenMixer; the banner turns green when connected
+   PenMixer-Lexy; the banner turns green when connected
 4. Tilt for bass, sway sideways for mids, twist for treble; each gesture
    boosts one way and cuts the other, and the pen at rest leaves the music flat
 
@@ -283,7 +283,7 @@ The app talks to the pen board directly: set the Source dropdown to
 "Bluetooth (pen board)" or click "Scan Bluetooth" to pick it from a list of
 everything in range. The board runs the firmware in `prototype/flash`
 (flash kit with CircuitPython, libraries and `code.py`); it advertises as
-"PenMixer" with a Nordic UART service. The app scans, connects, and
+"PenMixer-Lexy" with a Nordic UART service. The app scans, connects, and
 reconnects on its own; the banner reports every state. On macOS the first
 scan pops a Bluetooth permission prompt for the terminal or Python; allow
 it or the scan finds nothing.

@@ -145,7 +145,7 @@ def read_frame(dt):
 
 
 ble = BLERadio()
-ble.name = "PenMixer"
+ble.name = "PenMixer-Lexy"
 uart = UARTService()
 advert = ProvideServicesAdvertisement(uart)
 period = 1.0 / FRAME_HZ

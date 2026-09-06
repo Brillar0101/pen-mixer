@@ -10,7 +10,7 @@ Requires:  python3 -m pip install bleak
 import asyncio
 import re
 
-DEVICE_NAME = "PenMixer"
+DEVICE_NAME = "PenMixer-Lexy"
 # Nordic UART Service - TX is the characteristic the peripheral notifies on.
 NUS_TX = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 

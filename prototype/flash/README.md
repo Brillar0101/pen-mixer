@@ -24,7 +24,7 @@ Windows) and flashing is copying files onto it. This folder holds:
    icon; Windows: "Safely Remove Hardware") before unplugging.
 
 The firmware starts the moment the copy lands. This `code.py` is the BLE
-build: the board advertises as `PenMixer`, and the app's Scan Bluetooth
+build: the board advertises as `PenMixer-Lexy`, and the app's Scan Bluetooth
 button or a green "Pen board connected" banner confirms it is alive.
 
 ## Updating the firmware only
@@ -42,7 +42,7 @@ The laptop side is the same either way, only the Source setting changes.
 
 ## Renaming the board
 
-The advertised name is one line in the firmware, `ble.name = "PenMixer"`.
+The advertised name is one line in the firmware, `ble.name = "PenMixer-Lexy"`.
 Change it before copying, and change the matching name on the laptop side
 (`DEVICE_NAME` in `app/src/penmixer/bleio.py`, and `ble_source.py` for the
 prototype bridge). macOS caches Bluetooth names, so the old one can linger

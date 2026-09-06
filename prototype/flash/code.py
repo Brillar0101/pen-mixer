@@ -35,7 +35,7 @@ i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
 imu = LSM6DS3TRC(i2c)
 
 ble = BLERadio()
-ble.name = "PenMixer"
+ble.name = "PenMixer-Lexy"
 uart = UARTService()
 advert = ProvideServicesAdvertisement(uart)
 

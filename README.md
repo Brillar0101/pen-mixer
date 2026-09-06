@@ -83,7 +83,7 @@ prototype/
   dashboard.py        live web view on :8080
   firmware/
     code.py           IMU over USB serial
-    code_ble.py       IMU over BLE, advertises as PenMixer
+    code_ble.py       IMU over BLE, advertises as PenMixer-Lexy
   patches/            Pure Data: track playback, manual sliders, live input
 ```
 

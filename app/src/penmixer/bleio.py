@@ -1,6 +1,6 @@
 """Bluetooth LE reader for the nRF52840 pen board.
 
-The board advertises as "PenMixer" with a Nordic UART service and notifies
+The board advertises as "PenMixer-Lexy" with a Nordic UART service and notifies
 the same "tilt,roll,energy" lines the USB path produces. This reader scans,
 connects, and reconnects on its own, emitting the same signals as the
 serial reader so the rest of the app does not care where frames come from.
@@ -13,7 +13,7 @@ from PySide6.QtCore import QThread, Signal
 
 from .frames import parse_line
 
-DEVICE_NAME = "PenMixer"
+DEVICE_NAME = "PenMixer-Lexy"
 NUS_TX = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 ANSI = re.compile(r"\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)|\x1b\[[0-9;]*[A-Za-z]")
 

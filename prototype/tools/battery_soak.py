@@ -1,6 +1,6 @@
 """Battery soak test (PRD P4): how long does the pen board stream on one charge?
 
-Connects to the PenMixer board over Bluetooth, subscribes to the motion
+Connects to the PenMixer-Lexy board over Bluetooth, subscribes to the motion
 stream, and logs until the board stops responding for RECONNECT_GRACE_S.
 Prints one status line per minute and a final summary. Run with the board
 OFF USB, fully charged, and within range of the laptop for the whole test.
@@ -15,7 +15,7 @@ import time
 
 from bleak import BleakClient, BleakScanner
 
-NAME = "PenMixer"
+NAME = "PenMixer-Lexy"
 NUS_TX = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 RECONNECT_GRACE_S = 180.0
 REPORT_EVERY_S = 60.0
