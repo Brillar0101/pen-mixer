@@ -9,23 +9,24 @@ dropped; if v1 misses a requirement, the table says so.
 
 | # | Requirement | Status |
 |---|---|---|
-| F1 | Some form of feedback | **v1.** Two kinds: the audio itself changes live, and the dashboard at localhost:8080 shows tilt and twist as you move. |
-| F2 | Manipulate sound and get better at it | **v1.** Continuous control with 24 ms smoothing, so small hand improvements are audible. |
-| F3 | Gesture rewards practice | **v1.** The mapping is deterministic and repeatable; a practiced gesture lands the same filter sweep every time. |
-| F4 | Bluetooth link to the laptop, controlling the audio player | **v1.** BLE (Nordic UART) to bridge.py, which drives Pure Data over UDP. |
+| F1 | Some form of feedback | **Done.** The audio itself changes live, and the Qt app (app/) shows a live spectrum, the waveform, dB readouts per band, and pad/motion meters as you move. |
+| F2 | Manipulate sound and get better at it | **Done.** Continuous control with 24 ms smoothing in the app plus a click-free gain ramp in the audio path, so small hand improvements are audible. |
+| F3 | Gesture rewards practice | **Done.** The mapping is a pure function of the motion frame (app/src/penmixer/mapping.py); a practiced gesture lands the same gains every time. |
+| F4 | Bluetooth link to the laptop, controlling the audio player | **Done.** BLE (Nordic UART) straight into the Qt app, which applies the EQ to whatever the laptop is playing. The app scans, lists devices, connects, and reconnects on its own; the bridge.py and Pure Data path is retired. |
 
 ## Pen direction mapping
 
-The brief asks for a three-band EQ mapped to pen motion. v1 ships a simpler
-mapping (tilt sweeps one filter, twist moves gain) that proves the pipeline.
-The full three-band mapping is v2 work in firmware and the Pure Data patch;
-no hardware change is needed, the IMU already measures all three axes.
+The brief asks for a three-band EQ mapped to pen motion. The Qt app now
+implements the three-band EQ (bass 60-250 Hz, mid 250 Hz-2 kHz, treble
+2-20 kHz) and drives two of the three bands from the pen, signed, so motion
+one way boosts and the other way cuts. The mid band waits on the firmware
+streaming a horizontal-motion value; no hardware change is needed.
 
 | # | Requirement | Status |
 |---|---|---|
-| M1 | Bass 60-250 Hz on vertical motion (y), like writing an "l" | **v2.** |
-| M2 | Mids 250 Hz-2 kHz on horizontal motion (x), like crossing a "t"; left cuts, right boosts | **v2.** |
-| M3 | Treble 2-20 kHz on orientation, upright (90&deg;) as base; leaning toward 0&deg; adds brightness | **v2.** Closest to today's tilt-sweeps-filter behavior. |
+| M1 | Bass 60-250 Hz on vertical motion (y), like writing an "l" | **Done in app.** Pen tilt drives the bass band, signed: forward boosts to +12 dB, back cuts to -12 dB. Tilt orientation stands in for vertical motion. |
+| M2 | Mids 250 Hz-2 kHz on horizontal motion (x), like crossing a "t"; left cuts, right boosts | **Partial.** The mid filter and the cut/boost direction exist in the app, but the firmware streams no horizontal axis yet, so the mids are slider-only. Next step: derive x motion in code.py and stream it as a fourth value. |
+| M3 | Treble 2-20 kHz on orientation, upright (90&deg;) as base; leaning toward 0&deg; adds brightness | **Done in app.** Pen twist (roll) drives the treble band, signed, both directions. |
 
 ## Physical requirements
 
@@ -65,7 +66,8 @@ two GPIO lines total (P0.20 data, P0.17 button).
 
 ## What comes next, in one list
 
-Three-band EQ mapping (M1-M3), the 30 mm board (P1), the clear casing (P2),
-the one-handed adjustable clip (P5, P6), the NFC antenna and song-request
-flow (Q1, Q2), measured numbers for weight and battery life (P3, P4), and
-the v2.1 interface set: battery LED, power button, Bluetooth status (I1-I3).
+The horizontal axis for the mid band (M2), the 30 mm board (P1), the clear
+casing fabricated and fitted (P2), the one-handed adjustable clip (P5, P6),
+the NFC antenna and song-request flow (Q1, Q2), measured numbers for weight
+and battery life (P3, P4), and the v2.1 interface firmware: battery LED,
+power button, Bluetooth status (I1-I3).
