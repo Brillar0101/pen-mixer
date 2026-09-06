@@ -10,7 +10,8 @@ same code targets the production board unchanged).
 - Pure Data (`brew install --cask purr-data` or vanilla Pd from puredata.info).
 - Firmware on the board: copy `prototype/firmware/code.py` (USB serial) or
   `prototype/firmware/code_ble.py` (BLE, advertises as `PenMixer`) onto the
-  CIRCUITPY drive.
+  CIRCUITPY drive. Full flashing steps from a blank board, for macOS and
+  Windows, are in [prototype/flash/README.md](../prototype/flash/README.md).
 
 ## Start the bridge
 
