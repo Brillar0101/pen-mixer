@@ -5,17 +5,16 @@ Pen motion drives the sliders; the sliders drive the DSP; nothing else
 holds state. Untick "Pen control" to drive the EQ by hand.
 """
 
+import math
 import os
+import sys
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
-    QDialog,
-    QDialogButtonBox,
     QHBoxLayout,
     QLabel,
-    QListWidget,
     QMainWindow,
     QProgressBar,
     QPushButton,
@@ -24,7 +23,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from . import routing
+from . import routing, sysvol
 from .audio import (
     AudioEngine,
     default_input_index,
@@ -34,7 +33,7 @@ from .audio import (
     preferred_output_index,
     rescan_devices,
 )
-from .bleio import BleReader, BleScanThread
+from .bleio import BleReader
 from .frames import TouchFrame
 from .mapping import BandGains, gains_from_frame, smooth
 from .serialio import SerialReader, SimulatedReader
@@ -132,23 +131,7 @@ class MainWindow(QMainWindow):
         control_row.addWidget(self.touch_toggle)
         control_row.addWidget(QLabel("Source"))
         control_row.addWidget(self.source_box)
-        self.scan_bt_button = QPushButton("Scan Bluetooth")
-        self.scan_bt_button.setToolTip(
-            "List every Bluetooth device in range and connect to the one you pick"
-        )
-        self.scan_bt_button.clicked.connect(self._scan_bluetooth)
-        control_row.addWidget(self.scan_bt_button)
         layout.addLayout(control_row)
-
-        # Cross-platform: pick the loopback input and real speakers, start the
-        # engine, so the routed music is audible through this computer.
-        self.hear_button = QPushButton("Hear music here")
-        self.hear_button.setToolTip(
-            "Select the loopback input (CABLE Output / BlackHole), select real "
-            "speakers, and start the audio so you hear the routed music"
-        )
-        self.hear_button.clicked.connect(self._hear_music)
-        control_row.addWidget(self.hear_button)
 
         # One-click system routing (SwitchAudioSource): send the Mac's output
         # into BlackHole so the app hears the music; restored on exit.
@@ -202,6 +185,19 @@ class MainWindow(QMainWindow):
 
         self._restart_reader()
 
+        # Start hearing music without a click: once the window is up, pick
+        # the loopback input and real speakers and start the engine, exactly
+        # what the old "Hear music here" button did.
+        QTimer.singleShot(300, self._hear_music)
+
+        # Follow the computer's volume keys: when the system master volume
+        # moves, move the app's Volume slider to match. One-way, and only on
+        # changes, so dragging the slider by hand still works between presses.
+        self._sys_vol_last: tuple[float, bool] | None = None
+        self._sysvol_timer = QTimer(self)
+        self._sysvol_timer.timeout.connect(self._sync_system_volume)
+        self._sysvol_timer.start(300)
+
     # ---- devices -------------------------------------------------------
     def _populate_devices(self) -> None:
         self.input_box.blockSignals(True)
@@ -250,57 +246,6 @@ class MainWindow(QMainWindow):
             f"{self.output_box.count()} outputs"
             + ("; press Start audio again" if was_running else "")
         )
-
-    # ---- bluetooth scan ------------------------------------------------
-    def _scan_bluetooth(self) -> None:
-        self.scan_bt_button.setEnabled(False)
-        self.scan_bt_button.setText("Scanning...")
-        self._scan_thread = BleScanThread()
-        self._scan_thread.devices_found.connect(self._show_scan_results)
-        self._scan_thread.scan_failed.connect(self._scan_failed)
-        self._scan_thread.start()
-
-    def _scan_failed(self, message: str) -> None:
-        self.scan_bt_button.setEnabled(True)
-        self.scan_bt_button.setText("Scan Bluetooth")
-        self.status.setText(f"Bluetooth scan failed: {message}")
-
-    def _show_scan_results(self, devices: list) -> None:
-        self.scan_bt_button.setEnabled(True)
-        self.scan_bt_button.setText("Scan Bluetooth")
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Bluetooth devices in range")
-        layout = QVBoxLayout(dialog)
-        layout.addWidget(QLabel(f"{len(devices)} devices found. Pick one and Connect:"))
-        listing = QListWidget()
-        pen_row = -1
-        for i, (name, address) in enumerate(sorted(devices, key=lambda d: d[0].lower())):
-            listing.addItem(f"{name}  [{address}]")
-            listing.item(i).setData(Qt.ItemDataRole.UserRole, address)
-            if "penmixer" in name.lower():
-                pen_row = i
-        if pen_row >= 0:
-            listing.setCurrentRow(pen_row)
-        elif devices:
-            listing.setCurrentRow(0)
-        layout.addWidget(listing)
-        buttons = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
-        )
-        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Connect")
-        buttons.accepted.connect(dialog.accept)
-        buttons.rejected.connect(dialog.reject)
-        layout.addWidget(buttons)
-        listing.itemDoubleClicked.connect(lambda _: dialog.accept())
-        if dialog.exec() == QDialog.DialogCode.Accepted and listing.currentItem():
-            address = listing.currentItem().data(Qt.ItemDataRole.UserRole)
-            self._ble_address = address
-            pos = self.source_box.findText("Bluetooth (pen board)")
-            if self.source_box.currentIndex() == pos:
-                self._restart_reader()
-            else:
-                self.source_box.setCurrentIndex(pos)  # triggers restart
-            self.status.setText(f"connecting to {listing.currentItem().text()}")
 
     # ---- readers -------------------------------------------------------
     def _restart_reader(self) -> None:
@@ -490,10 +435,40 @@ class MainWindow(QMainWindow):
                 self.status.setText("audio running")
             self._silent_ticks = 0
         if self._silent_ticks == SILENCE_TICKS:
-            self.status.setText(
-                "audio running but input is silent: set System Settings -> Sound -> "
-                "Output to BlackHole 2ch, then play music"
-            )
+            if sys.platform == "win32":
+                hint = (
+                    "audio running but input is silent: set Settings > System > "
+                    "Sound > Output to CABLE Input, then play music"
+                )
+            else:
+                hint = (
+                    "audio running but input is silent: set System Settings -> "
+                    "Sound -> Output to BlackHole 2ch, then play music"
+                )
+            self.status.setText(hint)
+
+    def _sync_system_volume(self) -> None:
+        state = sysvol.get_volume()
+        if state is None:
+            self._sysvol_timer.stop()  # not available on this machine
+            return
+        if state == self._sys_vol_last:
+            return
+        first = self._sys_vol_last is None
+        self._sys_vol_last = state
+        scalar, muted = state
+        if muted or scalar <= 0.001:
+            self.volume_slider.setValue(self.volume_slider.minimum())
+            return
+        # Full system volume lands on the slider's own maximum, so computer
+        # max and app max are the same thing; lower volumes scale down from
+        # there. Past +9 the gain eats the EQ boost headroom, so loud tracks
+        # at full volume can hit the clip.
+        db = 20.0 * math.log10(scalar) + self.volume_slider.maximum() / 10.0
+        value = max(self.volume_slider.minimum(), min(self.volume_slider.maximum(), int(db * 10)))
+        if first and value == self.volume_slider.value():
+            return
+        self.volume_slider.setValue(value)
 
     def _volume_changed(self, value: int) -> None:
         if value <= self.volume_slider.minimum():
