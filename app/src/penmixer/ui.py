@@ -24,13 +24,14 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from . import routing
+from . import routing, spotifyio
 from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
 from .mapping import BandGains, gains_from_frame, smooth
 from .serialio import SerialReader, SimulatedReader
 from .spectrum import bar_spectrum
+from .spotifyio import SpotifyPoller
 from .tcpio import TcpReader
 from .viz import SpectrumWidget
 
@@ -141,6 +142,27 @@ class MainWindow(QMainWindow):
             self.route_button = QPushButton("Route system audio here")
             self.route_button.clicked.connect(self._toggle_routing)
             control_row.addWidget(self.route_button)
+
+        # Spotify now-playing + transport controls (Web API, PKCE auth)
+        self.spotify_poller: SpotifyPoller | None = None
+        if spotifyio.available():
+            spotify_row = QHBoxLayout()
+            self.prev_button = QPushButton("|<")
+            self.play_pause_button = QPushButton("Play/Pause")
+            self.next_button = QPushButton(">|")
+            self.spotify_label = QLabel("Spotify: connecting...")
+            self.prev_button.clicked.connect(lambda: self.spotify_poller.previous_track())
+            self.play_pause_button.clicked.connect(lambda: self.spotify_poller.play_pause())
+            self.next_button.clicked.connect(lambda: self.spotify_poller.next_track())
+            spotify_row.addWidget(self.prev_button)
+            spotify_row.addWidget(self.play_pause_button)
+            spotify_row.addWidget(self.next_button)
+            spotify_row.addWidget(self.spotify_label, 1)
+            layout.addLayout(spotify_row)
+            self.spotify_poller = SpotifyPoller()
+            self.spotify_poller.track_changed.connect(self._on_spotify_track)
+            self.spotify_poller.status_changed.connect(self._on_spotify_status)
+            self.spotify_poller.start()
 
         # Live motion meters (F1: show the hand input as it moves); center = at rest
         pad_row = QHBoxLayout()
@@ -315,6 +337,17 @@ class MainWindow(QMainWindow):
             slider.blockSignals(False)
         self._push_gains()
 
+    # ---- spotify ---------------------------------------------------------
+    def _on_spotify_track(self, title: str, artist: str, is_playing: bool) -> None:
+        if not title:
+            self.spotify_label.setText("Spotify: nothing playing")
+        else:
+            state = "playing" if is_playing else "paused"
+            self.spotify_label.setText(f"{title} — {artist} ({state})")
+
+    def _on_spotify_status(self, text: str) -> None:
+        self.spotify_label.setText(text)
+
     # ---- gains ---------------------------------------------------------
     def _sliders_changed(self) -> None:
         self._push_gains()
@@ -450,13 +483,16 @@ class MainWindow(QMainWindow):
         if self.engine.running:
             window = self.engine.latest_window()
             bars = bar_spectrum(window, self.engine.samplerate)
-            self.spectrum.update_levels(bars, window)
+            self.spectrum.update_levels(bars)
             self._check_silence()
 
     def closeEvent(self, event: object) -> None:
         if self.reader is not None:
             self.reader.stop()
             self.reader.wait(2000)
+        if self.spotify_poller is not None:
+            self.spotify_poller.stop()
+            self.spotify_poller.wait(2000)
         self.engine.stop()
         self._restore_routing()
         super().closeEvent(event)
