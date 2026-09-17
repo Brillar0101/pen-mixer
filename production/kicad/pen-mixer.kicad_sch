@@ -7126,467 +7126,468 @@
 			)
 			(embedded_fonts no)
 		)
-	
-(symbol "v21:XL-1010RGBC"
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(duplicate_pin_numbers_are_jumpers no)
-		(property "Reference" "U"
-			(at 0 6.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "XL-1010RGBC-WS2812B"
-			(at 0 -6.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "C5349953:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B"
-			(at 0 -8.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C5349953.pdf"
-			(at 0 -11.43 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "XINGLIGHT(成兴光)"
-			(at 0 -13.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "XL-1010RGBC-2812B"
-			(at 0 -16.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C5349953"
-			(at 0 -19.05 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_keywords" "Light Emitting Diodes (LED)"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(symbol "XL-1010RGBC_0_1"
-			(rectangle
-				(start -7.62 3.81)
-				(end 7.62 -3.81)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type background)
-				)
-			)
-			(circle
-				(center -6.35 2.54)
-				(radius 0.38)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(pin unspecified line
-				(at -10.16 1.27 0)
-				(length 2.54)
-				(name "DOUT"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
+		(symbol "v21:EVQP7C01P"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "SW"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
 					)
 				)
 			)
-			(pin unspecified line
-				(at 10.16 1.27 180)
-				(length 2.54)
-				(name "VDD"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
+			(property "Value" "EVQP7C01P"
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
 					)
 				)
 			)
-			(pin unspecified line
-				(at -10.16 -1.27 0)
-				(length 2.54)
-				(name "GND"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
+			(property "Footprint" "C388883:SW-SMD_EVQP7C01P"
+				(at 0 -11.43 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
 					)
 				)
 			)
-			(pin unspecified line
-				(at 10.16 -1.27 180)
-				(length 2.54)
-				(name "DIN"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
+			(property "Datasheet" "https://lcsc.com/product-detail/New-Arrivals_PANASONIC-EVQP7C01P_C388883.html"
+				(at 0 -13.97 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
 					)
 				)
 			)
-		)
-	)
-(symbol "v21:EVQP7C01P"
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(duplicate_pin_numbers_are_jumpers no)
-		(property "Reference" "SW"
-			(at 0 6.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 				)
 			)
-		)
-		(property "Value" "EVQP7C01P"
-			(at 0 -8.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(property "Manufacturer" "PANASONIC(松下)"
+				(at 0 -16.51 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 				)
 			)
-		)
-		(property "Footprint" "C388883:SW-SMD_EVQP7C01P"
-			(at 0 -11.43 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(property "MPN" "EVQP7C01P"
+				(at 0 -19.05 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 				)
 			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/New-Arrivals_PANASONIC-EVQP7C01P_C388883.html"
-			(at 0 -13.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(property "LCSC Part" "C388883"
+				(at 0 -21.59 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 				)
 			)
-		)
-		(property "Description" ""
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(property "ki_keywords" "Tactile Switches"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 				)
 			)
-		)
-		(property "Manufacturer" "PANASONIC(松下)"
-			(at 0 -16.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+			(symbol "EVQP7C01P_0_1"
+				(polyline
+					(pts
+						(xy -5.08 1.27) (xy 5.08 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-			)
-		)
-		(property "MPN" "EVQP7C01P"
-			(at 0 -19.05 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+				(polyline
+					(pts
+						(xy -5.08 -3.81) (xy 5.08 -3.81)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-			)
-		)
-		(property "LCSC Part" "C388883"
-			(at 0 -21.59 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 0 -0.25)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-			)
-		)
-		(property "ki_keywords" "Tactile Switches"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
+				(circle
+					(center 0 -0.51)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-			)
-		)
-		(symbol "EVQP7C01P_0_1"
-			(polyline
-				(pts
-					(xy -5.08 1.27) (xy 5.08 1.27)
+				(circle
+					(center 0 -2.03)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-				(stroke
-					(width 0)
-					(type default)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 -2.29) (xy 0 -2.29)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-				(fill
-					(type none)
+				(polyline
+					(pts
+						(xy 0.76 -0.76) (xy 0.25 -2.29)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
-			)
-			(polyline
-				(pts
-					(xy -5.08 -3.81) (xy 5.08 -3.81)
-				)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 0 1.27) (xy 0 -0.25)
-				)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(circle
-				(center 0 -0.51)
-				(radius 0.25)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(circle
-				(center 0 -2.03)
-				(radius 0.25)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 0 -3.81) (xy 0 -2.29) (xy 0 -2.29)
-				)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 0.76 -0.76) (xy 0.25 -2.29)
-				)
-				(stroke
-					(width 0)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(pin unspecified line
-				(at -7.62 1.27 0)
-				(length 2.54)
-				(name "1"
-					(effects
-						(font
-							(size 1.27 1.27)
+				(pin unspecified line
+					(at -7.62 1.27 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
 						)
 					)
 				)
-				(number "1"
-					(effects
-						(font
-							(size 1.27 1.27)
+				(pin unspecified line
+					(at 7.62 1.27 180)
+					(length 2.54)
+					(name "1&#96;"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1&#96;"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at -7.62 -3.81 0)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 7.62 -3.81 180)
+					(length 2.54)
+					(name "2&#96;"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2&#96;"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
 						)
 					)
 				)
 			)
-			(pin unspecified line
-				(at 7.62 1.27 180)
-				(length 2.54)
-				(name "1&#96;"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "1&#96;"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin unspecified line
-				(at -7.62 -3.81 0)
-				(length 2.54)
-				(name "2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin unspecified line
-				(at 7.62 -3.81 180)
-				(length 2.54)
-				(name "2&#96;"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2&#96;"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
+			(embedded_fonts no)
 		)
-	)
+		(symbol "v21:XL-1010RGBC"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "XL-1010RGBC-WS2812B"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "C5349953:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B"
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/C5349953.pdf"
+				(at 0 -11.43 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "XINGLIGHT(成兴光)"
+				(at 0 -13.97 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "XL-1010RGBC-2812B"
+				(at 0 -16.51 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC Part" "C5349953"
+				(at 0 -19.05 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "Light Emitting Diodes (LED)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "XL-1010RGBC_0_1"
+				(rectangle
+					(start -7.62 3.81)
+					(end 7.62 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(circle
+					(center -6.35 2.54)
+					(radius 0.38)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin unspecified line
+					(at -10.16 1.27 0)
+					(length 2.54)
+					(name "DOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 10.16 1.27 180)
+					(length 2.54)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at -10.16 -1.27 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 10.16 -1.27 180)
+					(length 2.54)
+					(name "DIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(rectangle
 		(start 16.38 84.5)
@@ -7611,6 +7612,19 @@
 			(type none)
 		)
 		(uuid "24e35a9a-aefe-486f-875a-e11aa4d8b9b4")
+	)
+	(rectangle
+		(start 140 165)
+		(end 215 198)
+		(stroke
+			(width 0.1524)
+			(type dash)
+			(color 0 0 194 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "35fa10eb-da2c-4e79-9a09-3234bee739ab")
 	)
 	(rectangle
 		(start 16.27 129.54)
@@ -7683,6 +7697,19 @@
 			(type none)
 		)
 		(uuid "bf8f5249-710d-48da-84a0-88a177b91318")
+	)
+	(text "USER INTERFACE (v2.1)"
+		(exclude_from_sim no)
+		(at 141 163.5 0)
+		(effects
+			(font
+				(size 2 2)
+				(bold yes)
+				(color 0 0 194 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "027f2dce-8027-4754-bcb2-4e009305f989")
 	)
 	(text "USB-C INPUT"
 		(exclude_from_sim no)
@@ -7781,6 +7808,18 @@
 		(uuid "f3147a8f-9826-4316-b1fe-6c065cc3b2d1")
 	)
 	(junction
+		(at 48.26 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0970eb48-6b21-471e-b093-dd6327a4f4b3")
+	)
+	(junction
+		(at 186.69 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4c65ba17-7605-4ab8-a251-5c03ab58f313")
+	)
+	(junction
 		(at 30.48 71.12)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7791,6 +7830,48 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "800a4a2d-58ec-4691-a653-5f40e7c2213a")
+	)
+	(junction
+		(at 96.52 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8137ba26-cfd1-4115-b96b-1a1e75e7baa4")
+	)
+	(junction
+		(at 48.26 53.34)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "87d2c93b-79a0-49a2-8b67-6102b0c2d3cf")
+	)
+	(junction
+		(at 186.69 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c6753343-f8c9-4397-9bcd-af8d6fc69c5d")
+	)
+	(junction
+		(at 48.26 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c8449c76-3136-443a-bd06-79100863094e")
+	)
+	(junction
+		(at 48.26 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cdbb15b3-b3df-440a-89c8-8623be6ffa6c")
+	)
+	(junction
+		(at 113.03 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "db97998a-9f9b-4d09-8e59-6e4831a7d66e")
+	)
+	(junction
+		(at 186.69 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ddd63fb7-a044-44a7-8ab1-f58b5c5ee41a")
 	)
 	(junction
 		(at 270.51 49.53)
@@ -7817,12 +7898,20 @@
 		(uuid "0ee75a93-ae26-4fb2-8fec-3fe77d9ebf95")
 	)
 	(no_connect
+		(at 148.59 39.37)
+		(uuid "10e9039e-b56c-4b89-babf-8b145c645471")
+	)
+	(no_connect
 		(at 218.44 33.02)
 		(uuid "15b23402-9f0e-4368-82eb-db75496ac6d9")
 	)
 	(no_connect
 		(at 266.7 57.15)
 		(uuid "175f1a9d-fe32-4def-95d4-9943cdb47d23")
+	)
+	(no_connect
+		(at 167.62 188.73)
+		(uuid "22bcef37-a12f-41a5-ac59-85dcaac57f63")
 	)
 	(no_connect
 		(at 209.55 142.24)
@@ -7875,6 +7964,10 @@
 	(no_connect
 		(at 250.19 144.78)
 		(uuid "6d3b2d0e-43b8-420e-b874-df6642f5ea79")
+	)
+	(no_connect
+		(at 167.62 193.81)
+		(uuid "6f597cf1-fdbc-4450-adc2-7405390700f0")
 	)
 	(no_connect
 		(at 250.19 142.24)
@@ -7937,6 +8030,10 @@
 		(uuid "8e76cb9e-9dab-4c25-a617-f9354d9a28ce")
 	)
 	(no_connect
+		(at 148.59 41.91)
+		(uuid "8f6ee8bc-ad2d-44af-9b88-9b0389a33af1")
+	)
+	(no_connect
 		(at 209.55 152.4)
 		(uuid "8fcdc72f-5dbc-4bdd-be06-33b4996cce1c")
 	)
@@ -7965,6 +8062,10 @@
 		(uuid "a56af6c4-0980-4ac0-941f-1c1ddb8829dd")
 	)
 	(no_connect
+		(at 191.77 76.2)
+		(uuid "abd56e93-048f-4ce2-8c90-3217491405e1")
+	)
+	(no_connect
 		(at 266.7 54.61)
 		(uuid "adbb4c2f-5360-4723-8878-f2e2454d91e2")
 	)
@@ -7977,6 +8078,10 @@
 		(uuid "b1cf4794-cebd-4cfa-9a0e-84ed6a5700a9")
 	)
 	(no_connect
+		(at 174.84 173.73)
+		(uuid "ba874f18-7904-44bd-a283-c6f8687216fb")
+	)
+	(no_connect
 		(at 209.55 147.32)
 		(uuid "bbeb074d-07ef-4129-be67-3dd5b488f384")
 	)
@@ -7987,6 +8092,10 @@
 	(no_connect
 		(at 234.95 107.95)
 		(uuid "c3854d6e-d7ec-4168-85ea-5c19555ecf6b")
+	)
+	(no_connect
+		(at 191.77 73.66)
+		(uuid "c992ac05-0b03-427b-9352-e8d8617f57b6")
 	)
 	(no_connect
 		(at 146.05 52.07)
@@ -8038,6 +8147,17 @@
 	)
 	(wire
 		(pts
+			(xy 48.26 48.26) (xy 52.07 48.26)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "009ed849-b393-4d7a-9fe4-cebb243230ff")
+	)
+	(wire
+		(pts
 			(xy 113.03 54.61) (xy 113.03 57.15)
 		)
 		(stroke
@@ -8046,28 +8166,6 @@
 			(color 0 132 0 1)
 		)
 		(uuid "00e5491f-87f6-4751-9121-fe49187e5814")
-	)
-	(wire
-		(pts
-			(xy 45.72 45.72) (xy 48.26 45.72)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "12739b8b-c8c4-4327-81ee-e6981ea2202a")
-	)
-	(wire
-		(pts
-			(xy 48.26 45.72) (xy 52.07 45.72)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "686ee229-f9ce-4f36-b51d-aa734d95bd2e")
 	)
 	(wire
 		(pts
@@ -8134,6 +8232,28 @@
 			(color 0 132 0 1)
 		)
 		(uuid "0da54901-f832-4379-a95f-01403d7d73df")
+	)
+	(wire
+		(pts
+			(xy 113.03 41.91) (xy 113.03 44.45)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "1054aaa2-5047-4373-a03c-9cd9296808bb")
+	)
+	(wire
+		(pts
+			(xy 45.72 45.72) (xy 48.26 45.72)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "12739b8b-c8c4-4327-81ee-e6981ea2202a")
 	)
 	(wire
 		(pts
@@ -8456,28 +8576,6 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 53.34) (xy 48.26 53.34)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "a84ff83c-dcab-4b26-ad21-89906e0b9f31")
-	)
-	(wire
-		(pts
-			(xy 48.26 53.34) (xy 52.07 53.34)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "dca2ca37-0d79-403e-aa63-65a88df6669c")
-	)
-	(wire
-		(pts
 			(xy 273.05 95.25) (xy 273.05 92.71)
 		)
 		(stroke
@@ -8508,28 +8606,6 @@
 			(color 0 132 0 1)
 		)
 		(uuid "5bdf7c86-9d47-43da-99c9-4c6c6793eb20")
-	)
-	(wire
-		(pts
-			(xy 113.03 39.37) (xy 113.03 41.91)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "94a72d39-8773-44f0-9831-37e04f737fbb")
-	)
-	(wire
-		(pts
-			(xy 113.03 41.91) (xy 113.03 44.45)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "1054aaa2-5047-4373-a03c-9cd9296808bb")
 	)
 	(wire
 		(pts
@@ -8566,25 +8642,14 @@
 	)
 	(wire
 		(pts
-			(xy 96.52 100.33) (xy 96.52 102.87)
+			(xy 48.26 45.72) (xy 52.07 45.72)
 		)
 		(stroke
 			(width 0.1524)
 			(type solid)
 			(color 0 132 0 1)
 		)
-		(uuid "9b549700-d395-415e-809a-699e91e9ef94")
-	)
-	(wire
-		(pts
-			(xy 96.52 102.87) (xy 96.52 105.41)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "df0b7950-2e43-49e4-bb08-e1a246bd5b04")
+		(uuid "686ee229-f9ce-4f36-b51d-aa734d95bd2e")
 	)
 	(wire
 		(pts
@@ -8619,7 +8684,6 @@
 		)
 		(uuid "6fbc5329-1ef9-491c-9686-c1ee37cd8811")
 	)
-	
 	(wire
 		(pts
 			(xy 20.32 105.41) (xy 26.67 105.41)
@@ -8655,6 +8719,17 @@
 	)
 	(wire
 		(pts
+			(xy 45.72 48.26) (xy 48.26 48.26)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "81e73352-47a2-4182-9ebc-3ba8f3ba0d74")
+	)
+	(wire
+		(pts
 			(xy 60.96 140.97) (xy 60.96 137.16)
 		)
 		(stroke
@@ -8663,6 +8738,17 @@
 			(color 0 132 0 1)
 		)
 		(uuid "81e7919c-ba96-4506-bbf2-04820429bffb")
+	)
+	(wire
+		(pts
+			(xy 186.69 78.74) (xy 186.69 81.28)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "840fba01-49d9-4b4f-9198-91a1546b17b9")
 	)
 	(wire
 		(pts
@@ -8721,6 +8807,17 @@
 	)
 	(wire
 		(pts
+			(xy 186.69 86.36) (xy 186.69 88.9)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "8c5279d1-bb24-4314-8291-e798f933e4e9")
+	)
+	(wire
+		(pts
 			(xy 266.7 46.99) (xy 270.51 46.99)
 		)
 		(stroke
@@ -8729,6 +8826,17 @@
 			(color 0 132 0 1)
 		)
 		(uuid "8c613cb6-b3dd-46db-8c3b-301512fd185c")
+	)
+	(wire
+		(pts
+			(xy 48.26 50.8) (xy 52.07 50.8)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "8d5581c1-984d-48a7-8994-372c1d468f3b")
 	)
 	(wire
 		(pts
@@ -8754,28 +8862,6 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 48.26) (xy 48.26 48.26)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "81e73352-47a2-4182-9ebc-3ba8f3ba0d74")
-	)
-	(wire
-		(pts
-			(xy 48.26 48.26) (xy 52.07 48.26)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "009ed849-b393-4d7a-9fe4-cebb243230ff")
-	)
-	(wire
-		(pts
 			(xy 143.51 139.7) (xy 143.51 137.16)
 		)
 		(stroke
@@ -8784,6 +8870,17 @@
 			(color 0 132 0 1)
 		)
 		(uuid "9487fde7-b493-4c3c-92db-0f5f71fe607e")
+	)
+	(wire
+		(pts
+			(xy 113.03 39.37) (xy 113.03 41.91)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "94a72d39-8773-44f0-9831-37e04f737fbb")
 	)
 	(wire
 		(pts
@@ -8817,6 +8914,17 @@
 			(color 0 132 0 1)
 		)
 		(uuid "9a21afab-3f69-4b67-880d-7f3a261cfb54")
+	)
+	(wire
+		(pts
+			(xy 96.52 100.33) (xy 96.52 102.87)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "9b549700-d395-415e-809a-699e91e9ef94")
 	)
 	(wire
 		(pts
@@ -8894,6 +9002,28 @@
 			(color 0 132 0 1)
 		)
 		(uuid "a67eb3bc-e365-431c-8ab3-818596869121")
+	)
+	(wire
+		(pts
+			(xy 45.72 50.8) (xy 48.26 50.8)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "a6a159ff-048b-4d51-b2d9-8f9d06e9a70a")
+	)
+	(wire
+		(pts
+			(xy 45.72 53.34) (xy 48.26 53.34)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "a84ff83c-dcab-4b26-ad21-89906e0b9f31")
 	)
 	(wire
 		(pts
@@ -8994,30 +9124,6 @@
 		)
 		(uuid "bfd954e6-6ec6-4901-9ee4-08abb5002a72")
 	)
-	
-	(wire
-		(pts
-			(xy 45.72 50.8) (xy 48.26 50.8)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "a6a159ff-048b-4d51-b2d9-8f9d06e9a70a")
-	)
-	(wire
-		(pts
-			(xy 48.26 50.8) (xy 52.07 50.8)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "8d5581c1-984d-48a7-8994-372c1d468f3b")
-	)
-	
 	(wire
 		(pts
 			(xy 270.51 46.99) (xy 270.51 49.53)
@@ -9084,7 +9190,17 @@
 		)
 		(uuid "d3661c36-1feb-4ab3-ac5f-5b0b5c88803e")
 	)
-	
+	(wire
+		(pts
+			(xy 48.26 53.34) (xy 52.07 53.34)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "dca2ca37-0d79-403e-aa63-65a88df6669c")
+	)
 	(wire
 		(pts
 			(xy 133.35 62.23) (xy 133.35 64.77)
@@ -9109,6 +9225,17 @@
 	)
 	(wire
 		(pts
+			(xy 96.52 102.87) (xy 96.52 105.41)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "df0b7950-2e43-49e4-bb08-e1a246bd5b04")
+	)
+	(wire
+		(pts
 			(xy 266.7 85.09) (xy 270.51 85.09)
 		)
 		(stroke
@@ -9117,6 +9244,17 @@
 			(color 0 132 0 1)
 		)
 		(uuid "e010967e-59cb-4ded-a3b2-df61dfe48891")
+	)
+	(wire
+		(pts
+			(xy 186.69 81.28) (xy 186.69 83.82)
+		)
+		(stroke
+			(width 0.1524)
+			(type solid)
+			(color 0 132 0 1)
+		)
+		(uuid "e28335a2-9cd8-493f-b3f2-d52e4702b583")
 	)
 	(wire
 		(pts
@@ -9164,25 +9302,14 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 78.74) (xy 186.69 81.28)
+			(xy 95.25 137.16) (xy 100.33 137.16)
 		)
 		(stroke
 			(width 0.1524)
 			(type solid)
 			(color 0 132 0 1)
 		)
-		(uuid "840fba01-49d9-4b4f-9198-91a1546b17b9")
-	)
-	(wire
-		(pts
-			(xy 186.69 81.28) (xy 186.69 83.82)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "e28335a2-9cd8-493f-b3f2-d52e4702b583")
+		(uuid "f58f5552-83f0-4826-b761-ea9776b23849")
 	)
 	(wire
 		(pts
@@ -9194,28 +9321,6 @@
 			(color 0 132 0 1)
 		)
 		(uuid "f58fe56b-b591-4995-bf92-00b60ce9b0b8")
-	)
-	(wire
-		(pts
-			(xy 186.69 86.36) (xy 186.69 88.9)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "8c5279d1-bb24-4314-8291-e798f933e4e9")
-	)
-	(wire
-		(pts
-			(xy 95.25 137.16) (xy 100.33 137.16)
-		)
-		(stroke
-			(width 0.1524)
-			(type solid)
-			(color 0 132 0 1)
-		)
-		(uuid "f58f5552-83f0-4826-b761-ea9776b23849")
 	)
 	(wire
 		(pts
@@ -9344,6 +9449,29 @@
 			)
 		)
 	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 205 189.81 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0ea7b0c3-fa40-4b02-86ef-5563b9b5f064")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 205 189.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "SDA"
 		(shape bidirectional)
 		(at 109.22 49.53 270)
@@ -9357,6 +9485,29 @@
 		(uuid "17470c0d-41d3-4330-b8b8-53b0588e54ac")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 109.22 49.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 195.16 173.73 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "1e0d0d9e-c5ed-4c0f-8284-87246324ba7e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 195.16 173.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9390,6 +9541,29 @@
 			)
 		)
 	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 144.84 176.27 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2a36d6db-2b81-4e2f-a875-9e3774de0146")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 144.84 176.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "SWDCLK"
 		(shape bidirectional)
 		(at 270.51 85.09 0)
@@ -9403,6 +9577,29 @@
 		(uuid "2b87d3c3-deb1-4c85-b512-2c6ac32a9467")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 270.51 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "LED_LINK"
+		(shape bidirectional)
+		(at 195.16 176.27 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "366d805f-92a8-400d-8dd9-94f2e2456dc3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 195.16 176.27 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9434,6 +9631,29 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+			)
+		)
+	)
+	(global_label "BTN"
+		(shape bidirectional)
+		(at 152.38 188.73 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "38fca671-114e-4949-adaa-220a2a3f01d7")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 152.38 188.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 	)
@@ -9473,6 +9693,29 @@
 		(uuid "3cce08f7-75a8-4256-b5b9-3a5540fe3b8e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 270.51 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "BTN"
+		(shape bidirectional)
+		(at 229.87 107.95 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "4ede2168-7a54-4a77-a567-9d3ee2ca48f3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 229.87 107.95 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9529,6 +9772,98 @@
 			)
 		)
 	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 165.16 173.73 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5c3350ac-4511-43cb-97b4-d6656d385176")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 165.16 173.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "LED_DATA"
+		(shape bidirectional)
+		(at 165.16 176.27 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "66f6bfe9-358c-4b4a-86dc-aba2fe5e0800")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 165.16 176.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 174.84 176.27 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6891a328-b83e-4c34-9afd-8d93f0cde4b6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 174.84 176.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "VBAT"
+		(shape bidirectional)
+		(at 205 182.19 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "76adcef5-e077-43fa-957b-93c722aec471")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 205 182.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "SDA"
 		(shape bidirectional)
 		(at 102.87 49.53 180)
@@ -9552,9 +9887,6 @@
 			)
 		)
 	)
-	
-	
-	
 	(global_label "VBAT_SENSE"
 		(shape bidirectional)
 		(at 144.78 106.68 270)
@@ -9637,6 +9969,52 @@
 		(uuid "c62f27ad-1379-46bf-bf6c-df14e9b85c2a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 157.48 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "LED_DATA"
+		(shape bidirectional)
+		(at 237.49 107.95 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "cc8f891e-c31e-4401-b548-962c2203535b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 237.49 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "LED_LINK"
+		(shape bidirectional)
+		(at 144.84 173.73 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d50168bd-799c-42dd-95aa-8037663b9ba6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 144.84 173.73 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9739,6 +10117,29 @@
 			)
 		)
 	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 152.38 193.81 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f5038532-3f2a-413f-993c-a4faa450f39e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 152.38 193.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "USB_DP"
 		(shape bidirectional)
 		(at 245.11 111.76 270)
@@ -9762,7 +10163,6 @@
 			)
 		)
 	)
-	
 	(global_label "USB_DM"
 		(shape bidirectional)
 		(at 52.07 45.72 0)
@@ -10000,28 +10400,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C26083" (at 0 0 0)
+		(property "LCSC" "C26083"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF1004TCE" (at 0 0 0)
+		(property "MPN" "0402WGF1004TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -10103,28 +10512,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C25905" (at 0 0 0)
+		(property "LCSC" "C25905"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF5101TCE" (at 0 0 0)
+		(property "MPN" "0402WGF5101TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -10431,36 +10849,48 @@
 				)
 			)
 		)
-		(property "BOM Comments" "bare solder pads - battery wires solder here, no part to order" (at 0 0 0)
+		(property "BOM Comments" "bare solder pads - battery wires solder here, no part to order"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "LCSC" "" (at 0 0 0)
+		(property "LCSC" ""
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "" (at 0 0 0)
+		(property "Manufacturer" ""
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "" (at 0 0 0)
+		(property "MPN" ""
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -11025,7 +11455,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "USB-C 16P vertical"
+		(property "Value" "USB-C 16P"
 			(at 25.654 28.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11036,7 +11466,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "pen-mixer:USB-C-SMD_GT-USB-7055E"
+		(property "Footprint" "pen-mixer:GT-USB-7010ASV"
 			(at 30.48 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -11067,28 +11497,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C7450622" (at 0 0 0)
+		(property "LCSC" "C2988369"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "G-Switch" (at 0 0 0)
+		(property "Manufacturer" "G-Switch"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "GT-USB-7055E" (at 0 0 0)
+		(property "MPN" "GT-USB-7010ASV"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "A1"
@@ -11290,28 +11729,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C23692971" (at 0 0 0)
+		(property "LCSC" "C23692971"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "TDK" (at 0 0 0)
+		(property "Manufacturer" "TDK"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CGA0402X5R106M6R3GT" (at 0 0 0)
+		(property "MPN" "CGA0402X5R106M6R3GT"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -11393,28 +11841,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C1525" (at 0 0 0)
+		(property "LCSC" "C1525"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05B104KO5NNNC" (at 0 0 0)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -12386,6 +12843,134 @@
 		)
 	)
 	(symbol
+		(lib_id "v21:XL-1010RGBC")
+		(at 155 175 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "714948ca-b315-4f2c-b0f3-6a6eb31970ab")
+		(property "Reference" "LED1"
+			(at 155 167 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "XL-1010RGBC"
+			(at 155 183 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "pen-mixer:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B"
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 155 175 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "XL-1010RGBC-2812B"
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "XINGLIGHT"
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5349953"
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM Comments" "battery level indicator"
+			(at 155 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "cf38e0f6-e22f-43eb-843b-1c03e2e7b6a1")
+		)
+		(pin "2"
+			(uuid "8f893473-7ca4-48fb-ae38-d5e5c9abacf2")
+		)
+		(pin "3"
+			(uuid "4cbe10e7-0c9d-4bf3-8d1b-27aaac4f7c15")
+		)
+		(pin "4"
+			(uuid "ced1f151-c410-412b-b973-3ac18c6f3f92")
+		)
+		(instances
+			(project "pen-mixer"
+				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
+					(reference "LED1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 127 137.16 0)
 		(unit 1)
@@ -12599,28 +13184,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C25765" (at 0 0 0)
+		(property "LCSC" "C25765"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF2002TCE" (at 0 0 0)
+		(property "MPN" "0402WGF2002TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -13153,28 +13747,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C967633" (at 0 0 0)
+		(property "LCSC" "C967633"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "STMicroelectronics" (at 0 0 0)
+		(property "Manufacturer" "STMicroelectronics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "LSM6DS3TR-C" (at 0 0 0)
+		(property "MPN" "LSM6DS3TR-C"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -13517,28 +14120,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C23733" (at 0 0 0)
+		(property "LCSC" "C23733"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05A475MP5NRNC" (at 0 0 0)
+		(property "MPN" "CL05A475MP5NRNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -13620,28 +14232,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C52923" (at 0 0 0)
+		(property "LCSC" "C52923"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05A105KA5NQNC" (at 0 0 0)
+		(property "MPN" "CL05A105KA5NQNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -14076,28 +14697,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C25900" (at 0 0 0)
+		(property "LCSC" "C25900"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF4701TCE" (at 0 0 0)
+		(property "MPN" "0402WGF4701TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -14329,28 +14959,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C23733" (at 0 0 0)
+		(property "LCSC" "C23733"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05A475MP5NRNC" (at 0 0 0)
+		(property "MPN" "CL05A475MP5NRNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -14594,6 +15233,134 @@
 		)
 	)
 	(symbol
+		(lib_id "v21:EVQP7C01P")
+		(at 160 190 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ad70ab4e-7a28-4de5-a1fd-5f4bef36561f")
+		(property "Reference" "SW1"
+			(at 160 182 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "EVQP7C01P"
+			(at 160 198 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "pen-mixer:SW-SMD_EVQP7C01P"
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 160 190 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "EVQP7C01P"
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "PANASONIC"
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C388883"
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM Comments" "power and pairing button, side actuated"
+			(at 160 190 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "38aaf3ab-c9b1-44eb-8dcf-e99fe86f6e5e")
+		)
+		(pin "1&#96;"
+			(uuid "9bb9743c-12ae-499b-84c4-16b7d59caa1d")
+		)
+		(pin "2"
+			(uuid "76dcac80-0488-421d-a409-f2f83945b136")
+		)
+		(pin "2&#96;"
+			(uuid "24235745-2635-4169-9e50-05ae9ef25d86")
+		)
+		(instances
+			(project "pen-mixer"
+				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 91.44 41.91 0)
 		(unit 1)
@@ -14807,28 +15574,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C493453" (at 0 0 0)
+		(property "LCSC" "C493453"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Texas Instruments" (at 0 0 0)
+		(property "Manufacturer" "Texas Instruments"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "TPS7A0533PDBVR" (at 0 0 0)
+		(property "MPN" "TPS7A0533PDBVR"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -14919,28 +15695,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C1525" (at 0 0 0)
+		(property "LCSC" "C1525"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05B104KO5NNNC" (at 0 0 0)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -15247,28 +16032,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C11702" (at 0 0 0)
+		(property "LCSC" "C11702"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF1001TCE" (at 0 0 0)
+		(property "MPN" "0402WGF1001TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -15800,28 +16594,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C25905" (at 0 0 0)
+		(property "LCSC" "C25905"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF5101TCE" (at 0 0 0)
+		(property "MPN" "0402WGF5101TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -15903,28 +16706,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C130723" (at 0 0 0)
+		(property "LCSC" "C130723"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Foshan NationStar" (at 0 0 0)
+		(property "Manufacturer" "Foshan NationStar"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "NCD0402G1" (at 0 0 0)
+		(property "MPN" "NCD0402G1"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16156,28 +16968,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C26083" (at 0 0 0)
+		(property "LCSC" "C26083"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF1004TCE" (at 0 0 0)
+		(property "MPN" "0402WGF1004TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16485,28 +17306,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C1525" (at 0 0 0)
+		(property "LCSC" "C1525"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05B104KO5NNNC" (at 0 0 0)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16588,28 +17418,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C424093" (at 0 0 0)
+		(property "LCSC" "C424093"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Microchip" (at 0 0 0)
+		(property "Manufacturer" "Microchip"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "MCP73831T-2ACI/OT" (at 0 0 0)
+		(property "MPN" "MCP73831T-2ACI/OT"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16631,6 +17470,134 @@
 			(project "pen-mixer"
 				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
 					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "v21:XL-1010RGBC")
+		(at 185 175 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ee65a577-b460-4ecb-ad61-1d3ec0a80f67")
+		(property "Reference" "LED2"
+			(at 185 167 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "XL-1010RGBC"
+			(at 185 183 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "pen-mixer:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B"
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 185 175 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "XL-1010RGBC-2812B"
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "XINGLIGHT"
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5349953"
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "BOM Comments" "bluetooth status indicator"
+			(at 185 175 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "090f14c7-f06f-41fe-928c-17eb785e33b1")
+		)
+		(pin "2"
+			(uuid "4d0d5bc3-512c-4e43-a2d3-9282076e9a45")
+		)
+		(pin "3"
+			(uuid "9c5f3e92-e1fb-4d69-8402-d975734afd60")
+		)
+		(pin "4"
+			(uuid "5aa8fda5-4c57-435f-bb34-342d9996a1ef")
+		)
+		(instances
+			(project "pen-mixer"
+				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
+					(reference "LED2")
 					(unit 1)
 				)
 			)
@@ -16700,28 +17667,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C1525" (at 0 0 0)
+		(property "LCSC" "C1525"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05B104KO5NNNC" (at 0 0 0)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16734,6 +17710,117 @@
 			(project "pen-mixer"
 				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
 					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 205 186 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f0e7bf7f-8c33-48c6-9321-efabea82afe4")
+		(property "Reference" "C11"
+			(at 205 178 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100n"
+			(at 205 194 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 205 186 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 205 186 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 205 186 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 205 186 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 205 186 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C1525"
+			(at 205 186 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "596ef161-491c-4fe2-bb93-947e59990591")
+		)
+		(pin "2"
+			(uuid "b059cd25-1f02-4189-98d7-d964805702c5")
+		)
+		(instances
+			(project "pen-mixer"
+				(path "/0684e67f-dde5-4049-a068-2c0d069dd8c7"
+					(reference "C11")
 					(unit 1)
 				)
 			)
@@ -16878,28 +17965,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C25900" (at 0 0 0)
+		(property "LCSC" "C25900"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL" (at 0 0 0)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF4701TCE" (at 0 0 0)
+		(property "MPN" "0402WGF4701TCE"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -16981,28 +18077,37 @@
 				)
 			)
 		)
-		(property "LCSC" "C52923" (at 0 0 0)
+		(property "LCSC" "C52923"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 0 0 0)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
-		(property "MPN" "CL05A105KA5NQNC" (at 0 0 0)
+		(property "MPN" "CL05A105KA5NQNC"
+			(at 0 0 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(pin "1"
@@ -17095,288 +18200,10 @@
 			)
 		)
 	)
-	(junction
-		(at 186.69 81.28)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ddd63fb7-a044-44a7-8ab1-f58b5c5ee41a")
-	)
-	(junction
-		(at 186.69 83.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c6753343-f8c9-4397-9bcd-af8d6fc69c5d")
-	)
-	(junction
-		(at 186.69 86.36)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4c65ba17-7605-4ab8-a251-5c03ab58f313")
-	)
-	(junction
-		(at 113.03 41.91)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "db97998a-9f9b-4d09-8e59-6e4831a7d66e")
-	)
-	(junction
-		(at 96.52 102.87)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8137ba26-cfd1-4115-b96b-1a1e75e7baa4")
-	)
-	(junction
-		(at 48.26 45.72)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0970eb48-6b21-471e-b093-dd6327a4f4b3")
-	)
-	(junction
-		(at 48.26 48.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c8449c76-3136-443a-bd06-79100863094e")
-	)
-	(junction
-		(at 48.26 50.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "cdbb15b3-b3df-440a-89c8-8623be6ffa6c")
-	)
-	(junction
-		(at 48.26 53.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "87d2c93b-79a0-49a2-8b67-6102b0c2d3cf")
-	)
-	(symbol
-		(lib_id "v21:XL-1010RGBC")
-		(at 155 175 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "714948ca-b315-4f2c-b0f3-6a6eb31970ab")
-		(property "Reference" "LED1" (at 155 167 0)  (effects (font (size 1.27 1.27))))
-		(property "Value" "XL-1010RGBC" (at 155 183 0)  (effects (font (size 1.27 1.27))))
-		(property "Footprint" "pen-mixer:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "MPN" "XL-1010RGBC-2812B" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Manufacturer" "XINGLIGHT" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "LCSC" "C5349953" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "BOM Comments" "battery level indicator" (at 155 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(instances (project "pen-mixer" (path "/0684e67f-dde5-4049-a068-2c0d069dd8c7" (reference "LED1") (unit 1))))
-	)
-	(symbol
-		(lib_id "v21:XL-1010RGBC")
-		(at 185 175 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ee65a577-b460-4ecb-ad61-1d3ec0a80f67")
-		(property "Reference" "LED2" (at 185 167 0)  (effects (font (size 1.27 1.27))))
-		(property "Value" "XL-1010RGBC" (at 185 183 0)  (effects (font (size 1.27 1.27))))
-		(property "Footprint" "pen-mixer:LED-SMD_4P-L1.0-W1.0-TL_XL-1010RGBC-WS2812B" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "MPN" "XL-1010RGBC-2812B" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Manufacturer" "XINGLIGHT" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "LCSC" "C5349953" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "BOM Comments" "bluetooth status indicator" (at 185 175 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(instances (project "pen-mixer" (path "/0684e67f-dde5-4049-a068-2c0d069dd8c7" (reference "LED2") (unit 1))))
-	)
-	(symbol
-		(lib_id "v21:EVQP7C01P")
-		(at 160 190 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ad70ab4e-7a28-4de5-a1fd-5f4bef36561f")
-		(property "Reference" "SW1" (at 160 182 0)  (effects (font (size 1.27 1.27))))
-		(property "Value" "EVQP7C01P" (at 160 198 0)  (effects (font (size 1.27 1.27))))
-		(property "Footprint" "pen-mixer:SW-SMD_EVQP7C01P" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "MPN" "EVQP7C01P" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Manufacturer" "PANASONIC" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "LCSC" "C388883" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "BOM Comments" "power and pairing button, side actuated" (at 160 190 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(instances (project "pen-mixer" (path "/0684e67f-dde5-4049-a068-2c0d069dd8c7" (reference "SW1") (unit 1))))
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 205 186 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f0e7bf7f-8c33-48c6-9321-efabea82afe4")
-		(property "Reference" "C11" (at 205 178 0)  (effects (font (size 1.27 1.27))))
-		(property "Value" "100n" (at 205 194 0)  (effects (font (size 1.27 1.27))))
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 205 186 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Datasheet" "" (at 205 186 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "MPN" "CL05B104KO5NNNC" (at 205 186 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "Manufacturer" "Samsung Electro-Mechanics" (at 205 186 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(property "LCSC" "C1525" (at 205 186 0) (hide yes) (effects (font (size 1.27 1.27))))
-		(instances (project "pen-mixer" (path "/0684e67f-dde5-4049-a068-2c0d069dd8c7" (reference "C11") (unit 1))))
-	)
-	(global_label "LED_LINK"
-		(shape bidirectional)
-		(at 144.84 173.73 180)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "d50168bd-799c-42dd-95aa-8037663b9ba6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 144.84 173.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 144.84 176.27 180)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "2a36d6db-2b81-4e2f-a875-9e3774de0146")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 144.84 176.27 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "VBAT"
-		(shape bidirectional)
-		(at 165.16 173.73 0)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "5c3350ac-4511-43cb-97b4-d6656d385176")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 165.16 173.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "LED_DATA"
-		(shape bidirectional)
-		(at 165.16 176.27 0)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "66f6bfe9-358c-4b4a-86dc-aba2fe5e0800")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 165.16 176.27 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(no_connect
-		(at 174.84 173.73)
-		(uuid "ba874f18-7904-44bd-a283-c6f8687216fb")
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 174.84 176.27 180)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "6891a328-b83e-4c34-9afd-8d93f0cde4b6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 174.84 176.27 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "VBAT"
-		(shape bidirectional)
-		(at 195.16 173.73 0)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "1e0d0d9e-c5ed-4c0f-8284-87246324ba7e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 195.16 173.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "LED_LINK"
-		(shape bidirectional)
-		(at 195.16 176.27 0)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "366d805f-92a8-400d-8dd9-94f2e2456dc3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 195.16 176.27 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "BTN"
-		(shape bidirectional)
-		(at 152.38 188.73 180)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "38fca671-114e-4949-adaa-220a2a3f01d7")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.38 188.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 152.38 193.81 180)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify right))
-		(uuid "f5038532-3f2a-413f-993c-a4faa450f39e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 152.38 193.81 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(no_connect
-		(at 167.62 188.73)
-		(uuid "22bcef37-a12f-41a5-ac59-85dcaac57f63")
-	)
-	(no_connect
-		(at 167.62 193.81)
-		(uuid "6f597cf1-fdbc-4450-adc2-7405390700f0")
-	)
-	(global_label "VBAT"
-		(shape bidirectional)
-		(at 205 182.19 90)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "76adcef5-e077-43fa-957b-93c722aec471")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 205 182.19 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 205 189.81 270)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "0ea7b0c3-fa40-4b02-86ef-5563b9b5f064")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 205 189.81 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "LED_DATA"
-		(shape bidirectional)
-		(at 237.49 107.95 270)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "cc8f891e-c31e-4401-b548-962c2203535b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 237.49 107.95 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(global_label "BTN"
-		(shape bidirectional)
-		(at 229.87 107.95 270)
-		(fields_autoplaced yes)
-		(effects (font (size 1.27 1.27)) (justify left))
-		(uuid "4ede2168-7a54-4a77-a567-9d3ee2ca48f3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}" (at 229.87 107.95 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27))))
-	)
-	(rectangle
-		(start 140 165)
-		(end 215 198)
-		(stroke (width 0.1524) (type dash) (color 0 0 194 1))
-		(fill (type none))
-		(uuid "35fa10eb-da2c-4e79-9a09-3234bee739ab")
-	)
-	(text "USER INTERFACE (v2.1)"
-		(exclude_from_sim no)
-		(at 141 163.5 0)
-		(effects (font (size 2 2) (bold yes) (color 0 0 194 1)) (justify left bottom))
-		(uuid "027f2dce-8027-4754-bcb2-4e009305f989")
-	)
 	(sheet_instances
 		(path "/"
 			(page "1")
 		)
 	)
 	(embedded_fonts no)
-	(no_connect
-		(at 148.59 39.37)
-		(uuid "10e9039e-b56c-4b89-babf-8b145c645471")
-	)
-	(no_connect
-		(at 148.59 41.91)
-		(uuid "8f6ee8bc-ad2d-44af-9b88-9b0389a33af1")
-	)
-	(no_connect
-		(at 191.77 73.66)
-		(uuid "c992ac05-0b03-427b-9352-e8d8617f57b6")
-	)
-	(no_connect
-		(at 191.77 76.2)
-		(uuid "abd56e93-048f-4ce2-8c90-3217491405e1")
-	)
 )
