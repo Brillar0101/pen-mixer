@@ -4,9 +4,16 @@ per band, cava-style rise/decay driving how many rows are lit per column.
 
 import numpy as np
 from PySide6.QtCore import QRectF, Qt
-from PySide6.QtGui import QColor, QFont, QFontMetrics, QGradient, QPainter, QRadialGradient
+from PySide6.QtGui import (
+    QColor,
+    QFontMetrics,
+    QGradient,
+    QPainter,
+    QRadialGradient,
+)
 from PySide6.QtWidgets import QWidget
 
+from . import theme
 from .spectrum import BASS_EDGE_HZ, TREBLE_EDGE_HZ, bar_frequencies
 
 BAR_COUNT = 32
@@ -19,9 +26,9 @@ MID_COLOR = QColor(0x10, 0xB9, 0x81)
 TREBLE_COLOR = QColor(0xF5, 0x9E, 0x0B)
 BAND_COLOR = {"bass": BASS_COLOR, "mid": MID_COLOR, "treble": TREBLE_COLOR}
 
-BACKGROUND = QColor(0xEC, 0xEC, 0xEE)
+BACKGROUND = QColor(theme.CARD_BG)
 DOT_FILL = QColor(0xCD, 0xCD, 0xCD)
-LABEL_COLOR = QColor(0x9A, 0x9A, 0xA0)
+LABEL_COLOR = QColor(theme.TEXT_MUTED)
 
 
 def _inset_gradient(fill: QColor) -> QRadialGradient:
@@ -92,7 +99,9 @@ class SpectrumWidget(QWidget):
                     painter.drawEllipse(rect)
                     painter.setOpacity(1.0)
 
-        font = QFont("Consolas", 8)
+        painter.setClipping(False)
+        font = self.font()
+        font.setPointSize(8)
         painter.setFont(font)
         painter.setPen(LABEL_COLOR)
         metrics = QFontMetrics(font)

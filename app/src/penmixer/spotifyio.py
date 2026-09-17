@@ -32,14 +32,18 @@ def available() -> bool:
 class SpotifyPoller(QThread):
     """Polls playback state and exposes play/pause/skip for the UI."""
 
-    track_changed = Signal(str, str, bool)  # title, artist, is_playing
+    # title, artist, is_playing, progress_ms, duration_ms
+    track_changed = Signal(str, str, bool, int, int)
+    art_changed = Signal(bytes)  # raw image bytes, only on a new album art URL
     status_changed = Signal(str)
 
     def __init__(self) -> None:
         super().__init__()
         self._stop = False
         self._sp = None
-        self._last = (None, None, None)
+        self._is_playing = False
+        self._last_track_id: str | None = None
+        self._last_art_url: str | None = None
 
     def stop(self) -> None:
         self._stop = True
@@ -73,25 +77,50 @@ class SpotifyPoller(QThread):
                 self.status_changed.emit(f"Spotify error: {exc}")
                 self.sleep(int(POLL_SECONDS))
                 continue
-            if playback and playback.get("item"):
-                title = playback["item"]["name"]
-                artist = ", ".join(a["name"] for a in playback["item"]["artists"])
-                playing = bool(playback.get("is_playing"))
-                current = (title, artist, playing)
-                if current != self._last:
-                    self._last = current
-                    self.track_changed.emit(title, artist, playing)
-            elif self._last != (None, None, None):
-                self._last = (None, None, None)
-                self.track_changed.emit("", "", False)
+            item = playback.get("item") if playback else None
+            if item:
+                self._is_playing = bool(playback.get("is_playing"))
+                title = item["name"]
+                artist = ", ".join(a["name"] for a in item["artists"])
+                self.track_changed.emit(
+                    title,
+                    artist,
+                    self._is_playing,
+                    int(playback.get("progress_ms") or 0),
+                    int(item.get("duration_ms") or 0),
+                )
+                self._last_track_id = item["id"]
+                images = item.get("album", {}).get("images") or []
+                self._maybe_fetch_art(images[-1]["url"] if images else None)
+            elif self._last_track_id is not None:
+                self._is_playing = False
+                self._last_track_id = None
+                self.track_changed.emit("", "", False, 0, 0)
+                self._maybe_fetch_art(None)
             self.msleep(int(POLL_SECONDS * 1000))
+
+    def _maybe_fetch_art(self, url: str | None) -> None:
+        if url == self._last_art_url:
+            return
+        self._last_art_url = url
+        if url is None:
+            self.art_changed.emit(b"")
+            return
+        try:
+            import requests
+
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            self.art_changed.emit(response.content)
+        except Exception:  # noqa: BLE001 - a missing image is not worth surfacing
+            self.art_changed.emit(b"")
 
     # ---- controls, called directly from the UI thread ------------------
     def play_pause(self) -> None:
         if self._sp is None:
             return
         try:
-            if self._last[2]:
+            if self._is_playing:
                 self._sp.pause_playback()
             else:
                 self._sp.start_playback()

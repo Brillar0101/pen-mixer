@@ -2,10 +2,16 @@
 
 The window owns the audio engine, the motion reader, and the gain state.
 Pen motion drives the sliders; the sliders drive the DSP; nothing else
-holds state. Untick "Pen control" to drive the EQ by hand.
+holds state. Untick "Pen control" (in Settings) to drive the EQ by hand.
+
+The dashboard shows the dot-grid spectrum, a session card (device I/O,
+volume, engine start/stop, Spotify transport), a track card, and the
+equalizer. Board status, Bluetooth, audio routing, Rescan, and the raw
+motion meters live behind the gear icon in the top bar.
 """
 
 import os
+from datetime import datetime
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
@@ -13,10 +19,12 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
     QDialogButtonBox,
+    QFrame,
     QHBoxLayout,
     QLabel,
     QListWidget,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QSlider,
@@ -24,7 +32,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from . import routing, spotifyio
+from . import routing, spotifyio, theme
 from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
@@ -34,137 +42,433 @@ from .spectrum import bar_spectrum
 from .spotifyio import SpotifyPoller
 from .tcpio import TcpReader
 from .viz import SpectrumWidget
+from .widgets import EqSlider, TrackArt
 
 SLIDER_SCALE = 10  # slider units per dB
 SILENCE_TICKS = 60  # ~2 s of silence at the 33 ms refresh before we hint
 GAIN_LIMIT_DB = 12.0
-BANDS = ("Bass\n60-250 Hz", "Mid\n250 Hz-2 kHz", "Treble\n2-20 kHz")
+EQ_BANDS = (("60-250 Hz", "Bass"), ("250 Hz-2 kHz", "Mid"), ("2-20 kHz", "Treble"))
+
+SLIDER_QSS = f"""
+QSlider::groove:horizontal {{
+    height: 6px;
+    background: {theme.DIVIDER};
+    border-radius: 3px;
+}}
+QSlider::sub-page:horizontal {{
+    background: {theme.TEXT_PRIMARY};
+    border-radius: 3px;
+}}
+QSlider::handle:horizontal {{
+    width: 14px;
+    height: 14px;
+    margin: -5px 0;
+    border-radius: 7px;
+    background: {theme.TEXT_PRIMARY};
+}}
+"""
+
+TRANSPORT_BUTTON_QSS = f"""
+QPushButton {{
+    background: {theme.PAGE_BG};
+    color: {theme.TEXT_PRIMARY};
+    border: 1px solid {theme.DIVIDER};
+    border-radius: 12px;
+    outline: none;
+}}
+QPushButton:focus {{
+    background: {theme.PAGE_BG};
+    border: 1px solid {theme.DIVIDER};
+    outline: none;
+}}
+QPushButton:pressed {{
+    background: {theme.DIVIDER};
+}}
+QPushButton:disabled {{
+    color: {theme.TEXT_MUTED};
+}}
+"""
+
+
+def _format_mmss(ms: int) -> str:
+    total_seconds = max(ms, 0) // 1000
+    return f"{total_seconds // 60}:{total_seconds % 60:02d}"
+
+
+def _muted_label(text: str) -> QLabel:
+    label = QLabel(text)
+    label.setStyleSheet(f"color: {theme.TEXT_MUTED}; font-size: 11px;")
+    return label
 
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("Pen Mixer EQ")
+        self.setWindowTitle("Write FM")
         self.engine = AudioEngine()
         self.reader: SerialReader | SimulatedReader | TcpReader | BleReader | None = None
         self._touch_gains = BandGains(0.0, 0.0, 0.0)
         self._silent_ticks = 0
+        self._spotify_progress_ms = 0
+        self._spotify_duration_ms = 0
+        self._spotify_has_track = False
 
-        root = QWidget()
-        layout = QVBoxLayout(root)
+        self.spotify_poller: SpotifyPoller | None = (
+            SpotifyPoller() if spotifyio.available() else None
+        )
 
-        # Board status banner: always visible, never overwritten by audio messages.
+        central = QWidget()
+        central.setObjectName("dashboard")
+        central.setStyleSheet(f"#dashboard {{ background: {theme.PAGE_BG}; }}")
+        root = QVBoxLayout(central)
+        # Margins/spacing have to clear each card's own shadow bleed (offset
+        # + blur, ~24px on the dark bottom-right side) or the next card/the
+        # window edge cuts the shadow off instead of letting it fade out.
+        root.setContentsMargins(32, 28, 40, 40)
+        root.setSpacing(36)
+
+        self._build_settings_dialog()
+        root.addWidget(self._build_top_bar())
+
+        self.spectrum = SpectrumWidget()
+        root.addWidget(self.spectrum)
+
+        row = QHBoxLayout()
+        row.setSpacing(36)
+        row.addWidget(theme.with_dual_shadow(self._build_session_card()), 3)
+        row.addWidget(theme.with_dual_shadow(self._build_track_card()), 4)
+        row.addWidget(theme.with_dual_shadow(self._build_equalizer_card()), 4)
+        root.addLayout(row)
+
+        self.setCentralWidget(central)
+
+        if self.spotify_poller is not None:
+            self.spotify_poller.track_changed.connect(self._on_spotify_track)
+            self.spotify_poller.art_changed.connect(self._on_spotify_art)
+            self.spotify_poller.status_changed.connect(self._on_spotify_status)
+            self.spotify_poller.start()
+
+        self._clock_timer = QTimer(self)
+        self._clock_timer.timeout.connect(self._update_clock)
+        self._clock_timer.start(1000)
+        self._update_clock()
+
+        self._ui_timer = QTimer(self)
+        self._ui_timer.timeout.connect(self._refresh)
+        self._ui_timer.start(33)
+
+        self._restart_reader()
+
+    # ---- dashboard construction -----------------------------------------
+    def _build_top_bar(self) -> QWidget:
+        bar = QFrame()
+        bar.setObjectName("topbar")
+        bar.setStyleSheet(f"#topbar {{ background: {theme.BAR_BG}; border-radius: 26px; }}")
+        layout = QHBoxLayout(bar)
+        layout.setContentsMargins(28, 14, 28, 14)
+
+        self.clock_label = QLabel()
+        self.clock_label.setStyleSheet(f"color: {theme.BAR_TEXT};")
+        layout.addWidget(self.clock_label, 1)
+
+        title = QLabel("WRITE FM")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_font = title.font()
+        title_font.setBold(True)
+        title_font.setPointSize(13)
+        title.setFont(title_font)
+        title.setStyleSheet(f"color: {theme.BAR_TITLE};")
+        layout.addWidget(title, 1)
+
+        right = QHBoxLayout()
+        right.addStretch(1)
+        version = QLabel("VER 2026")
+        version.setStyleSheet(f"color: {theme.BAR_TEXT};")
+        right.addWidget(version)
+
+        self.settings_button = QPushButton("S")
+        self.settings_button.setFixedSize(26, 26)
+        self.settings_button.setToolTip("Board status, Bluetooth, routing, motion meters")
+        self.settings_button.setStyleSheet(
+            f"QPushButton {{ background: transparent; color: {theme.BAR_TEXT}; "
+            f"border: 1px solid {theme.BAR_TEXT}; border-radius: 13px; }}"
+        )
+        self.settings_button.clicked.connect(self._open_settings)
+        right.addWidget(self.settings_button)
+
+        self.help_button = QPushButton("?")
+        self.help_button.setFixedSize(26, 26)
+        self.help_button.setStyleSheet(
+            f"QPushButton {{ background: {theme.BLUE}; color: white; "
+            f"border-radius: 13px; font-weight: 700; }}"
+        )
+        self.help_button.clicked.connect(self._show_help)
+        right.addWidget(self.help_button)
+
+        layout.addLayout(right, 1)
+        return bar
+
+    def _build_session_card(self) -> QWidget:
+        card = theme.Card()
+        layout = QVBoxLayout(card)
+        layout.setContentsMargins(26, 24, 26, 26)
+        layout.setSpacing(14)
+
+        status_row = QHBoxLayout()
+        self.session_dot = QLabel()
+        self.session_dot.setFixedSize(10, 10)
+        status_row.addWidget(self.session_dot)
+        self.session_status_label = QLabel("Stopped")
+        status_font = self.session_status_label.font()
+        status_font.setBold(True)
+        self.session_status_label.setFont(status_font)
+        self.session_status_label.setStyleSheet(f"color: {theme.TEXT_PRIMARY};")
+        status_row.addWidget(self.session_status_label)
+        status_row.addStretch(1)
+        layout.addLayout(status_row)
+
+        divider = QFrame()
+        divider.setFixedHeight(1)
+        divider.setStyleSheet(f"background: {theme.DIVIDER}; border: none;")
+        layout.addWidget(divider)
+
+        self.input_box = QComboBox()
+        self.output_box = QComboBox()
+        # Device names ("CABLE Output (VB-Audio Virtual...") are long enough
+        # to force the card wide if the combo sizes to fit them; cap the
+        # visible width to a character count and let Qt elide the rest.
+        for combo in (self.input_box, self.output_box):
+            combo.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+            combo.setMinimumContentsLength(12)
+        layout.addWidget(_muted_label("INPUT"))
+        layout.addWidget(self.input_box)
+        layout.addWidget(_muted_label("OUTPUT"))
+        layout.addWidget(self.output_box)
+        self._populate_devices()
+
+        vol_head = QHBoxLayout()
+        vol_head.addWidget(_muted_label("VOLUME"))
+        vol_head.addStretch(1)
+        self.volume_readout = QLabel("+9.0 dB")
+        self.volume_readout.setStyleSheet(f"color: {theme.TEXT_MUTED};")
+        vol_head.addWidget(self.volume_readout)
+        layout.addLayout(vol_head)
+        self.volume_slider = QSlider(Qt.Orientation.Horizontal)
+        self.volume_slider.setRange(0, 150)  # 0 to +15 dB, tenths
+        self.volume_slider.setValue(90)
+        self.volume_slider.valueChanged.connect(self._volume_changed)
+        self.volume_slider.setStyleSheet(SLIDER_QSS)
+        layout.addWidget(self.volume_slider)
+
+        layout.addStretch(1)
+
+        # Spotify transport: a big orange pause/play pill plus back/skip below,
+        # matching the reference exactly. The EQ engine's own start/stop lives
+        # in Settings now instead of duplicating a second "play" control here.
+        self.spotify_play_pause_button = QPushButton()
+        self.spotify_play_pause_button.setFixedHeight(54)
+        self.spotify_play_pause_button.setStyleSheet(
+            f"QPushButton {{ background: {theme.ORANGE}; color: {theme.TEXT_PRIMARY}; "
+            f"border-radius: 27px; font-weight: 700; font-size: 16px; border: none; "
+            f"outline: none; }}"
+            f"QPushButton:focus {{ background: {theme.ORANGE}; border: none; outline: none; }}"
+            f"QPushButton:disabled {{ background: {theme.DIVIDER}; color: {theme.TEXT_MUTED}; }}"
+        )
+        self.spotify_play_pause_button.setAutoDefault(False)
+        self.spotify_play_pause_button.setDefault(False)
+        layout.addWidget(self.spotify_play_pause_button)
+
+        transport_row = QHBoxLayout()
+        transport_row.setSpacing(10)
+        self.prev_button = QPushButton("|◀")
+        self.next_button = QPushButton("▶|")
+        for button in (self.prev_button, self.next_button):
+            button.setFixedHeight(44)
+            button.setStyleSheet(TRANSPORT_BUTTON_QSS)
+            # Without this, Windows paints a native blue "default button"
+            # highlight behind whichever of these gets autoDefault first.
+            button.setAutoDefault(False)
+            button.setDefault(False)
+            transport_row.addWidget(button)
+        layout.addLayout(transport_row)
+        if self.spotify_poller is not None:
+            self.prev_button.clicked.connect(self.spotify_poller.previous_track)
+            self.spotify_play_pause_button.clicked.connect(self.spotify_poller.play_pause)
+            self.next_button.clicked.connect(self.spotify_poller.next_track)
+        else:
+            for button in (self.prev_button, self.spotify_play_pause_button, self.next_button):
+                button.setEnabled(False)
+
+        self._sync_session_ui()
+        card.setMaximumWidth(400)
+        return card
+
+    def _build_track_card(self) -> QWidget:
+        card = theme.Card()
+        layout = QVBoxLayout(card)
+        layout.setContentsMargins(26, 24, 26, 26)
+        layout.setSpacing(10)
+
+        header_row = QHBoxLayout()
+        header = QLabel("TRACK")
+        header_font = header.font()
+        header_font.setBold(True)
+        header_font.setPointSize(12)
+        header.setFont(header_font)
+        header.setStyleSheet(f"color: {theme.TEXT_PRIMARY};")
+        header_row.addWidget(header)
+        header_row.addStretch(1)
+        header_row.addWidget(_muted_label("+"))
+        layout.addLayout(header_row)
+
+        self.track_art = TrackArt()
+        art_row = QHBoxLayout()
+        art_row.addStretch(1)
+        art_row.addWidget(self.track_art)
+        art_row.addStretch(1)
+        layout.addLayout(art_row)
+
+        self.track_artist_label = QLabel()
+        self.track_artist_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.track_artist_label.setStyleSheet(f"color: {theme.TEXT_MUTED};")
+        layout.addWidget(self.track_artist_label)
+
+        self.track_title_label = QLabel(
+            "Not connected" if self.spotify_poller is None else "Connecting..."
+        )
+        self.track_title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.track_title_label.setWordWrap(True)
+        title_font = self.track_title_label.font()
+        title_font.setBold(True)
+        title_font.setPointSize(13)
+        self.track_title_label.setFont(title_font)
+        self.track_title_label.setStyleSheet(f"color: {theme.TEXT_PRIMARY};")
+        layout.addWidget(self.track_title_label)
+
+        self.track_progress = QProgressBar()
+        self.track_progress.setRange(0, 1000)
+        self.track_progress.setTextVisible(False)
+        self.track_progress.setFixedHeight(4)
+        self.track_progress.setStyleSheet(
+            f"QProgressBar {{ background: {theme.DIVIDER}; border: none; border-radius: 2px; }}"
+            f"QProgressBar::chunk {{ background: {theme.TEXT_PRIMARY}; border-radius: 2px; }}"
+        )
+        layout.addWidget(self.track_progress)
+
+        self.track_time_label = QLabel("0:00 / 0:00")
+        self.track_time_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.track_time_label.setStyleSheet(f"color: {theme.TEXT_MUTED}; font-size: 11px;")
+        layout.addWidget(self.track_time_label)
+
+        layout.addStretch(1)
+
+        source_row = QHBoxLayout()
+        source_row.addWidget(_muted_label("PLAYING FROM"))
+        spotify_tag = QLabel("Spotify")
+        spotify_tag.setStyleSheet(f"color: {theme.GREEN}; font-weight: 700;")
+        source_row.addWidget(spotify_tag)
+        source_row.addStretch(1)
+        layout.addLayout(source_row)
+
+        return card
+
+    def _build_equalizer_card(self) -> QWidget:
+        card = theme.Card()
+        layout = QVBoxLayout(card)
+        layout.setContentsMargins(26, 24, 26, 26)
+        layout.setSpacing(16)
+
+        header = QLabel("EQUALIZER")
+        header_font = header.font()
+        header_font.setBold(True)
+        header_font.setPointSize(12)
+        header.setFont(header_font)
+        header.setStyleSheet(f"color: {theme.TEXT_PRIMARY};")
+        layout.addWidget(header)
+
+        slider_row = QHBoxLayout()
+        slider_row.setSpacing(40)
+        self.sliders: list[EqSlider] = []
+        for freq_text, band_name in EQ_BANDS:
+            column = QVBoxLayout()
+            slider = EqSlider()
+            slider.setRange(int(-GAIN_LIMIT_DB * SLIDER_SCALE), int(GAIN_LIMIT_DB * SLIDER_SCALE))
+            slider.setValue(0)
+            slider.setMinimumHeight(220)
+            slider.valueChanged.connect(self._sliders_changed)
+            column.addWidget(slider, alignment=Qt.AlignmentFlag.AlignHCenter)
+            freq_label = QLabel(freq_text)
+            freq_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+            freq_label.setStyleSheet(f"color: {theme.TEXT_MUTED}; font-size: 10px;")
+            column.addWidget(freq_label)
+            name_label = QLabel(band_name)
+            name_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+            name_font = name_label.font()
+            name_font.setBold(True)
+            name_label.setFont(name_font)
+            name_label.setStyleSheet(f"color: {theme.TEXT_PRIMARY};")
+            column.addWidget(name_label)
+            slider_row.addLayout(column)
+            self.sliders.append(slider)
+        layout.addLayout(slider_row)
+        layout.addStretch(1)
+        return card
+
+    def _build_settings_dialog(self) -> None:
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Settings")
+        layout = QVBoxLayout(dialog)
+
         self.board_label = QLabel()
         self.board_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self._set_board_status(False, "Pen board not detected")
         layout.addWidget(self.board_label)
 
-        # Device row
-        device_row = QHBoxLayout()
-        self.input_box = QComboBox()
-        self.output_box = QComboBox()
-        self._populate_devices()
-        device_row.addWidget(QLabel("Input"))
-        device_row.addWidget(self.input_box, 1)
-        device_row.addWidget(QLabel("Output"))
-        device_row.addWidget(self.output_box, 1)
-        self.rescan_button = QPushButton("Rescan")
-        self.rescan_button.setToolTip(
-            "Re-detect audio devices (use after installing VB-CABLE/BlackHole "
-            "or plugging in headphones)"
-        )
-        self.rescan_button.clicked.connect(self._rescan_devices)
-        device_row.addWidget(self.rescan_button)
-        layout.addLayout(device_row)
-
-        # Live spectrum
-        self.spectrum = SpectrumWidget()
-        layout.addWidget(self.spectrum)
-
-        # Sliders
-        slider_row = QHBoxLayout()
-        self.sliders: list[QSlider] = []
-        self.readouts: list[QLabel] = []
-        for name in BANDS:
-            column = QVBoxLayout()
-            readout = QLabel("0.0 dB")
-            readout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-            slider = QSlider(Qt.Orientation.Vertical)
-            slider.setRange(int(-GAIN_LIMIT_DB * SLIDER_SCALE), int(GAIN_LIMIT_DB * SLIDER_SCALE))
-            slider.setValue(0)
-            slider.setMinimumHeight(220)
-            slider.valueChanged.connect(self._sliders_changed)
-            label = QLabel(name)
-            label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-            column.addWidget(readout)
-            column.addWidget(slider, alignment=Qt.AlignmentFlag.AlignHCenter)
-            column.addWidget(label)
-            slider_row.addLayout(column)
-            self.sliders.append(slider)
-            self.readouts.append(readout)
-        layout.addLayout(slider_row)
-
-        # Controls
-        control_row = QHBoxLayout()
-        self.start_button = QPushButton("Start audio")
-        self.start_button.clicked.connect(self._toggle_audio)
+        source_row = QHBoxLayout()
         self.touch_toggle = QCheckBox("Pen control")
         self.touch_toggle.setChecked(True)
         self.source_box = QComboBox()
-        self.source_box.addItems(["USB serial (cable)", "Bluetooth (pen board)", "Simulate (no board)"])
+        self.source_box.addItems(
+            ["USB serial (cable)", "Bluetooth (pen board)", "Simulate (no board)"]
+        )
         self.source_box.currentIndexChanged.connect(self._restart_reader)
-        control_row.addWidget(self.start_button)
-        control_row.addWidget(self.touch_toggle)
-        control_row.addWidget(QLabel("Source"))
-        control_row.addWidget(self.source_box)
+        source_row.addWidget(self.touch_toggle)
+        source_row.addWidget(QLabel("Source"))
+        source_row.addWidget(self.source_box)
         self.scan_bt_button = QPushButton("Scan Bluetooth")
         self.scan_bt_button.setToolTip(
             "List every Bluetooth device in range and connect to the one you pick"
         )
         self.scan_bt_button.clicked.connect(self._scan_bluetooth)
-        control_row.addWidget(self.scan_bt_button)
-        layout.addLayout(control_row)
+        source_row.addWidget(self.scan_bt_button)
+        layout.addLayout(source_row)
 
-        # Cross-platform: pick the loopback input and real speakers, start the
-        # engine, so the routed music is audible through this computer.
+        routing_row = QHBoxLayout()
+        self.audio_toggle_button = QPushButton("Start audio")
+        self.audio_toggle_button.setToolTip("Start/stop the pen-controlled EQ engine")
+        self.audio_toggle_button.clicked.connect(self._toggle_audio)
+        routing_row.addWidget(self.audio_toggle_button)
         self.hear_button = QPushButton("Hear music here")
         self.hear_button.setToolTip(
             "Select the loopback input (CABLE Output / BlackHole), select real "
             "speakers, and start the audio so you hear the routed music"
         )
         self.hear_button.clicked.connect(self._hear_music)
-        control_row.addWidget(self.hear_button)
-
-        # One-click system routing (SwitchAudioSource): send the Mac's output
-        # into BlackHole so the app hears the music; restored on exit.
+        routing_row.addWidget(self.hear_button)
         self._previous_output: str | None = None
         if routing.available():
             self.route_button = QPushButton("Route system audio here")
             self.route_button.clicked.connect(self._toggle_routing)
-            control_row.addWidget(self.route_button)
+            routing_row.addWidget(self.route_button)
+        self.rescan_button = QPushButton("Rescan")
+        self.rescan_button.setToolTip(
+            "Re-detect audio devices (use after installing VB-CABLE/BlackHole "
+            "or plugging in headphones)"
+        )
+        self.rescan_button.clicked.connect(self._rescan_devices)
+        routing_row.addWidget(self.rescan_button)
+        layout.addLayout(routing_row)
 
-        # Spotify now-playing + transport controls (Web API, PKCE auth)
-        self.spotify_poller: SpotifyPoller | None = None
-        if spotifyio.available():
-            spotify_row = QHBoxLayout()
-            self.prev_button = QPushButton("|<")
-            self.play_pause_button = QPushButton("Play/Pause")
-            self.next_button = QPushButton(">|")
-            self.spotify_label = QLabel("Spotify: connecting...")
-            self.prev_button.clicked.connect(lambda: self.spotify_poller.previous_track())
-            self.play_pause_button.clicked.connect(lambda: self.spotify_poller.play_pause())
-            self.next_button.clicked.connect(lambda: self.spotify_poller.next_track())
-            spotify_row.addWidget(self.prev_button)
-            spotify_row.addWidget(self.play_pause_button)
-            spotify_row.addWidget(self.next_button)
-            spotify_row.addWidget(self.spotify_label, 1)
-            layout.addLayout(spotify_row)
-            self.spotify_poller = SpotifyPoller()
-            self.spotify_poller.track_changed.connect(self._on_spotify_track)
-            self.spotify_poller.status_changed.connect(self._on_spotify_status)
-            self.spotify_poller.start()
-
-        # Live motion meters (F1: show the hand input as it moves); center = at rest
         pad_row = QHBoxLayout()
         self.pad_bars: list[QProgressBar] = []
         for name in ("Tilt (bass)", "Sway (mid)", "Twist (treble)"):
@@ -177,33 +481,44 @@ class MainWindow(QMainWindow):
             self.pad_bars.append(bar)
         layout.addLayout(pad_row)
 
-        # Output volume (makeup after the EQ; +9 dB cancels the input headroom pad)
-        vol_row = QHBoxLayout()
-        vol_row.addWidget(QLabel("Volume"))
-        self.volume_slider = QSlider(Qt.Orientation.Horizontal)
-        self.volume_slider.setRange(0, 150)  # 0 to +15 dB, tenths
-        self.volume_slider.setValue(90)
-        self.volume_readout = QLabel("+9.0 dB")
-        self.volume_slider.valueChanged.connect(self._volume_changed)
-        vol_row.addWidget(self.volume_slider, 1)
-        vol_row.addWidget(self.volume_readout)
-        layout.addLayout(vol_row)
-
-        # Level + status
         self.level_bar = QProgressBar()
         self.level_bar.setRange(0, 100)
         self.level_bar.setTextVisible(False)
         layout.addWidget(self.level_bar)
+
         self.status = QLabel("stopped")
         layout.addWidget(self.status)
 
-        self.setCentralWidget(root)
+        close_button = QPushButton("Close")
+        close_button.clicked.connect(dialog.close)
+        layout.addWidget(close_button)
 
-        self._ui_timer = QTimer(self)
-        self._ui_timer.timeout.connect(self._refresh)
-        self._ui_timer.start(33)
+        self._settings_dialog = dialog
 
-        self._restart_reader()
+    def _open_settings(self) -> None:
+        self._settings_dialog.show()
+        self._settings_dialog.raise_()
+        self._settings_dialog.activateWindow()
+
+    def _show_help(self) -> None:
+        QMessageBox.information(
+            self,
+            "Pen Mixer",
+            "Move the pen to shape a live 3-band EQ over your system audio.\n\n"
+            "Board status, Bluetooth, audio routing, Rescan, and the raw "
+            "motion meters live behind the gear icon.",
+        )
+
+    def _update_clock(self) -> None:
+        now = datetime.now().astimezone()
+        text = f"{now.strftime('%b')} {now.day}, {now.year}   "
+        hour = now.hour % 12 or 12
+        ampm = "AM" if now.hour < 12 else "PM"
+        text += f"{hour}:{now.minute:02d} {ampm}"
+        tz = now.strftime("%Z")
+        if tz:
+            text += f" {tz}"
+        self.clock_label.setText(text)
 
     # ---- devices -------------------------------------------------------
     def _populate_devices(self) -> None:
@@ -224,13 +539,13 @@ class MainWindow(QMainWindow):
         was_running = self.engine.running
         if was_running:
             self.engine.stop()
-            self.start_button.setText("Start audio")
+            self._sync_session_ui()
         rescan_devices()
         self._populate_devices()
         self.status.setText(
             f"devices rescanned: {self.input_box.count()} inputs, "
             f"{self.output_box.count()} outputs"
-            + ("; press Start audio again" if was_running else "")
+            + ("; press Play again" if was_running else "")
         )
 
     # ---- bluetooth scan ------------------------------------------------
@@ -318,7 +633,7 @@ class MainWindow(QMainWindow):
     def _set_board_status(self, connected: bool, text: str) -> None:
         simulated = "simulated" in text
         color = "#b58900" if simulated else "#2e8b57" if connected else "#c0392b"
-        dot = "\u25cf"
+        dot = "●"
         self.board_label.setText(f'<b style="color:{color}">{dot} {text}</b>')
 
     def _on_frame(self, frame: TouchFrame) -> None:
@@ -338,15 +653,35 @@ class MainWindow(QMainWindow):
         self._push_gains()
 
     # ---- spotify ---------------------------------------------------------
-    def _on_spotify_track(self, title: str, artist: str, is_playing: bool) -> None:
+    def _on_spotify_track(
+        self, title: str, artist: str, is_playing: bool, progress_ms: int, duration_ms: int
+    ) -> None:
+        self.spotify_play_pause_button.setText("||" if is_playing else "▶")
         if not title:
-            self.spotify_label.setText("Spotify: nothing playing")
+            self._spotify_has_track = False
+            self.track_artist_label.setText("")
+            self.track_title_label.setText("Nothing playing")
+            self.track_progress.setValue(0)
+            self.track_time_label.setText("0:00 / 0:00")
+            return
+        self._spotify_has_track = True
+        self.track_artist_label.setText(artist)
+        self.track_title_label.setText(title)
+        self._spotify_progress_ms = progress_ms
+        self._spotify_duration_ms = duration_ms
+        if duration_ms > 0:
+            self.track_progress.setValue(int(min(progress_ms / duration_ms, 1.0) * 1000))
         else:
-            state = "playing" if is_playing else "paused"
-            self.spotify_label.setText(f"{title} — {artist} ({state})")
+            self.track_progress.setValue(0)
+        self.track_time_label.setText(f"{_format_mmss(progress_ms)} / {_format_mmss(duration_ms)}")
+
+    def _on_spotify_art(self, data: bytes) -> None:
+        self.track_art.set_image(data)
 
     def _on_spotify_status(self, text: str) -> None:
-        self.spotify_label.setText(text)
+        self.status.setText(text)
+        if not self._spotify_has_track:
+            self.track_title_label.setText(text)
 
     # ---- gains ---------------------------------------------------------
     def _sliders_changed(self) -> None:
@@ -359,10 +694,6 @@ class MainWindow(QMainWindow):
     def _push_gains(self) -> None:
         gains = self._current_gains()
         self.engine.set_gains(gains)
-        for readout, value in zip(
-            self.readouts, (gains.bass_db, gains.mid_db, gains.treble_db)
-        ):
-            readout.setText(f"{value:+.1f} dB")
 
     def _hear_music(self) -> None:
         preferred = default_input_index()
@@ -379,7 +710,7 @@ class MainWindow(QMainWindow):
         self._select_preferred_output()
         if self.engine.running:
             self.engine.stop()
-            self.start_button.setText("Start audio")
+            self._sync_session_ui()
         self._toggle_audio()
 
     # ---- system routing ------------------------------------------------
@@ -436,10 +767,17 @@ class MainWindow(QMainWindow):
             self._previous_output = None
 
     # ---- audio ---------------------------------------------------------
+    def _sync_session_ui(self) -> None:
+        running = self.engine.running
+        self.audio_toggle_button.setText("Stop audio" if running else "Start audio")
+        color = theme.GREEN if running else theme.TEXT_MUTED
+        self.session_dot.setStyleSheet(f"background: {color}; border-radius: 5px;")
+        self.session_status_label.setText("Playing" if running else "Stopped")
+
     def _toggle_audio(self) -> None:
         if self.engine.running:
             self.engine.stop()
-            self.start_button.setText("Start audio")
+            self._sync_session_ui()
             # Hand the system audio back so stopping never means silence.
             if self._previous_output is not None:
                 restored = self._previous_output
@@ -454,7 +792,7 @@ class MainWindow(QMainWindow):
                 input_index=self.input_box.currentData(),
                 output_index=self.output_box.currentData(),
             )
-            self.start_button.setText("Stop audio")
+            self._sync_session_ui()
             self.status.setText("audio running")
         except Exception as exc:  # noqa: BLE001 - any start failure is surfaced to the user
             self.status.setText(f"audio failed to start: {exc}")
