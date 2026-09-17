@@ -10,6 +10,7 @@ equalizer. Board status, Bluetooth, audio routing, Rescan, and the raw
 motion meters live behind the gear icon in the top bar.
 """
 
+import math
 import os
 from datetime import datetime
 
@@ -32,7 +33,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from . import routing, spotifyio, theme
+from . import routing, spotifyio, sysvol, theme
 from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
@@ -156,6 +157,11 @@ class MainWindow(QMainWindow):
         self._ui_timer = QTimer(self)
         self._ui_timer.timeout.connect(self._refresh)
         self._ui_timer.start(33)
+
+        self._sys_vol_last: tuple[float, bool] | None = None
+        self._sysvol_timer = QTimer(self)
+        self._sysvol_timer.timeout.connect(self._sync_system_volume)
+        self._sysvol_timer.start(300)
 
         self._restart_reader()
 
@@ -810,7 +816,34 @@ class MainWindow(QMainWindow):
                 "Output to BlackHole 2ch, then play music"
             )
 
+    def _sync_system_volume(self) -> None:
+        state = sysvol.get_volume()
+        if state is None:
+            self._sysvol_timer.stop()  # not available on this machine
+            return
+        if state == self._sys_vol_last:
+            return
+        first = self._sys_vol_last is None
+        self._sys_vol_last = state
+        scalar, muted = state
+        if muted or scalar <= 0.001:
+            self.volume_slider.setValue(self.volume_slider.minimum())
+            return
+        # Full system volume lands on the slider's own maximum, so computer
+        # max and app max are the same thing; lower volumes scale down from
+        # there. Past +9 the gain eats the EQ boost headroom, so loud tracks
+        # at full volume can hit the clip.
+        db = 20.0 * math.log10(scalar) + self.volume_slider.maximum() / 10.0
+        value = max(self.volume_slider.minimum(), min(self.volume_slider.maximum(), int(db * 10)))
+        if first and value == self.volume_slider.value():
+            return
+        self.volume_slider.setValue(value)
+
     def _volume_changed(self, value: int) -> None:
+        if value <= self.volume_slider.minimum():
+            self.engine.set_makeup_db(-999.0)  # gain of ~0: a true mute
+            self.volume_readout.setText("muted")
+            return
         db = value / 10.0
         self.engine.set_makeup_db(db)
         self.volume_readout.setText(f"+{db:.1f} dB")
