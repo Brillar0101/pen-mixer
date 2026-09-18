@@ -47,7 +47,12 @@ flowchart LR
 
 ## The hardware
 
-The production board is a 13 x 35 mm, four-layer, 0.8 mm PCB, all SMD, designed
+Two production board shapes exist. v2.1 is a 13 x 35 mm bar (frozen in
+`production/kicad/v2/`). v3, the current design in `production/kicad/`, is a
+regular five-point star 40 mm tip to tip with a vertical, top-entry USB-C
+(G-Switch GT-USB-7055E) in the body so all five prongs are identical, the
+antenna at the top tip, LEDs out on the left arm and the button in the right
+arm; otherwise the same parts and the same four-layer 0.8 mm stack. The v2.1 board is a 13 x 35 mm, four-layer, 0.8 mm PCB, all SMD, designed
 to ride on a pen barrel with a 401230 LiPo at the back of the pen.
 
 | Ref | Part | Role |

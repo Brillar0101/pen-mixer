@@ -8,7 +8,7 @@ import numpy as np
 
 BASS_EDGE_HZ = 250.0
 TREBLE_EDGE_HZ = 2000.0
-WINDOW_SAMPLES = 2048
+WINDOW_SAMPLES = 4096  # 11.7 Hz per bin at 48 kHz, so the bass bars resolve
 FLOOR_DB = -70.0
 
 
@@ -56,6 +56,12 @@ def bar_spectrum(
         mask = (freqs >= edges[i]) & (freqs < edges[i + 1])
         if mask.any():
             levels[i] = _to_unit(float(np.sqrt(np.mean(spectrum[mask] ** 2))))
+        else:
+            # Low bars on a log scale can be narrower than one FFT bin, and an
+            # empty mask would leave them dark forever. Read the nearest bin.
+            center = np.sqrt(edges[i] * edges[i + 1])
+            nearest = int(np.argmin(np.abs(freqs - center)))
+            levels[i] = _to_unit(float(spectrum[nearest]))
     return levels
 
 

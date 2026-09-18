@@ -34,7 +34,15 @@ from PySide6.QtWidgets import (
 )
 
 from . import routing, spotifyio, sysvol, theme
-from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
+from .audio import (
+    AudioEngine,
+    default_input_index,
+    is_virtual_sink,
+    list_devices,
+    preferred_hostapi,
+    preferred_output_index,
+    rescan_devices,
+)
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
 from .mapping import BandGains, gains_from_frame, smooth
@@ -42,7 +50,7 @@ from .serialio import SerialReader, SimulatedReader
 from .spectrum import bar_spectrum
 from .spotifyio import SpotifyPoller
 from .tcpio import TcpReader
-from .viz import SpectrumWidget
+from .viz import BAR_COUNT, SpectrumWidget
 from .widgets import EqSlider, TrackArt
 
 SLIDER_SCALE = 10  # slider units per dB
@@ -156,12 +164,17 @@ class MainWindow(QMainWindow):
 
         self._ui_timer = QTimer(self)
         self._ui_timer.timeout.connect(self._refresh)
-        self._ui_timer.start(33)
+        self._ui_timer.start(16)
 
         self._sys_vol_last: tuple[float, bool] | None = None
         self._sysvol_timer = QTimer(self)
         self._sysvol_timer.timeout.connect(self._sync_system_volume)
         self._sysvol_timer.start(300)
+
+        # Start hearing music without a click: once the window is up, pick
+        # the loopback input and real speakers and start the engine, exactly
+        # what the "Hear music here" button does.
+        QTimer.singleShot(300, self._hear_music)
 
         self._restart_reader()
 
@@ -240,6 +253,14 @@ class MainWindow(QMainWindow):
 
         self.input_box = QComboBox()
         self.output_box = QComboBox()
+        for box in (self.input_box, self.output_box):
+            # Long labels ("CABLE Output ... [Windows WASAPI]") must ellipsize
+            # instead of forcing the window wider than a laptop screen.
+            box.setSizeAdjustPolicy(
+                QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
+            )
+            box.setMinimumContentsLength(16)
+        self.input_box.currentIndexChanged.connect(self._on_input_changed)
         # Device names ("CABLE Output (VB-Audio Virtual...") are long enough
         # to force the card wide if the combo sizes to fit them; cap the
         # visible width to a character count and let Qt elide the rest.
@@ -260,7 +281,10 @@ class MainWindow(QMainWindow):
         vol_head.addWidget(self.volume_readout)
         layout.addLayout(vol_head)
         self.volume_slider = QSlider(Qt.Orientation.Horizontal)
-        self.volume_slider.setRange(0, 150)  # 0 to +15 dB, tenths
+        # -60 dB to +24 dB in tenths; the bottom of the fader is a true mute.
+        # Past unity (+9) the gain eats the EQ boost headroom and can clip
+        # loud tracks.
+        self.volume_slider.setRange(-600, 240)
         self.volume_slider.setValue(90)
         self.volume_slider.valueChanged.connect(self._volume_changed)
         self.volume_slider.setStyleSheet(SLIDER_QSS)
@@ -528,18 +552,39 @@ class MainWindow(QMainWindow):
 
     # ---- devices -------------------------------------------------------
     def _populate_devices(self) -> None:
+        self.input_box.blockSignals(True)
+        self.output_box.blockSignals(True)
         self.input_box.clear()
         self.output_box.clear()
+        api = preferred_hostapi()
         for dev in list_devices():
+            # Show each endpoint once, on the host API everything runs on,
+            # instead of the four-per-device list Windows enumerates.
+            if api is not None and dev.hostapi != api:
+                continue
             if dev.inputs >= 2:
-                self.input_box.addItem(f"{dev.name}", dev.index)
-            if dev.outputs >= 2 and "blackhole" not in dev.name.lower():
-                self.output_box.addItem(f"{dev.name}", dev.index)
+                self.input_box.addItem(dev.name, dev.index)
+            if dev.outputs >= 2 and not is_virtual_sink(dev.name):
+                self.output_box.addItem(dev.name, dev.index)
         preferred = default_input_index()
         if preferred is not None:
             pos = self.input_box.findData(preferred)
             if pos >= 0:
                 self.input_box.setCurrentIndex(pos)
+        self.input_box.blockSignals(False)
+        self.output_box.blockSignals(False)
+        self._select_preferred_output()
+
+    def _on_input_changed(self) -> None:
+        """Keep the output on the input's host API, or the stream won't open."""
+        devices = list_devices()
+        in_index = self.input_box.currentData()
+        out_index = self.output_box.currentData()
+        if in_index is None or out_index is None:
+            return
+        if devices[in_index].hostapi == devices[out_index].hostapi:
+            return
+        self._select_preferred_output()
 
     def _rescan_devices(self) -> None:
         was_running = self.engine.running
@@ -754,18 +799,34 @@ class MainWindow(QMainWindow):
             self._previous_output = None
 
     def _select_preferred_output(self) -> None:
-        for hint in ("bose", "airpod", "headphone", "speaker"):
-            for i in range(self.output_box.count()):
-                if hint in self.output_box.itemText(i).lower():
-                    self.output_box.setCurrentIndex(i)
-                    return
+        index = preferred_output_index(self.input_box.currentData())
+        if index is None:
+            return
+        pos = self.output_box.findData(index)
+        if pos >= 0:
+            self.output_box.setCurrentIndex(pos)
 
     def _select_output_by_name(self, name: str) -> None:
-        for i in range(self.output_box.count()):
-            item = self.output_box.itemText(i)
-            if name in item or item in name:
-                self.output_box.setCurrentIndex(i)
-                return
+        """Pick the named output, preferring the input's host API."""
+        devices = list_devices()
+        in_index = self.input_box.currentData()
+        api = devices[in_index].hostapi if in_index is not None else None
+        fallback = None
+        for dev in devices:
+            if dev.outputs < 2:
+                continue
+            if name not in dev.name and dev.name not in name:
+                continue
+            if api is not None and dev.hostapi == api:
+                fallback = dev.index
+                break
+            if fallback is None:
+                fallback = dev.index
+        if fallback is None:
+            return
+        pos = self.output_box.findData(fallback)
+        if pos >= 0:
+            self.output_box.setCurrentIndex(pos)
 
     def _restore_routing(self) -> None:
         if self._previous_output is not None:
@@ -846,14 +907,14 @@ class MainWindow(QMainWindow):
             return
         db = value / 10.0
         self.engine.set_makeup_db(db)
-        self.volume_readout.setText(f"+{db:.1f} dB")
+        self.volume_readout.setText(f"{db:+.1f} dB")
 
     def _refresh(self) -> None:
         level = min(int(self.engine.output_level * 300), 100)
         self.level_bar.setValue(level if self.engine.running else 0)
         if self.engine.running:
             window = self.engine.latest_window()
-            bars = bar_spectrum(window, self.engine.samplerate)
+            bars = bar_spectrum(window, self.engine.samplerate, bars=BAR_COUNT)
             self.spectrum.update_levels(bars)
             self._check_silence()
 

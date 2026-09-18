@@ -20,7 +20,9 @@ Settled decisions. Build on these; do not re-litigate.
 - **Run DRC after every board edit.** Baseline: 0 unconnected, 0 errors; the 2
   TrueType text_thickness warnings on the board label are accepted.
 - One editor at a time: quit KiCad before editing files on disk, reopen after.
-- v1 is frozen: git tag v1 and production/kicad/v1/. Current board is v2, 13 x 35 mm.
+- v1 is frozen: git tag v1 and production/kicad/v1/. v2 (13 x 35 mm, v2.1 board) is
+  frozen: git tag v2 and production/kicad/v2/. Current board is v3, a regular five-point
+  star 40 mm tip to tip with a vertical (top-entry) USB-C in the body; antenna tip at the top.
 
 ## Sourcing
 
