@@ -186,12 +186,15 @@ module star_cuts() {
 
 // Slide-in rails on the roof for a wooden slab. Enters at -X, stops at +X.
 slab_len = 58; slab_wid = 27; slab_thk = 5;
-slab_clear_w = 0.15;   // per side
-slab_clear_h = 0.3;
-rail_lip = 1.5;        // how far the lip reaches over the slab
+slab_clear_w = 1.15;   // per side: channel is slab + 2.3 mm wide
+slab_clear_h = 1.3;    // channel is slab + 1.3 mm tall
+rail_lip = 2.5;        // lip reach from the channel wall; overlaps the slab by 1.35 mm
 lip_thk = 1.0;
 stop_wall = 1.6;
 detent = 0.3;
+rail_round = 0.45;     // edge radius on the rails and stop wall
+// Round every convex and concave corner of a 2D profile by r.
+module round2d(r) { offset(r=r) offset(delta=-r) offset(r=-r) offset(delta=r) children(); }
 module slab_rails() {
     hx = slab_wid/2 + slab_clear_w;
     z0 = H - edge_fillet;   // fuses through the roof edge fillet
@@ -200,12 +203,19 @@ module slab_rails() {
     intersection() {
         translate([0,0,z0]) rounded_prism(OL,OW,zt-z0,lid_corner);
         union() {
-            for (s=[-1,1]) {
-                translate([-OL/2, s>0 ? hx : -OW/2, z0]) cube([OL, OW/2-hx, zt-z0]);
-                translate([-OL/2, s>0 ? hx-rail_lip : -hx, zc]) cube([OL, rail_lip, lip_thk]);
-                translate([-OL/2+1.5, s>0 ? hx-rail_lip : -hx, zc-detent]) cube([1, rail_lip, detent+eps]);
+            for (s=[-1,1]) scale([1,s,1]) {
+                // rail wall and lip as one rounded profile swept along the length
+                translate([-OL/2,0,0]) rotate([90,0,90]) linear_extrude(OL)
+                    round2d(rail_round) union() {
+                        translate([hx, z0 - 2*rail_round]) square([OW/2 - hx + 2*rail_round, zt - z0 + 2*rail_round]);
+                        translate([hx - rail_lip, zc]) square([rail_lip + eps, lip_thk]);
+                    }
+                // detent under each lip at the entry end
+                translate([-OL/2+1.5, hx-rail_lip, zc-detent]) cube([1, rail_lip, detent+eps]);
             }
-            translate([OL/2-stop_wall, -OW/2, z0]) cube([stop_wall, OW, zt-z0]);
+            // stop wall with rounded top edges
+            translate([0,OW/2+1,0]) rotate([90,0,0]) linear_extrude(OW+2)
+                round2d(rail_round) translate([OL/2 - stop_wall, z0 - 2*rail_round]) square([stop_wall + 2*rail_round, zt - z0 + 2*rail_round]);
         }
     }
 }

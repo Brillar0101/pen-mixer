@@ -12,8 +12,10 @@ removed; set `stars` in enclosure.scad to bring them back.
   are part of the lid.
 - `stars.3mf`: PrusaSlicer project, both parts side by side on the
   Anycubic Mega S bed with the transparent-PLA settings.
-- `stars.gcode`: ready to print on the Mega S. 3 h 50 min, 21.8 g PLA.
+- `stars.gcode`: ready to print on the Mega S. 3 h 52 min, 21.7 g PLA.
 - `case_both.blend`: assembled scene with the slab in the rails.
+- `tools/make_3mf.py`, `tools/make_blend.py`: rebuild the 3MF and the
+  Blender scene after re-exporting the STLs.
 - `megas_pla_prusaslicer.ini`: the base Mega S PLA profile.
 
 ## Print settings (transparent PLA)
@@ -27,8 +29,10 @@ keep edges crisp.
 
 - Cavity 59 x 25 x 15 mm. Lid snaps over the tray with four hooked tabs.
 - The slab slides in from the -X end and stops against the +X wall; a
-  0.3 mm detent under each lip holds it. 0.15 mm side and 0.3 mm top
-  clearance.
+  0.3 mm detent under each lip holds it. Channel is 29.3 x 6.3 mm for a
+  27 x 5 mm slab (1.15 mm per side, 1.3 mm above), widened after the first
+  slab did not fit. Lips reach 2.5 mm in, overlapping the slab 1.35 mm.
+- Rail and stop-wall edges are rounded at 0.45 mm.
 - The lid prints rails-down, so its roof spans the 27.3 mm slab channel.
   Printing that as an unsupported bridge failed, so the slice puts support
   material inside the channel only (build plate only, 0.2 mm gap, 2
