@@ -194,7 +194,7 @@ stop_wall = 1.6;
 detent = 0.3;
 module slab_rails() {
     hx = slab_wid/2 + slab_clear_w;
-    z0 = H;
+    z0 = H - edge_fillet;   // fuses through the roof edge fillet
     zc = H + slab_thk + slab_clear_h;
     zt = zc + lip_thk;
     intersection() {
@@ -209,13 +209,13 @@ module slab_rails() {
         }
     }
 }
-module top_with_stars() { difference() { top_assembled(); star_cuts(); } }
+module top_with_stars() { difference() { union() { top_assembled(); slab_rails(); } star_cuts(); } }
 rails_top = H + slab_thk + slab_clear_h + lip_thk;
 // Separate glue-on frame. Printed lip side down: no bridges or overhangs.
 module rails_print() { translate([0,0,rails_top]) rotate([180,0,0]) slab_rails(); }
 
 module top_print() {
-    translate([0,0,H]) rotate([180,0,0]) top_with_stars();
+    translate([0,0,rails_top]) rotate([180,0,0]) top_with_stars();
 }
 
 if (part=="bottom") bottom();
@@ -224,7 +224,6 @@ else if (part=="top") top_print();
 else if (part=="assembled") {
     color("SlateGray") bottom();
     color("Orange") top_with_stars();
-    color("Wheat") slab_rails();
 }
 else if (part=="exploded") {
     color("SlateGray") bottom();
@@ -234,5 +233,4 @@ else if (part=="interference") intersection() { bottom(); top_assembled(); }
 else {
     translate([0,-(OW+6)/2,0]) bottom();
     translate([0,(OW+6)/2,0]) top_print();
-    translate([0,(OW+6)/2 + OW + 6,0]) rails_print();
 }
