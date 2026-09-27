@@ -174,7 +174,7 @@ module top_assembled() {
 // Star cut-outs through the lid roof, kept inside the cavity footprint.
 star_points = 5;
 star_inner_ratio = 0.42;
-stars = [[-21,4,5],[-12,-6,3],[-4,6,2.5],[4,-4,4.5],[14,5,3.5],[22,-5,3],[24,7,2]]; // [x, y, outer radius]
+stars = []; // [x, y, outer radius] -- stars removed; add entries to bring them back
 module star2d(r) {
     polygon([for (i=[0:2*star_points-1])
         let(a = 90 + i*180/star_points, rr = (i%2==0) ? r : r*star_inner_ratio)
