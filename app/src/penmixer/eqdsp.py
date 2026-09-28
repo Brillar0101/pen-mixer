@@ -100,7 +100,13 @@ class ThreeBandEq:
         return self._gains
 
     def process(self, block: np.ndarray) -> np.ndarray:
-        """Filter one (frames, channels) float32 block; returns a new array."""
+        """Filter one (frames, channels) float32 block; returns a new array.
+
+        The result may exceed +/-1: a boosted band legitimately does, and this
+        is float, so nothing is lost by letting it. Clamping here instead
+        squared off the waveform before the make-up gain had a chance to
+        scale it back, which is distortion the output stage cannot undo.
+        """
         out = np.empty_like(block)
         for ch in range(min(self._channels, block.shape[1])):
             signal = block[:, ch].astype(np.float64)
@@ -108,5 +114,5 @@ class ThreeBandEq:
                 signal, self._state[ch][i] = lfilter(
                     biq.b, biq.a, signal, zi=self._state[ch][i]
                 )
-            out[:, ch] = np.clip(signal, -1.0, 1.0).astype(block.dtype)
+            out[:, ch] = signal.astype(block.dtype)
         return out

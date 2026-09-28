@@ -293,6 +293,49 @@ it taps the same speakers this app plays into, so the app would hear its
 own output and feed back on itself, and many Realtek drivers mix the
 microphone into it as well.
 
+## Spotify now playing
+
+The track card (artwork, title, artist, progress) and the transport buttons
+talk to the Spotify Web API. This is separate from the audio path: the API
+tells the app what is playing, while the sound itself still has to reach the
+EQ through the loopback device. Fixing one does not fix the other, and the
+EQ works fine with Spotify never configured at all.
+
+Auth is PKCE, so there is no client secret to keep safe, but you do need a
+client id of your own. It is not a secret and it is safe to paste into a
+shell.
+
+1. Go to https://developer.spotify.com/dashboard and create an app. Any name
+   works.
+2. In the app's settings, add `http://127.0.0.1:8888/callback` as a redirect
+   URI. It has to match exactly, including the port. If you want a different
+   one, set `SPOTIFY_REDIRECT_URI` to match.
+3. Copy the Client ID.
+4. Set it in the environment before launching. It is read once at import, so
+   exporting it after the app starts does nothing.
+
+```powershell
+# Windows
+$env:SPOTIFY_CLIENT_ID="paste-your-client-id-here"
+venv\Scripts\python -m penmixer.app
+```
+
+```bash
+# macOS and Linux
+export SPOTIFY_CLIENT_ID=paste-your-client-id-here
+venv/bin/python -m penmixer.app
+```
+
+The first run opens a browser to sign in, then caches the refresh token at
+`~/.cache/penmixer/spotify_token.json` so later runs skip that step. The
+cache holds only the tokens, not the client id, so you still need the
+environment variable every time. Setting it permanently (a shell profile, or
+System Properties on Windows) saves rediscovering it later.
+
+Without the variable the track card reads "Set SPOTIFY_CLIENT_ID" and the
+transport buttons are disabled. That is the expected state, not a failure to
+connect.
+
 ## Installing Docker
 
 Docker is optional: the app runs natively without it. It gives you the

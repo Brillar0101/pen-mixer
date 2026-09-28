@@ -27,6 +27,24 @@ The firmware starts the moment the copy lands. This `code.py` is the BLE
 build: the board advertises as `PenMixer-Lexy`, and the app's Scan Bluetooth
 button or a green "Pen board connected" banner confirms it is alive.
 
+## The rest pose, and why the grip matters
+
+This build zeroes itself against however you happen to be holding the pen.
+For the first half second after the app connects it averages the sensors,
+and that pose becomes flat: tilt reads zero there, and the gyro bias it
+measures in the same window is subtracted from every later frame. So hold
+the pen in your normal writing grip, still, while the app connects. Waving
+it around during that window bakes a bad zero into the whole session, and
+the only way out is to disconnect and reconnect.
+
+Two of the three gestures are integrated from the gyro rather than measured
+against gravity, because with the pen upright a twist rotates around gravity
+itself and the accelerometer cannot see it at all. Integrated values cannot
+hold forever, so they ease back toward flat on a six second time constant
+(`SWAY_TAU` and `TWIST_TAU`). Shorten those if you want the bands to recentre
+on their own sooner, lengthen them if a held pose slips away too fast. Only
+tilt is absolute.
+
 ## Updating the firmware only
 
 CircuitPython is already on the board, so skip the uf2: plug in, wait for

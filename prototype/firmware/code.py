@@ -69,13 +69,27 @@ period = 1.0 / FRAME_HZ
 # Horizontal motion for the mid band (PRD M2), see code_ble.py for the notes.
 SWAY_AXIS = 2
 SWAY_SCALE = 1.5
-SWAY_LEAK = 0.97
+# How long a sweep holds before it bleeds back to centre, in seconds.
+# The old code multiplied by a fixed 0.97 every frame, which tied the hold to
+# FRAME_HZ: 0.33 s over BLE at 100 Hz but only 0.13 s over USB at 250 Hz, so
+# the same gesture read differently on the two builds and both let go of the
+# value long before the hand did. Deriving the per-frame factor from a time
+# constant keeps the feel identical at any frame rate.
+SWAY_TAU = 6.0
+SWAY_LEAK = math.exp(-1.0 / (FRAME_HZ * SWAY_TAU))
+# A gyro reads a small non-zero rate even at rest, and an integrator turns
+# that bias into steady creep. Ignore rates below this (rad/s) so holding a
+# position stays put instead of wandering.
+SWAY_DEADBAND = 0.05
 sway = 0.0
 
 
 def update_sway(gyro, dt):
     global sway
-    sway = sway * SWAY_LEAK + gyro[SWAY_AXIS] * dt / SWAY_SCALE
+    rate = gyro[SWAY_AXIS]
+    if abs(rate) < SWAY_DEADBAND:
+        rate = 0.0
+    sway = sway * SWAY_LEAK + rate * dt / SWAY_SCALE
     sway = max(-1.0, min(1.0, sway))
     return sway
 

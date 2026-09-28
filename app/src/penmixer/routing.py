@@ -2,10 +2,13 @@
 
 Lets the app route the Mac's output to BlackHole with one click and put it
 back afterward, so the user never has to visit Sound settings mid-demo.
+Windows has no equivalent CLI, so there the default playback device has to
+be switched by hand and all this module can do is say so.
 """
 
 import shutil
 import subprocess
+import sys
 
 BLACKHOLE_NAME = "BlackHole 2ch"
 _CANDIDATES = ("/opt/homebrew/bin/SwitchAudioSource", "/usr/local/bin/SwitchAudioSource")
@@ -53,3 +56,21 @@ def set_output(device_name: str) -> bool:
         return result.returncode == 0
     except (OSError, subprocess.TimeoutExpired):
         return False
+
+
+def loopback_hint() -> str:
+    """Why the EQ input is silent, and the one manual step that fixes it.
+
+    The engine reads the loopback capture device, so nothing reaches the EQ
+    until the system's playback device is the matching loopback sink. On
+    macOS the route button does that; on Windows it has to be done by hand.
+    """
+    if sys.platform == "win32":
+        return (
+            "audio running but the input is silent: set Windows Settings -> System -> "
+            "Sound -> Output to 'CABLE Input (VB-Audio Virtual Cable)', then play music"
+        )
+    return (
+        "audio running but the input is silent: set System Settings -> Sound -> "
+        f"Output to {BLACKHOLE_NAME}, then play music"
+    )
