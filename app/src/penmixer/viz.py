@@ -17,13 +17,14 @@ from . import theme
 from .spectrum import BASS_EDGE_HZ, TREBLE_EDGE_HZ, bar_frequencies
 
 BAR_COUNT = 32
-ROWS = 12
+ROWS = 15  # dot size is the grid pitch, so more rows means smaller dots
 DECAY = 0.82
-DOT_TO_PITCH = 0.30  # dot radius as a fraction of the grid pitch
+DOT_TO_PITCH = 0.36  # dot radius as a fraction of the grid pitch
+SIDE_MARGIN = 0.10  # inset the grid this fraction of the width on each side
 
-BASS_COLOR = QColor(0x3B, 0x82, 0xF6)
-MID_COLOR = QColor(0x10, 0xB9, 0x81)
-TREBLE_COLOR = QColor(0xF5, 0x9E, 0x0B)
+BASS_COLOR = QColor(0xFF, 0xC3, 0x00)  # yellow
+MID_COLOR = QColor(0x7E, 0xD3, 0x21)  # lime green
+TREBLE_COLOR = QColor(0x29, 0xB6, 0xE8)  # light blue
 BAND_COLOR = {"bass": BASS_COLOR, "mid": MID_COLOR, "treble": TREBLE_COLOR}
 
 BACKGROUND = QColor(theme.CARD_BG)
@@ -48,7 +49,7 @@ def _inset_gradient(fill: QColor) -> QRadialGradient:
 class SpectrumWidget(QWidget):
     def __init__(self) -> None:
         super().__init__()
-        self.setMinimumHeight(140)
+        self.setMinimumHeight(208)
         self._levels = np.zeros(BAR_COUNT)
         freqs = bar_frequencies(BAR_COUNT)
         self._bands = [
@@ -71,15 +72,19 @@ class SpectrumWidget(QWidget):
         painter.fillRect(self.rect(), BACKGROUND)
         painter.setPen(Qt.PenStyle.NoPen)
 
-        width = self.width()
         label_h = 16
         grid_h = self.height() - label_h
+
+        # Inset the grid from both edges, then fit whole columns in what is
+        # left; the labels below line up with the same inset.
+        inset = self.width() * SIDE_MARGIN
+        width = self.width() - 2 * inset
 
         # One pitch for both axes so the gaps match evenly x and y; columns
         # are however many fit at that pitch, centered in the leftover width.
         pitch = grid_h / ROWS
         cols = max(int(width // pitch), 1)
-        x_margin = (width - cols * pitch) / 2
+        x_margin = inset + (width - cols * pitch) / 2
         radius = pitch * DOT_TO_PITCH
 
         for col in range(cols):
@@ -106,12 +111,16 @@ class SpectrumWidget(QWidget):
         painter.setPen(LABEL_COLOR)
         metrics = QFontMetrics(font)
         y = self.height() - 4
-        painter.drawText(6, y, "bass")
-        painter.drawText(width // 2 - metrics.horizontalAdvance("mid") // 2, y, "mid")
-        painter.drawText(width - metrics.horizontalAdvance("treble") - 6, y, "treble")
+        painter.drawText(round(inset), y, "bass")
+        painter.drawText(
+            round(self.width() / 2 - metrics.horizontalAdvance("mid") / 2), y, "mid"
+        )
+        painter.drawText(
+            round(self.width() - inset - metrics.horizontalAdvance("treble")), y, "treble"
+        )
         painter.end()
 
     def sizeHint(self):
         from PySide6.QtCore import QSize
 
-        return QSize(420, 150)
+        return QSize(420, 250)

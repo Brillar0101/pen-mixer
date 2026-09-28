@@ -19,14 +19,24 @@ CACHE_PATH = Path.home() / ".cache" / "penmixer" / "spotify_token.json"
 POLL_SECONDS = 2.0
 
 
-def available() -> bool:
+def unavailable_reason() -> str | None:
+    """Why the poller cannot run, or None when it can.
+
+    Worth distinguishing: a missing client id is a setup step the user has to
+    do once, a missing spotipy is a broken install. "Not connected" told them
+    neither.
+    """
     if not CLIENT_ID:
-        return False
+        return "Set SPOTIFY_CLIENT_ID"
     try:
         import spotipy  # noqa: F401
     except ImportError:
-        return False
-    return True
+        return "spotipy not installed"
+    return None
+
+
+def available() -> bool:
+    return unavailable_reason() is None
 
 
 class SpotifyPoller(QThread):
@@ -91,7 +101,10 @@ class SpotifyPoller(QThread):
                 )
                 self._last_track_id = item["id"]
                 images = item.get("album", {}).get("images") or []
-                self._maybe_fetch_art(images[-1]["url"] if images else None)
+                # Spotify lists artwork largest first, so [0] is the 640px
+                # version; [-1] is the 64px thumbnail, which visibly pixelated
+                # once the disc grew past thumbnail size.
+                self._maybe_fetch_art(images[0]["url"] if images else None)
             elif self._last_track_id is not None:
                 self._is_playing = False
                 self._last_track_id = None

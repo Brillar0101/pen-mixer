@@ -12,6 +12,14 @@ from dataclasses import dataclass
 from .frames import ROLL_RANGE, TILT_RANGE, TouchFrame
 
 MAX_BOOST_DB = 12.0
+# >1 means less than the full physical range is needed to hit
+# +/-MAX_BOOST_DB. Bass at 1.0 maps the full 45 degree tilt onto the full
+# gain range; sway and twist sit at 2.0 because their usable travel is
+# smaller. Dropping either below these stops the band reaching the rails at
+# all, which reads as a broken control rather than a calm one.
+BASS_SENSITIVITY = 1.0
+MID_SENSITIVITY = 2.0
+TREBLE_SENSITIVITY = 2.0
 
 
 @dataclass(frozen=True)
@@ -29,9 +37,11 @@ FLAT = BandGains(0.0, 0.0, 0.0)
 def gains_from_frame(frame: TouchFrame) -> BandGains:
     """Pen mapping: signed, both directions, all three bands."""
     return BandGains(
-        bass_db=max(-1.0, min(1.0, frame.tilt / TILT_RANGE[1])) * MAX_BOOST_DB,
-        mid_db=max(-1.0, min(1.0, frame.sway)) * MAX_BOOST_DB,
-        treble_db=max(-1.0, min(1.0, frame.roll / ROLL_RANGE[1])) * MAX_BOOST_DB,
+        bass_db=max(-1.0, min(1.0, (frame.tilt / TILT_RANGE[1]) * BASS_SENSITIVITY))
+        * MAX_BOOST_DB,
+        mid_db=max(-1.0, min(1.0, frame.sway * MID_SENSITIVITY)) * MAX_BOOST_DB,
+        treble_db=max(-1.0, min(1.0, (frame.roll / ROLL_RANGE[1]) * TREBLE_SENSITIVITY))
+        * MAX_BOOST_DB,
     )
 
 
