@@ -10,6 +10,7 @@ equalizer. Board status, Bluetooth, audio routing, Rescan, and the raw
 motion meters live behind the gear icon in the top bar.
 """
 
+import math
 import os
 import time
 from datetime import datetime
@@ -34,14 +35,7 @@ from PySide6.QtWidgets import (
 )
 
 from . import routing, spotifyio, theme
-from .audio import (
-    AudioEngine,
-    default_input_index,
-    hostapi_names,
-    hostapi_rank,
-    list_devices,
-    rescan_devices,
-)
+from .audio import AudioEngine, default_input_index, list_devices, rescan_devices
 from .bleio import BleReader, BleScanThread
 from .frames import TouchFrame
 from .mapping import BandGains, gains_from_frame, smooth
@@ -50,7 +44,7 @@ from .spectrum import bar_spectrum
 from .spotifyio import SpotifyPoller
 from .tcpio import TcpReader
 from .viz import SpectrumWidget
-from .widgets import EqSlider, GrainOverlay, OverlapColumn, SvgButton, TrackArt, svg_pixmap
+from .widgets import EqSlider, TrackArt
 
 SLIDER_SCALE = 10  # slider units per dB
 TRACK_HEADER_HEIGHT = 32  # rendered height of the TRACK lettering
@@ -223,7 +217,17 @@ class MainWindow(QMainWindow):
 
         self._ui_timer = QTimer(self)
         self._ui_timer.timeout.connect(self._refresh)
-        self._ui_timer.start(33)
+        self._ui_timer.start(16)
+
+        self._sys_vol_last: tuple[float, bool] | None = None
+        self._sysvol_timer = QTimer(self)
+        self._sysvol_timer.timeout.connect(self._sync_system_volume)
+        self._sysvol_timer.start(300)
+
+        # Start hearing music without a click: once the window is up, pick
+        # the loopback input and real speakers and start the engine, exactly
+        # what the "Hear music here" button does.
+        QTimer.singleShot(300, self._hear_music)
 
         self._restart_reader()
 
@@ -302,6 +306,14 @@ class MainWindow(QMainWindow):
 
         self.input_box = QComboBox()
         self.output_box = QComboBox()
+        for box in (self.input_box, self.output_box):
+            # Long labels ("CABLE Output ... [Windows WASAPI]") must ellipsize
+            # instead of forcing the window wider than a laptop screen.
+            box.setSizeAdjustPolicy(
+                QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon
+            )
+            box.setMinimumContentsLength(16)
+        self.input_box.currentIndexChanged.connect(self._on_input_changed)
         # Device names ("CABLE Output (VB-Audio Virtual...") are long enough
         # to force the card wide if the combo sizes to fit them; cap the
         # visible width to a character count and let Qt elide the rest.
@@ -322,8 +334,8 @@ class MainWindow(QMainWindow):
         vol_head.addWidget(self.volume_readout)
         layout.addLayout(vol_head)
         self.volume_slider = QSlider(Qt.Orientation.Horizontal)
-        self.volume_slider.setRange(0, 240)  # 0 to +24 dB, tenths
-        self.volume_slider.setValue(0)
+        self.volume_slider.setRange(0, 150)  # 0 to +15 dB, tenths
+        self.volume_slider.setValue(90)
         self.volume_slider.valueChanged.connect(self._volume_changed)
         self.volume_slider.setStyleSheet(SLIDER_QSS)
         layout.addWidget(self.volume_slider)
@@ -677,26 +689,21 @@ class MainWindow(QMainWindow):
 
     # ---- devices -------------------------------------------------------
     def _populate_devices(self) -> None:
+        self.input_box.blockSignals(True)
+        self.output_box.blockSignals(True)
         self.input_box.clear()
         self.output_box.clear()
+        api = preferred_hostapi()
         for dev in list_devices():
-            name = dev.name.lower()
-            # "Microsoft Sound Mapper" is a virtual meta-device; PortAudio
-            # frequently refuses to pair it for a duplex stream with a real
-            # device (paBadIODeviceCombination / PaErrorCode -9993), so it's
-            # never a safe choice here even though it looks like a device.
-            if "sound mapper" in name:
-                continue
             if dev.inputs >= 2:
                 self.input_box.addItem(f"{dev.name}", dev.index)
-            if dev.outputs >= 2 and "blackhole" not in name:
+            if dev.outputs >= 2 and "blackhole" not in dev.name.lower():
                 self.output_box.addItem(f"{dev.name}", dev.index)
         preferred = default_input_index()
         if preferred is not None:
             pos = self.input_box.findData(preferred)
             if pos >= 0:
                 self.input_box.setCurrentIndex(pos)
-        self._select_preferred_output()
 
     def _rescan_devices(self) -> None:
         was_running = self.engine.running
@@ -943,47 +950,33 @@ class MainWindow(QMainWindow):
             self._previous_output = None
 
     def _select_preferred_output(self) -> None:
-        # Windows refuses to duplex-pair devices from different host APIs
-        # (MME/DirectSound/WASAPI/WDM-KS) -- PaErrorCode -9993, "Illegal
-        # combination of I/O devices" -- so among hint matches, prefer one
-        # that shares the chosen input's host API before falling back to
-        # whichever hint match comes first regardless of API.
-        devices_by_index = {dev.index: dev for dev in list_devices()}
-        input_dev = devices_by_index.get(self.input_box.currentData())
-        input_hostapi = input_dev.hostapi if input_dev is not None else None
-
-        def output_hostapi(i: int) -> int:
-            dev = devices_by_index.get(self.output_box.itemData(i))
-            return dev.hostapi if dev is not None else -1
-
         for hint in ("bose", "airpod", "headphone", "speaker"):
             for i in range(self.output_box.count()):
-                if hint in self.output_box.itemText(i).lower() and (
-                    output_hostapi(i) == input_hostapi
-                ):
+                if hint in self.output_box.itemText(i).lower():
                     self.output_box.setCurrentIndex(i)
                     return
-        # Nothing shares the input's host API, so rank instead of taking
-        # whichever entry is listed first: on Windows that is always the
-        # legacy MME duplicate, which resamples and drops Bluetooth output.
-        api_names = hostapi_names()
-        for hint in ("bose", "airpod", "headphone", "speaker"):
-            matches = [
-                i
-                for i in range(self.output_box.count())
-                if hint in self.output_box.itemText(i).lower()
-            ]
-            if matches:
-                best = min(matches, key=lambda i: hostapi_rank(output_hostapi(i), api_names))
-                self.output_box.setCurrentIndex(best)
-                return
 
     def _select_output_by_name(self, name: str) -> None:
-        for i in range(self.output_box.count()):
-            item = self.output_box.itemText(i)
-            if name in item or item in name:
-                self.output_box.setCurrentIndex(i)
-                return
+        """Pick the named output, preferring the input's host API."""
+        devices = list_devices()
+        in_index = self.input_box.currentData()
+        api = devices[in_index].hostapi if in_index is not None else None
+        fallback = None
+        for dev in devices:
+            if dev.outputs < 2:
+                continue
+            if name not in dev.name and dev.name not in name:
+                continue
+            if api is not None and dev.hostapi == api:
+                fallback = dev.index
+                break
+            if fallback is None:
+                fallback = dev.index
+        if fallback is None:
+            return
+        pos = self.output_box.findData(fallback)
+        if pos >= 0:
+            self.output_box.setCurrentIndex(pos)
 
     def _restore_routing(self) -> None:
         if self._previous_output is not None:
@@ -1031,17 +1024,44 @@ class MainWindow(QMainWindow):
         if self._silent_ticks == SILENCE_TICKS:
             self.status.setText(routing.loopback_hint())
 
+    def _sync_system_volume(self) -> None:
+        state = sysvol.get_volume()
+        if state is None:
+            self._sysvol_timer.stop()  # not available on this machine
+            return
+        if state == self._sys_vol_last:
+            return
+        first = self._sys_vol_last is None
+        self._sys_vol_last = state
+        scalar, muted = state
+        if muted or scalar <= 0.001:
+            self.volume_slider.setValue(self.volume_slider.minimum())
+            return
+        # Full system volume lands on the slider's own maximum, so computer
+        # max and app max are the same thing; lower volumes scale down from
+        # there. Past +9 the gain eats the EQ boost headroom, so loud tracks
+        # at full volume can hit the clip.
+        db = 20.0 * math.log10(scalar) + self.volume_slider.maximum() / 10.0
+        value = max(self.volume_slider.minimum(), min(self.volume_slider.maximum(), int(db * 10)))
+        if first and value == self.volume_slider.value():
+            return
+        self.volume_slider.setValue(value)
+
     def _volume_changed(self, value: int) -> None:
+        if value <= self.volume_slider.minimum():
+            self.engine.set_makeup_db(-999.0)  # gain of ~0: a true mute
+            self.volume_readout.setText("muted")
+            return
         db = value / 10.0
         self.engine.set_makeup_db(db)
-        self.volume_readout.setText(f"+{db:.1f} dB")
+        self.volume_readout.setText(f"{db:+.1f} dB")
 
     def _refresh(self) -> None:
         level = min(int(self.engine.output_level * 300), 100)
         self.level_bar.setValue(level if self.engine.running else 0)
         if self.engine.running:
             window = self.engine.latest_window()
-            bars = bar_spectrum(window, self.engine.samplerate)
+            bars = bar_spectrum(window, self.engine.samplerate, bars=BAR_COUNT)
             self.spectrum.update_levels(bars)
             self._check_silence()
 

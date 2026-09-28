@@ -66,7 +66,6 @@ class DeviceInfo:
     name: str
     inputs: int
     outputs: int
-    hostapi: int
 
 
 def rescan_devices() -> None:
@@ -79,74 +78,27 @@ def rescan_devices() -> None:
 def list_devices() -> list[DeviceInfo]:
     devices = []
     for idx, dev in enumerate(sd.query_devices()):
+        api = int(dev["hostapi"])
         devices.append(
             DeviceInfo(
                 index=idx,
                 name=str(dev["name"]),
                 inputs=int(dev["max_input_channels"]),
                 outputs=int(dev["max_output_channels"]),
-                hostapi=int(dev["hostapi"]),
             )
         )
     return devices
-
-
-def hostapi_names() -> dict[int, str]:
-    return {idx: str(api["name"]) for idx, api in enumerate(sd.query_hostapis())}
-
-
-# Windows lists the same hardware once per host API. WASAPI is the one worth
-# having: it runs at the endpoint's native rate (VB-Cable is 48 kHz, but its
-# MME entry advertises 44.1 kHz and forces a resampled stream) and it is the
-# only one that drives Bluetooth A2DP output reliably. MME is a legacy
-# emulation layer that on this cable will not even open for render.
-HOSTAPI_PREFERENCE = ("wasapi", "directsound", "mme") if sys.platform == "win32" else ()
-
-
-def hostapi_rank(hostapi: int, names: dict[int, str] | None = None) -> int:
-    """Lower is better. Everything unranked sorts last, order untouched."""
-    if not HOSTAPI_PREFERENCE:
-        return 0
-    name = (names or hostapi_names()).get(hostapi, "").lower()
-    for rank, wanted in enumerate(HOSTAPI_PREFERENCE):
-        if wanted in name:
-            return rank
-    return len(HOSTAPI_PREFERENCE)
-
-
-def _wasapi_duplex_settings(input_index: int, output_index: int):
-    """Let WASAPI resample when the two devices sit at different rates.
-
-    Shared mode refuses a duplex stream outright when the input and output
-    have different native rates, which is the normal case here: VB-Cable runs
-    at 48 kHz while a Bluetooth speaker reports 44.1 kHz, and no single rate
-    satisfies both. auto_convert has the driver convert rather than fail.
-    Only applied when both ends are WASAPI, since the settings object is
-    rejected by the other host APIs.
-    """
-    names = hostapi_names()
-
-    def is_wasapi(index: int) -> bool:
-        hostapi = int(sd.query_devices(index)["hostapi"])
-        return "wasapi" in names.get(hostapi, "").lower()
-
-    if is_wasapi(input_index) and is_wasapi(output_index):
-        settings = sd.WasapiSettings(auto_convert=True)
-        return (settings, settings)
-    return None
 
 
 def default_input_index() -> int | None:
     """Prefer the loopback device so system audio is what gets EQ'd.
 
     BlackHole on macOS, VB-Audio Virtual Cable ("CABLE Output") on Windows.
-    Among the duplicate host-API entries for one device, take the best-ranked.
     """
-    names = hostapi_names()
     for hint in ("blackhole", "cable output"):
-        matches = [d for d in list_devices() if hint in d.name.lower() and d.inputs >= 2]
-        if matches:
-            return min(matches, key=lambda d: hostapi_rank(d.hostapi, names)).index
+        for dev in list_devices():
+            if hint in dev.name.lower() and dev.inputs >= 2:
+                return dev.index
     return None
 
 
@@ -205,7 +157,6 @@ class AudioEngine:
         in_rate = float(sd.query_devices(input_index)["default_samplerate"] or 48000.0)
         # Windows devices are picky about rates; try the plausible ones in order.
         rates = list(dict.fromkeys([out_rate, in_rate, 48000.0, 44100.0]))
-        extra = _wasapi_duplex_settings(input_index, output_index)
         last_error: Exception | None = None
         for rate in rates:
             try:
@@ -218,7 +169,6 @@ class AudioEngine:
                     channels=2,
                     dtype="float32",
                     callback=self._callback,
-                    extra_settings=extra,
                 )
                 self._stream.start()
                 return

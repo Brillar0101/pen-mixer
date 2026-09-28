@@ -8,7 +8,7 @@
 #
 # Gestures in this pose:
 #     tilt  (lean forward/back)     gravity leaking onto the board face
-#     sway  (swing left/right)      gyro, leaky integral, holds then eases
+#     sway  (swing left/right)      gyro, leaky integral, drifts back flat
 #     twist (rotate about the pen)  gyro, leaky integral. With the pen
 #                                   vertical a twist spins around gravity
 #                                   itself, so the accelerometer cannot
@@ -44,22 +44,9 @@ SWAY_GYRO_AXIS = 2      # left/right swing rotates about the face normal
 TWIST_GYRO_AXIS = 0     # twist rotates about the pen's length
 
 SWAY_SCALE = 1.5        # rad of sweep for full mids
+SWAY_LEAK = 0.97        # drifts back to flat in about a third of a second
 TWIST_SCALE = 3.1       # rad of twist for full treble, about half a turn
-
-# How long a gesture holds before it bleeds back to flat, in seconds. These
-# were per-frame factors (0.97 and 0.99), which tied the hold to FRAME_HZ and
-# let go of the value long before the hand did: a sweep was gone in 0.76 s and
-# a twist in 2.3 s, so neither band stayed where it was put. Deriving the
-# factor from a time constant fixes both and survives a change of frame rate.
-SWAY_TAU = 6.0
-TWIST_TAU = 6.0
-SWAY_LEAK = math.exp(-1.0 / (FRAME_HZ * SWAY_TAU))
-TWIST_LEAK = math.exp(-1.0 / (FRAME_HZ * TWIST_TAU))
-
-# Averaging out the gyro's idle bias cancels its mean, not its noise, and over
-# a six second hold that noise random-walks the integral. Ignore rates this
-# small (rad/s) so a held pose stays put instead of wandering.
-GYRO_DEADBAND = 0.03
+TWIST_LEAK = 0.99       # holds a twist longer than sway before going flat
 
 NEUTRAL_S = 0.5         # grip-averaging window right after connecting
 
@@ -85,11 +72,6 @@ def raw_tilt():
     mag = math.sqrt(sum(a * a for a in accel)) or G
     leak = max(-1.0, min(1.0, accel[TILT_ACCEL_AXIS] / mag))
     return math.degrees(math.asin(leak))
-
-
-def deadband(rate):
-    """Drop rates too small to be a deliberate gesture."""
-    return 0.0 if abs(rate) < GYRO_DEADBAND else rate
 
 
 def capture_neutral():
@@ -128,11 +110,9 @@ while True:
         energy = min(1.0, abs(mag - G) / 8.0)
 
         gyro = imu.gyro
-        sway_rate = deadband(gyro[SWAY_GYRO_AXIS] - bias[SWAY_GYRO_AXIS])
-        twist_rate = deadband(gyro[TWIST_GYRO_AXIS] - bias[TWIST_GYRO_AXIS])
-        sway = sway * SWAY_LEAK + sway_rate * period / SWAY_SCALE
+        sway = sway * SWAY_LEAK + (gyro[SWAY_GYRO_AXIS] - bias[SWAY_GYRO_AXIS]) * period / SWAY_SCALE
         sway = max(-1.0, min(1.0, sway))
-        twist = twist * TWIST_LEAK + twist_rate * period / TWIST_SCALE
+        twist = twist * TWIST_LEAK + (gyro[TWIST_GYRO_AXIS] - bias[TWIST_GYRO_AXIS]) * period / TWIST_SCALE
         twist = max(-1.0, min(1.0, twist))
         roll = twist * 90.0
 

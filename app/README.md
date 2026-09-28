@@ -77,6 +77,46 @@ your speakers when you are done.
 Set Source to "Simulate (no board)": synthetic pen motion sweeps all three
 bands so the whole pipeline demos untethered.
 
+### Spotify now playing, optional
+
+The track card and transport buttons read Spotify's Web API. Without the
+setup below the app runs normally with that panel disabled.
+
+1. Create an app at developer.spotify.com/dashboard. Under Redirect URIs
+   add exactly `http://127.0.0.1:8888/callback` (Spotify no longer accepts
+   `localhost`). Copy the Client ID; there is no secret to keep, the app
+   uses PKCE.
+2. Put the Client ID in the environment of the shell that launches the app.
+
+   macOS:
+
+   ```bash
+   export SPOTIFY_CLIENT_ID=your-client-id
+   venv/bin/python -m penmixer.app
+   ```
+
+   Windows, this window only:
+
+   ```powershell
+   $env:SPOTIFY_CLIENT_ID = "your-client-id"
+   venv\Scripts\python -m penmixer.app
+   ```
+
+   Windows, permanently (then open a new terminal):
+
+   ```powershell
+   setx SPOTIFY_CLIENT_ID "your-client-id"
+   ```
+
+3. The first launch opens a browser for the Spotify login. After that the
+   token is cached at `~/.cache/penmixer/spotify_token.json` and sign-in is
+   silent.
+
+Reading what is playing works on any account; play, pause and skip call
+endpoints Spotify limits to Premium. This only feeds the panel and the
+buttons: the audio the EQ shapes still has to arrive through BlackHole or
+VB-CABLE.
+
 ## Where this fits in the bigger project
 
 The parent project is the Pen Mixer: a tiny board (nRF52840 + IMU) that clips
